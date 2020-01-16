@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> LSU Library - Student SignUp </title>
+
+    <script type="text/javascript" src="../../JavaScript/signupPage.js"></script>
+
+    <style>
+      #asteriskImportant{
+        color: red;
+      }
+
+      #middleNameField{
+        width: 330px;
+        margin-top: 10px;
+      }
+
+
+    </style>
+
+  </head>
+  <body onload="displayFillAllMandatoryFieldsMessage();">
+
+    <!-- MAIN SECTION - Begin -->
+      <div id="main">
+
+        <!-- HEADER SECTION - Bgin -->
+
+        <!-- HEADER SECTION - End -->
+
+
+        <!-- BODY SECTION - Begin -->
+          <!-- Signup Form SECTION - Begin -->
+            <div id="signupForm">
+
+              <p>Librarian Membership <br>Registration</p>
+
+              <form method="POST" action="#">
+                <p>Full Name</p>
+                  <input type="text" name="firstName" placeholder="First Name" required>
+                  <span id="asteriskImportant">*</span>
+                  <input type="text" name="middleName" placeholder="Middle Name" required>
+                  <br>
+                  <input type="text" name="lastName" placeholder="Last Name" required id="middleNameField">
+                  <span id="asteriskImportant">*</span>
+                <p>Email Address</p>
+                  <input type="email" name="email" placeholder="eg:- sample@provider.com" required>
+                  <span id="asteriskImportant">*</span>
+                <p>Phone Number</p>
+                  <input type="number" name="mobileNumber" placeholder="Mobile Number" required>
+                  <span id="asteriskImportant">*</span>
+                  <input type="number" name="landNumber" placeholder="Land Number">
+                <p>Address</p>
+                  <input type="text" name="laneAdress" placeholder="Lane Address" required>
+                  <span id="asteriskImportant">*</span>
+                  <input type="text" name="city" placeholder="City" required>
+                  <span id="asteriskImportant">*</span>
+                  <br>
+                  <select name="provience">
+                    <option value="">Provience</option>
+                    <option value="central">Central</option>
+                    <option value="eastern">Eastern</option>
+                    <option value="northCentral">North Central</option>
+                    <option value="northern">Northern</option>
+                    <option value="northWestern">North Western</option>
+                    <option value="sabaragamuwa">Sabaragamuwa</option>
+                    <option value="southern">Southern</option>
+                    <option value="uva">Uva</option>
+                    <option value="western">Western</option>
+                  </select>
+                  <input type="text" name="city" placeholder="Postal/Zip Code" required>
+                  <span id="asteriskImportant">*</span>
+                <p>University Information</p>
+                  <input type="text" name="universityIndexNo" placeholder="University Index No" required>
+                  <span id="asteriskImportant">*</span>
+                  <br>
+                  <select name="faculty">
+                    <option value="">Faculty</option>
+                    <option value="engineering">Faculty of Engineering</option>
+                    <option value="science">Faculty of Science</option>
+                    <option value="computing">Faculty of Computing</option>
+                    <option value="business">Faculty of Buiness</option>
+                  </select>
+                  <span id="asteriskImportant">*</span>
+                  <br>
+                  <input type="text" name="degreeProgram" placeholder="Degree Program" required>
+                  <br>
+                  <input type="text" name="batch" placeholder="Batch" required>
+                  <span id="asteriskImportant">*</span>
+                <p>Login Credentails</p>
+                  <input type="text" name="username" placeholder="Username" required>
+                  <span id="asteriskImportant">*</span>
+                  <br>
+                  <input type="password" name="password" placeholder="Enter Password" required>
+                  <span id="asteriskImportant">*</span>
+                  <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                  <span id="asteriskImportant">*</span>
+                <p>Terms and Conditions</p>
+                <p>Please read through the Terms and Constions and tick the below <br>box to continue the registration</p>
+                <input type="checkbox" name="tAndCAgreement">
+                  <p>I have read and I agree to the Terms and Conditions</p>
+                <br>
+                <input type="submit" name="register" value="Register">
+                <input type="reset" name="reset" value="Reset">
+              </form>
+            </div>
+          <!-- Signup Form SECTION - End -->
+
+        <!-- BODY SECTION - End -->
+
+
+        <!-- FOOTER SECTION - Begin -->
+
+        <!-- FOOTER SECTION - End -->
+      </div>
+    <!-- MAIN SECTION - End -->
+  </body>
+</html>
