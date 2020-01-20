@@ -3,6 +3,7 @@
   <head>
     <title> LSU Library - Dashboard </title>
 
+    <link rel="icon" type="image/png" sizes="1500x1500" href="assets/images/LSULibraryLogo.png">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <script src="assets/bootstrap/js/bootstrap.js"></script>
@@ -146,8 +147,14 @@
           </div>
         </div>
 
-
+        <!-- Functionalities Section -->
         <div style="width: 100%; height: 500px; background-color: #B2E9FD;">
+
+          <div class="card" style="height: 120px;
+                                  width: 120px;
+                                  border-radius: 10px;">
+            <div class="card-body">Basic card</div>
+          </div>
 
         </div>
         <!-- BODY SECTION - End -->
