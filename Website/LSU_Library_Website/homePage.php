@@ -310,13 +310,13 @@
 
           <div id="logoSection">
 
-            <img src="assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+            <img src="assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
             <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
             <p id="mainTitleSub">Lowa State University</p>
 
-            <img src="assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+            <img src="assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
           </div>
 
@@ -432,7 +432,7 @@
 
           <!-- Body Section 1 - Begin -->
             <p id="bodySection1Text1">Welcome <br>to the<br><b> land of knowledge </b></p>
-            <img src="assets/Images/HomePage/bodyImg1.jpg" alt="Cover Image" id="bodyImg1">
+            <img src="assets/images/HomePage/bodyImg1.jpg" alt="Cover Image" id="bodyImg1">
           <!-- Body Section 1 - End -->
 
           <!-- Body Section 2 - Begin -->
@@ -443,7 +443,7 @@
                 <td>
 
                   <div class="card bg-info text-white bodySection2Cards">
-                    <img src="assets/Images/HomePage/homePageBodySection2Img1.jpg" class="card-img-top" alt="Image 1">
+                    <img src="assets/images/HomePage/homePageBodySection2Img1.jpg" class="card-img-top" alt="Image 1">
                     <div class="card-body">
                       <p class="card-text">
                         University Students and Professors from LSU can become a library member and access all the facilities
@@ -455,7 +455,7 @@
                 <td>
 
                   <div class="card bg-info text-white bodySection2Cards">
-                    <img src="assets/Images/HomePage/homePageBodySection2Img2.jpg" class="card-img-top" alt="Image 2">
+                    <img src="assets/images/HomePage/homePageBodySection2Img2.jpg" class="card-img-top" alt="Image 2">
                     <div class="card-body">
                       <p class="card-text">
                         Members can search for any book with a powerful searching tool
@@ -467,7 +467,7 @@
                 <td>
 
                   <div class="card bg-info text-white bodySection2Cards">
-                    <img src="assets/Images/HomePage/homePageBodySection2Img3.jpg" class="card-img-top" alt="Image 3">
+                    <img src="assets/images/HomePage/homePageBodySection2Img3.jpg" class="card-img-top" alt="Image 3">
                     <div class="card-body">
                       <p class="card-text">
                         Members can check the books' availability for borrowing
@@ -481,7 +481,7 @@
                 <td>
 
                   <div class="card bg-info text-white bodySection2Cards">
-                    <img src="assets/Images/HomePage/homePageBodySection2Img4.jpg" class="card-img-top" alt="Image 4">
+                    <img src="assets/images/HomePage/homePageBodySection2Img4.jpg" class="card-img-top" alt="Image 4">
                     <div class="card-body">
                       <p class="card-text">
                         Members can reserve a book for 24 hours before finalizing it for borrowing.
@@ -493,7 +493,7 @@
                 <td>
 
                   <div class="card bg-info text-white bodySection2Cards">
-                    <img src="assets/Images/HomePage/homePageBodySection2Img5.png" class="card-img-top" alt="Image 5">
+                    <img src="assets/images/HomePage/homePageBodySection2Img5.png" class="card-img-top" alt="Image 5">
                     <div class="card-body">
                       <p class="card-text">
                         Our web application is simple and easy to use.
@@ -505,7 +505,7 @@
                 <td>
 
                   <div class="card bg-info text-white bodySection2Cards">
-                    <img src="assets/Images/HomePage/homePageBodySection2Img6.jpg" class="card-img-top" alt="Image 6">
+                    <img src="assets/images/HomePage/homePageBodySection2Img6.jpg" class="card-img-top" alt="Image 6">
                     <div class="card-body">
                       <p class="card-text">
                         Members can update their account details or remove it
@@ -530,13 +530,13 @@
 
           <div id="footerLogoSection">
 
-            <img src="assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+            <img src="assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
             <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
             <p id="mainTitleSub">Lowa State University</p>
 
-            <img src="assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+            <img src="assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
           </div>
 
