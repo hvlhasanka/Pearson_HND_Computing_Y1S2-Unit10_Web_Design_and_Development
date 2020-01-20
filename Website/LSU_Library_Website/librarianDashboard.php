@@ -9,21 +9,14 @@
       }
     </style>
   </head>
-  <body style="height: 100%; ">
+  <body>
     <!-- MAIN SECTION - Begin -->
         <!-- HEADER SECTION - Begin -->
-        <div style="height: 60px; width: 100%; background-color: #3498DB;">
-wfefef
-        </div>
-        <div style="height: 1200px; width: 30px; background-color: #3498DB">
-
-          <table>
-            <tr><td>eff</td></tr>
-            <tr><td>wfefef</td></tr>
-            <tr><td>wdw</td></tr>
-          </table>
+        <div style="height: 160px; width: 100%; background-color: #3498DB;">
+        
 
         </div>
+
         <!-- HEADER SECTION - End -->
 
 
