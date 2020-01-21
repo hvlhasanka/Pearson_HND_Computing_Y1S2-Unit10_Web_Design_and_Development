@@ -6,7 +6,10 @@
     <link rel="icon" type="image/png" href="icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Retrieving default layout style sheet -->
+    <link rel="stylesheet" href="assets/css/defaultLayout.css">
 
+    <!-- Retrieving  signPage script  -->
     <script type="text/javascript" src="../JavaScript/signupPage.js"></script>
 
 
@@ -14,108 +17,14 @@
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif:100&display=swap" rel="stylesheet">
 
     <!-- Bootstrap links - begin -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+		<script src="assets/javascript/jquery.min.js"></script>
+		<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Bootstrap links - end -->
 
   </head>
 
   <style>
-    *{
-      margin: 0;
-    }
-
-    #header{
-      height: 120px;
-    }
-
-    #lsuLibraryLogoIcon{
-      height: 95px;
-      width: 95px;
-      position: relative;
-      top: 122px;
-      left: -120px;
-    }
-
-    #logoSection{
-      position: relative;
-      top: -100px;
-      left: 440px;
-    }
-
-    #mainTitle{
-      color: #0692c2;
-      letter-spacing: 4px;
-      font-family: 'Noto Sans', sans-serif;
-      font-size: 40px;
-      padding-top: 30px;
-      padding-left: 8px;
-    }
-
-    #mainTitleSpan{
-      letter-spacing: 1px;
-    }
-
-    #mainTitleSub{
-      font-size: 22px;
-      font-family: verdana;
-      color: #0692c2;
-      letter-spacing: 1px;
-    }
-
-    #lsuLogoIcon{
-      height: 62px;
-      width: 150px;
-      position: relative;
-      top: -90px;
-      left: 300px;
-    }
-
-    #navSection{
-      position: relative;
-      top: -240px;
-      left: 1180px;
-    }
-
-    .navItem{
-      padding-left: 20px;
-    }
-
-    .navItem a{
-      font-size: 25px;
-      text-decoration: none;
-      color: #00B1D2FF;
-      font-family: verdana;
-      font-size: 20px;
-      border-style: solid;
-      border-width: thin;
-      border-radius: 6px;
-      padding: 6px;
-    }
-
-    #navItem1 a{
-      border-color: white;
-      transition-duration: 0.4s;
-    }
-
-    #navItem1 a:hover{
-      background-color: lightblue;
-      color: white;
-    }
-
-    #navItem2 a{
-      transition-duration: 0.4s;
-    }
-
-    #navItem2 a:hover{
-      border-color: #00B1D2FF;
-      background-color: lightblue;
-      color: white;
-    }
-
     .modal-dialog{
       width: 600px;
     }
@@ -263,44 +172,6 @@
       font-family: 'Roboto', sans-serif;
       margin-top: -150px;
       margin-left: 545px;
-    }
-
-    #footer{
-      background-image: linear-gradient(to right, #9993ff, #86e9fd);
-      height: 200px;
-    }
-
-    #footerLogoSection{
-      position:relative;
-      top: -100px;
-      left: 700px;
-    }
-
-    #footerLogoSection h1{
-      color: white;
-    }
-
-    #footerLogoSection span{
-      color: white;
-    }
-
-    #footerLogoSection p{
-      color: white;
-    }
-
-    #footerText1Main{
-      position: relative;
-      top: -140px;
-      left: 650px;
-      font-family: sans-serif;
-      font-size: 20px;
-      color: white;
-    }
-
-    #footerText1Sub{
-      font-family: serif;
-      font-size: 20px;
-      color: white;
     }
   </style>
 
