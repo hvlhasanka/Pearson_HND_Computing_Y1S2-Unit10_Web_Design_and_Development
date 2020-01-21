@@ -129,16 +129,13 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT ";
+                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, bau.Author, ba.Availability, b.RegisteredDateTime FROM Book b
+                                    INNER JOIN BookAuthor bau ON b.ISBN = bau.bISBN
+                                    INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
+                                    ORDER BY RegisteredDateTime DESC;";
 
-                $flNameSQL = "SELECT FirstName, LastName FROM Police_Agent WHERE Email = '$email';";
+                  $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
 
-                $flNameResult = mysqli_query($conn, $flNameSQL);
-
-                while($flNameRow = mysqli_fetch_array($flNameResult)){
-                  $firstName = $flNameRow["FirstName"];
-                  $lastName = $flNameRow["LastName"];
-                }
                 ?>
 
                 <table class="table table-hover" style="border-radius: 10px;">
@@ -149,26 +146,34 @@
                       <th> Author Name </th>
                       <th> Availability </th>
                       <th> Registered Date Time </th>
-                      <th> Reserved Date Time </th>
                       <th> Modifications </th>
                     </tr>
                   </thead>
                   <tbody>
+                      <?php
+                        while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                      ?>
                     <tr>
-                      <td>1</td>
-                      <td>Lahiru</td>
+                      <td><?php echo $bookDetailsRow["ISBN"]; ?></td>
+                      <td><?php echo $bookDetailsRow["Name"]; ?></td>
+                      <td><?php echo $bookDetailsRow["Author"]; ?></td>
+                      <td><?php echo $bookDetailsRow["Availability"]; ?></td>
+                      <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
+                      <td>
+                        <a href="edit.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
+						            <a href="delete.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
+                      </td>
                     </tr>
+                      <?php } ?>
                   </tbody>
                 </table>
-
               </div>
-
 
             </div>
 
             <!-- Add new book section -->
             <div style="width: 70%;
-                        height: 500px;
+                        height: 600px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -179,6 +184,61 @@
               <p style="font-size: 20px;
                         padding-left: 30px;
                         padding-top: 20px;"><b>Add New Book</b></p>
+
+              <style>
+                #addBookFormText{
+                  font-size: 18px;
+                  padding-left: 35%;
+                }
+
+                #addBookInput{
+                  padding: 10px;
+                  border-radius: 10px;
+                  width: 20%;
+                  margin-top: 0px;
+                  margin-left: 40%;
+                  margin-bottom: 20px;
+                }
+
+                #addBookSubmitButton{
+                  padding: 5px;
+                  border-radius: 5px;
+                  margin-left: 50%;
+                  margin-right: 10px;
+                  background-color: #0081FF;
+                  color: #FFFFFF;
+                  width: 100px;
+                  border-color: #0081FF;
+                }
+              </style>
+
+              <form action="index.html" method="POST">
+                <p id="addBookFormText">ISBN:</p>
+                <input type="text" name="ISBN" placeholder="Enter ISBN" required id="addBookInput">
+                <p id="addBookFormText">Name:</p>
+                <input type="text" name="name" placeholder="Enter Name" required id="addBookInput">
+                <p id="addBookFormText">First Auther:</p>
+                <input type="text" name="author1" placeholder="Enter Author 1" required id="addBookInput">
+                <p id="addBookFormText">Second Author:</p>
+                <input type="text" name="author2" placeholder="Enter Author 2" id="addBookInput">
+                <p id="addBookFormText">Select Book Availability Type:</p>
+                <select name="BookAvailabilitySelect" id="addBookInput">
+                  <!-- Retrieving the book availability types from the database -->
+                  <?php
+                    $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
+
+                    $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
+
+                    while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
+                  ?>
+                    <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
+                  <?php } ?>
+                </select>
+                <br>
+                <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
+                <button type="reset" name="addBookReset">Reset</button>
+
+              </form>
 
 
             </div>

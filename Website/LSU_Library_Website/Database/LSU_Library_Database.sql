@@ -300,7 +300,7 @@ INSERT INTO BookAvailability(Availability) VALUES
 ('Not Available'),  -- BAID: 2
 ('Pending'),        -- BAID: 3
 ('Reserved'),       -- BAID: 4
-('Borrowed');        -- BAID: 5
+('Borrowed');       -- BAID: 5
 
 -- Creating Table 19 - Book
 CREATE TABLE Book(
