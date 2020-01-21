@@ -1,5 +1,5 @@
 <?php
-  include_once("LSULibraryDBConnection.php");
+  include_once("../LSULibraryDBConnection.php");
 ?>
 
 <!DOCTYPE html>
@@ -10,17 +10,17 @@
     <link rel="icon" type="image/png" href="icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/png" sizes="1500x1500" href="assets/images/LSULibraryLogo.png">
+    <link rel="icon" type="image/png" sizes="1500x1500" href="../assets/images/LSULibraryLogo.png">
 
     <!-- Retrieving default layout style sheet -->
-    <link rel="stylesheet" href="assets/css/defaultLayout.css">
+    <link rel="stylesheet" href="../assets/css/defaultLayout.css">
 
     <!-- Retrieving form layout style sheet -->
-    <link rel="stylesheet" href="assets/css/formLayout.css">
+    <link rel="stylesheet" href="../assets/css/formLayout.css">
 
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <script src="assets/javascript/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <script src="../assets/javascript/jquery.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 
   </head>
   <body>
@@ -29,13 +29,13 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <img src="assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                <img src="../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
                 <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
                 <p id="mainTitleSub">Lowa State University</p>
 
-                <img src="assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+                <img src="../assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
               </div>
 
@@ -228,7 +228,7 @@
                         margin-top: 0px;
                         margin-left: 95px;;
                         margin-bottom: 20px;
-                        border-color: #cc;
+                        border-color: #ccc;
                       }
 
                       #addBookSubmitButton{
@@ -252,9 +252,9 @@
                       }
                     </style>
 
-                    <form action="index.html" method="POST">
+                    <form action="addNewBook.php" method="POST">
                       <p id="addBookFormText">ISBN:</p>
-                      <input type="text" name="ISBN" placeholder="Enter ISBN" required id="addBookInput">
+                      <input type="text" name="isbn" placeholder="Enter ISBN" required id="addBookInput">
                       <p id="addBookFormText">Name:</p>
                       <input type="message" name="name" placeholder="Enter Name" required id="addBookInput">
                       <p id="addBookFormText">First Auther:</p>
@@ -305,13 +305,13 @@
 
             <div id="footerLogoSection">
 
-              <img src="assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+              <img src="../assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
               <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
               <p id="mainTitleSub">Lowa State University</p>
 
-              <img src="assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+              <img src="../assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
             </div>
 
