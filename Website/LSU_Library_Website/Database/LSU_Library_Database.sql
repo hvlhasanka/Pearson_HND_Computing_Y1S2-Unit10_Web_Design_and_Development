@@ -258,7 +258,6 @@ CREATE TABLE Librarian(
   MobilePhoneNumber VARCHAR(11) NOT NULL,
   LandPhoneNumber VARCHAR(11),
   RegistrationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  EditDateTime DATETIME,
   lLoginID INT NOT NULL,
   PRIMARY KEY (LibrarianID),
   FOREIGN KEY (lcLibrarianCityID) REFERENCES LibrarianCity(LibrarianCityID),
@@ -270,8 +269,9 @@ CREATE TABLE Librarian(
 -- Inserting records to Table 16 - Librarian
 INSERT INTO Librarian
 (FirstName, MiddleName, LastName, Email, StreetAddress, lcLibrarianCityID, lzpcLibrarianZipPostalCodeID,
-  lpLibrarianProvienceID, MobilePhoneNumber, LandPhoneNumber, lLoginID) VALUES
-('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 1, 1, 9, 015-8521592, 034-8521596, 2);
+  lpLibrarianProvienceID, MobilePhoneNumber, LandPhoneNumber, RegistrationDateTime, lLoginID) VALUES
+('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 1, 1, 9, '015-8521592', '034-8521596',
+  '2020-01-01 09:23:34.131', 1);
 
 
 -- Creating Table 17 - LibrarianManageMember
@@ -281,7 +281,7 @@ CREATE TABLE LibrarianManageMember(
   EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (lLibrarianID, mUniversityID, EditDateTime),
   FOREIGN KEY (lLibrarianID) REFERENCES Librarian(LibrarianID),
-  FOREIGN KEY (mUniversityID) REFERENCES Member(UniversityID),
+  FOREIGN KEY (mUniversityID) REFERENCES Member(UniversityID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 17 - LibrarianManageMember
@@ -290,22 +290,22 @@ CREATE TABLE LibrarianManageMember(
 -- Creating Table 18 - BookAvailability
 CREATE TABLE BookAvailability(
   BAID INT AUTO_INCREMENT,
-  Availability VARCHAR() NOT NULL,
+  Availability VARCHAR(15) NOT NULL,
   PRIMARY KEY (BAID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 18 - BookAvailability
 INSERT INTO BookAvailability(Availability) VALUES
-('Available'),
-('Not Available'),
-('Pending'),
-('Reserved'),
-('Borrowed')
+('Available'),      -- BAID: 1
+('Not Available'),  -- BAID: 2
+('Pending'),        -- BAID: 3
+('Reserved'),       -- BAID: 4
+('Borrowed');        -- BAID: 5
 
 -- Creating Table 19 - Book
 CREATE TABLE Book(
   ISBN VARCHAR(17) NOT NULL,
-  Name VARCHAR(120) NOT NULL,
+  Name VARCHAR(200) NOT NULL,
   baBAID INT NOT NULL,
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
@@ -313,9 +313,20 @@ CREATE TABLE Book(
 )ENGINE = INNODB;
 
 -- Inserting records to Table 19 - Book
+INSERT INTO Book VALUES
+('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
+  1, '2020-01-01 12:34:06.693');
 
+-- Creating Table 20 - ReservedBook
+CREATE TABLE ReservedBook(
+  bISBN VARCHAR(17) NOT NULL,
+  ReservedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (bISBN, ReservedDateTime)
+)ENGINE = INNODB;
 
--- Creating Table 20 - BookAuthor
+-- Inserting records to Table 20 - ReservedBook
+
+-- Creating Table 21 - BookAuthor
 CREATE TABLE BookAuthor(
   bISBN VARCHAR(17) NOT NULL,
   Author VARCHAR(50) NOT NULL,
@@ -323,35 +334,36 @@ CREATE TABLE BookAuthor(
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
 )ENGINE = INNODB;
 
--- Inserting records to Table 20 - BookAuthor
+-- Inserting records to Table 21 - BookAuthor
+INSERT INTO BookAuthor VALUES
+('978-0984782857', 'Gayle Laakmann McDowell');
 
-
--- Creating Table 21 - LibrarianManageBook
+-- Creating Table 22 - LibrarianManageBook
 CREATE TABLE LibrarianManageBook(
   lLibrarianID INT NOT NULL,
   bISBN VARCHAR(17) NOT NULL,
   EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lLibrarianID, mUniversityID, EditDateTime),
+  PRIMARY KEY (lLibrarianID, bISBN, EditDateTime),
   FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
 )ENGINE = INNODB;
 
--- Inserting records to Table 21 - LibrarianManageBook
+-- Inserting records to Table 22 - LibrarianManageBook
 
 
--- Creating Table 22 - BorrowDetails
+-- Creating Table 23 - BorrowDetails
 CREATE TABLE BorrowDetails(
   BDID INT AUTO_INCREMENT,
   BorrowDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   ReturnDateTime DATETIME NOT NULL,
   LateFine FLOAT,
-  PRIMARY KEY (BDID),
+  PRIMARY KEY (BDID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 22 - BorrowDetails
+-- Inserting records to Table 23 - BorrowDetails
 
 
--- Creating Table 23 - Borrow
+-- Creating Table 24 - Borrow
 CREATE TABLE Borrow(
   mUniversityID INT(8) NOT NULL,
   bISBN VARCHAR(17) NOT NULL,
@@ -362,35 +374,35 @@ CREATE TABLE Borrow(
   FOREIGN KEY (bdBDID) REFERENCES BorrowDetails (BDID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 23 - Borrow
+-- Inserting records to Table 24 - Borrow
 
 
--- Creating Table 24 - LibrarianManageBorrowDetails
+-- Creating Table 25 - LibrarianManageBorrowDetails
 CREATE TABLE LibrarianManageBorrowDetails(
   lLibrarianID INT NOT NULL,
   bdBDID INT NOT NULL,
-  EditDateTime DATE TIME DEFAULT CURRENT_TIMESTAMP,
+  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (lLibrarianID, bdBDID, EditDateTime),
   FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
   FOREIGN KEY (bdBDID) REFERENCES BorrowDetails (BDID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 24 - LibrarianManageBorrowDetails
+-- Inserting records to Table 25 - LibrarianManageBorrowDetails
 
 
--- Creating Table 25 - BookCatalog
+-- Creating Table 26 - BookCatalog
 CREATE TABLE BookCatalog(
   BCID INT AUTO_INCREMENT,
   Name VARCHAR(40) NOT NULL,
   NoOfBooks INT NOT NULL,
   CreationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (DBID)
+  PRIMARY KEY (BCID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 25 - BookCatalog
+-- Inserting records to Table 26 - BookCatalog
 
 
--- Creating Table 26 - LibrarianManageBookCatalog
+-- Creating Table 27 - LibrarianManageBookCatalog
 CREATE TABLE LibrarianManageBookCatalog(
   lLibrarianID INT NOT NULL,
   bcBCID INT NOT NULL,
@@ -400,4 +412,4 @@ CREATE TABLE LibrarianManageBookCatalog(
   FOREIGN KEY (bcBCID) REFERENCES BookCatalog (BCID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 26 - LibrarianManageBookCatalog
+-- Inserting records to Table 27 - LibrarianManageBookCatalog

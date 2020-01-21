@@ -1,3 +1,7 @@
+<?php
+  include_once("LSULibraryDBConnection.php");
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -98,13 +102,13 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 500px;
+                      height: 1100px;
                       background-color: #F6F6F6;">
 
-            <!-- View all books section -->
-            <div style="width: 990px;
-                        height: 400px;
-                        background-color: #CCF6FF;
+            <!-- Existing Books section -->
+            <div style="width: 70%;
+                        height: 500px;
+                        background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
@@ -113,99 +117,72 @@
 
               <p style="font-size: 20px;
                         padding-left: 30px;
-                        padding-top: 20px;"><b>View all Books</b></p>
+                        padding-top: 20px;"><b>Existing Books</b></p>
 
-              <p id="textFieldHeading">Enter Status of Books: </p>
-              <select name="bookStatusSelect" id="select">
-                <option value="Available">Available</option>
-                <option value="Reserved">Reserved</option>
-                <option value="Borrowed">Borrowed</option>
-                <option value="Unavailable">Unavailable</option>
-              </select>
+              <div style="width: 95%;
+                          height: 400px;
+                          background-color: white;
+                          position: absolute;
+                          left: 50%;
+                          transform: translateX(-50%);
+                          overflow-y: scroll;">
 
+                <!-- Retrieving details of the existing books from the database -->
+                <?php
+                  $bookDetailsSQL = "SELECT ";
 
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                Open modal
-              </button>
+                $flNameSQL = "SELECT FirstName, LastName FROM Police_Agent WHERE Email = '$email';";
 
+                $flNameResult = mysqli_query($conn, $flNameSQL);
 
+                while($flNameRow = mysqli_fetch_array($flNameResult)){
+                  $firstName = $flNameRow["FirstName"];
+                  $lastName = $flNameRow["LastName"];
+                }
+                ?>
 
+                <table class="table table-hover" style="border-radius: 10px;">
+                  <thead>
+                    <tr>
+                      <th> ISBN </th>
+                      <th> Name </th>
+                      <th> Author Name </th>
+                      <th> Availability </th>
+                      <th> Registered Date Time </th>
+                      <th> Reserved Date Time </th>
+                      <th> Modifications </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Lahiru</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
 
 
             </div>
 
             <!-- Add new book section -->
-            <div style="width: 990px;
-                        height: 400px;
-                        background-color: #CCF6FF;
+            <div style="width: 70%;
+                        height: 500px;
+                        background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
-                        transform: translateX(-50%);">
+                        transform: translateX(-50%);
+                        top: 40px;">
 
-              <p>Add New Book</p>
+              <p style="font-size: 20px;
+                        padding-left: 30px;
+                        padding-top: 20px;"><b>Add New Book</b></p>
+
+
             </div>
 
-            <!-- Add new book section -->
-            <div style="width: 990px;
-                        height: 400px;
-                        background-color: #CCF6FF;
-                        border-radius: 10px;
-                        position: relative;
-                        left: 50%;
-                        transform: translateX(-50%);">
-
-              <p>Add New Book</p>
-            </div>
-
-            <!-- Add new book section -->
-            <div style="width: 990px;
-                        height: 400px;
-                        background-color: #CCF6FF;
-                        border-radius: 10px;
-                        position: relative;
-                        left: 50%;
-                        transform: translateX(-50%);">
-
-              <p>Add New Book</p>
-            </div>
-
-                          <!-- The Modal -->
-                          <div class="modal fade" id="myModal">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                  <h4 class="modal-title">Modal Heading</h4>
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                  Modal body..
-                                </div>
-
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-
-            <!-- Add new book section -->
-            <div style="width: 990px;
-                        height: 400px;
-                        background-color: #CCF6FF;
-                        border-radius: 10px;
-                        position: relative;
-                        left: 50%;
-                        transform: translateX(-50%);">
-
-              <p>Add New Book</p>
-            </div>
 
           </div>
 
