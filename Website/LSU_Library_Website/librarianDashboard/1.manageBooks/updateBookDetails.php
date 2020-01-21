@@ -162,8 +162,8 @@
                       <td><?php echo $bookDetailsRow["Availability"]; ?></td>
                       <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
-                        <a href="updateBookDetails.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
-						            <a href="deleteBook.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
+                        <a href="edit.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
+						            <a href="delete.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
                       </td>
                     </tr>
                       <?php } ?>
