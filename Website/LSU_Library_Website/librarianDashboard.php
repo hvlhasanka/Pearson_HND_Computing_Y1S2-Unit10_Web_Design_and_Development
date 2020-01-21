@@ -4,9 +4,8 @@
     <title> LSU Library - Dashboard </title>
 
     <link rel="icon" type="image/png" sizes="1500x1500" href="assets/images/LSULibraryLogo.png">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <script src="assets/bootstrap/js/bootstrap.js"></script>
+    <script src="assets/javascript/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
     <style>
@@ -132,7 +131,7 @@
         <!-- BODY SECTION - Begin -->
         <div style="background-color: #3498DB;
                     width: 100%;
-                    height: 150px;">
+                    height: 160px;">
           <p style="font-size: 30px;
                     color: white;
                     text-align: center;
@@ -148,19 +147,92 @@
         </div>
 
         <!-- Functionalities Section -->
-        <div style="width: 100%; height: 500px; background-color: #B2E9FD;">
+        <!-- Main section -->
+        <div style="background-color: blue
+                    height: 100%;
+                    width: 100%;">
+          <!-- Grid Section -->
+          <div class="row">
+            <p style="font-size: 20px;
+                      position: absolute;
+                      top: 15px;
+                      left: 20px;"> <b>Book Management</b> </p>
 
-          <div class="card" style="height: 120px;
-                                  width: 120px;
-                                  border-radius: 10px;">
-            <div class="card-body">Basic card</div>
+            <div id="accordion" style="width: 850px;
+                                      height: 50px;
+                                      position: relative;
+                                      top: 20px;
+                                      left: 25%;">
+              <!-- Grid Component 1 -->
+              <div class="col-sm-12">
+                <!-- Card 1 -->
+                <div class="card">
+                  <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                      Collapsible Group Item #1
+                    </a>
+                  </div>
+                  <div id="collapseOne" class="collapse show" data-parent="#accordion" style="background-color: #EBFCFF;">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grid Component 2 -->
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                      Collapsible Group Item #2
+                    </a>
+                  </div>
+                  <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grid Component 3 -->
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                      Collapsible Group Item #3
+                    </a>
+                  </div>
+                  <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
-
         </div>
+
         <!-- BODY SECTION - End -->
 
 
+
+
+
+
+
+
+
+
+
+
         <!-- FOOTER SECTION - Begin -->
+
+
+
 
         <!-- FOOTER SECTION - End -->
     <!-- MAIN SECTION - End -->
