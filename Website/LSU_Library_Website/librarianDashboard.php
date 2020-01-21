@@ -71,7 +71,7 @@
             </div>
 
 
-            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 80px;">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="height: 100px;">
               <ul class="navbar-nav" style="text-align: center;
                                             position: absolute;
                                             left: 50%;
@@ -81,7 +81,10 @@
                   <a class="nav-link" href="#">Manage Books</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Browal Details</a>
+                  <a class="nav-link" href="#">Manage Book Catalogs</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Member Details</a>
@@ -102,7 +105,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 660px;
+                      height: 800px;
                       background-color: #F6F6F6;">
 
             <!-- Existing Books section -->
@@ -172,7 +175,7 @@
             </div>
 
             <!-- Add new book section -->
-            <div style="width: 20%;
+            <div style="width: 27%;
                         height: 100px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
@@ -181,18 +184,22 @@
                         transform: translateX(-50%);
                         top: 40px;">
 
-
-
               <p style="font-size: 20px;
                         padding-left: 50px;
-                        padding-top: 40px;"><b>Add New Book</b></p>
+                        padding-top: 40px;" data-toggle="modal" data-target="#addBookModal"><b>Add New Book</b></p>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal">
-                  Click Here
-                </button>
-
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal"
+               style="padding: 10px;
+                      width: 200px;
+                      position: absolute;
+                      left: 270px;
+                      top: 30px;">
+                Click Here
+              </button>
 
             </div>
+
+
 
             <!-- Add new book modal -->
             <div class="modal fade" id="addBookModal">
@@ -201,7 +208,7 @@
 
                   <!-- Modal - Header -->
                   <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
+                    <h4 class="modal-title">Add New Book</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                   </div>
 
@@ -211,16 +218,17 @@
                     <style>
                       #addBookFormText{
                         font-size: 18px;
-                        padding-left: 35%;
+                        padding-left: 75px;
                       }
 
                       #addBookInput{
                         padding: 10px;
-                        border-radius: 10px;
-                        width: 20%;
+                        border-radius: 7px;
+                        width: 300px;
                         margin-top: 0px;
-                        margin-left: 40%;
+                        margin-left: 95px;;
                         margin-bottom: 20px;
+                        border-color: #cc;
                       }
 
                       #addBookSubmitButton{
@@ -233,13 +241,22 @@
                         width: 100px;
                         border-color: #0081FF;
                       }
+
+                      #addBookResetButton{
+                        padding: 5px;
+                        border-radius: 5px;
+                        background-color: #DEDEDE;
+                        color: #000000;
+                        width: 100px;
+                        border-color: #DEDEDE;
+                      }
                     </style>
 
                     <form action="index.html" method="POST">
                       <p id="addBookFormText">ISBN:</p>
                       <input type="text" name="ISBN" placeholder="Enter ISBN" required id="addBookInput">
                       <p id="addBookFormText">Name:</p>
-                      <input type="text" name="name" placeholder="Enter Name" required id="addBookInput">
+                      <input type="message" name="name" placeholder="Enter Name" required id="addBookInput">
                       <p id="addBookFormText">First Auther:</p>
                       <input type="text" name="author1" placeholder="Enter Author 1" required id="addBookInput">
                       <p id="addBookFormText">Second Author:</p>
@@ -259,7 +276,7 @@
                       </select>
                       <br>
                       <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
-                      <button type="reset" name="addBookReset">Reset</button>
+                      <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
 
                     </form>
 
