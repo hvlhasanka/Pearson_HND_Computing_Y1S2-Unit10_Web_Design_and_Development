@@ -1,5 +1,5 @@
 <?php
-  include_once("../LSULibraryDBConnection.php");
+  include_once("../../LSULibraryDBConnection.php");
 ?>
 
 <!DOCTYPE html>
@@ -7,18 +7,17 @@
   <head>
     <title> LSU Library - Dashboard </title>
 
-    <link rel="icon" type="image/png" href="icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/png" sizes="1500x1500" href="../assets/images/LSULibraryLogo.png">
+    <link rel="icon" type="image/png" sizes="1500x1500" href="../../assets/images/LSULibraryLogo.png">
 
     <!-- Retrieving default layout style sheet -->
-    <link rel="stylesheet" href="../assets/css/defaultLayout.css">
+    <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
     <!-- Retrieving form layout style sheet -->
-    <link rel="stylesheet" href="../assets/css/formLayout.css">
+    <link rel="stylesheet" href="../../assets/css/formLayout.css">
 
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <script src="../assets/javascript/jquery.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 
@@ -29,13 +28,13 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <img src="../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
                 <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
                 <p id="mainTitleSub">Lowa State University</p>
 
-                <img src="../assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+                <img src="../../assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
               </div>
 
@@ -81,7 +80,7 @@
                   <a class="nav-link" href="#">Manage Books</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Book Catalogs</a>
+                  <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
@@ -305,13 +304,13 @@
 
             <div id="footerLogoSection">
 
-              <img src="../assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+              <img src="../../assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
               <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
               <p id="mainTitleSub">Lowa State University</p>
 
-              <img src="../assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+              <img src="../../assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
             </div>
 
