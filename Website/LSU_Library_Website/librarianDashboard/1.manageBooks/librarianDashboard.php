@@ -311,7 +311,7 @@
 
                           while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                         ?>
-                          <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
+                          <option value="<?php echo $bookAvailabilityRow["BAID"]; ?>"><?php echo $bookAvailabilityRow["Availability"]; ?></option>
                         <?php } ?>
                       </select>
                       <p class="mandatoryAsterisk" style="top: 595px;">*</p>

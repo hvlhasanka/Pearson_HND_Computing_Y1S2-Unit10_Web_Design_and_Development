@@ -167,14 +167,7 @@
                 }
               </style>
 
-              <!-- Retrieving existing details of the existing books from the database -->
-              <?php
-                $bookDetailsSQL = "SELECT b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
-                                  INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
-                                  WHERE b.ISBN = '$ISBN';";
 
-                $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
-              ?>
 
               <!-- Update Book Details Form -->
               <div style="position: absolute; left:50%; transform: translateX(-50%);">
@@ -183,13 +176,16 @@
                   <input type="text" name="isbn" placeholder="Enter ISBN" required class="updateBookInput" value="<?php echo $ISBN; ?>">
 
                   <p class="updateBookFormText">Book Name:</p>
+                  <!-- Retrieving existing details of the existing books from the database -->
                   <?php
+                    $bookDetailsSQL = "SELECT Name FROM Book WHERE ISBN = '$ISBN';";
+                    $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
                     while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
                   ?>
                   <textarea rows = "5" cols = "40" name="name" placeholder="Enter Book Name" required class="updateBookInput"
                     ><?php echo $bookDetailsRow['Name']; ?>
                   </textarea>
-
+                <?php } ?>
 
 
                   <?php
@@ -230,15 +226,33 @@
 
                   <p class="updateBookFormText">Select Book Availability Type:</p>
                   <select name="bookAvailabilitySelect" class="updateBookInput">
+                    <!-- Retrieving the selected book availability type from the database -->
+                    <?php
+                      $selectedBookAvailabilityID = "";
+                      $selectedBookAvailability = "";
+                      $selectedBookAvailabilitySQL = "SELECT ba.BAID, ba.Availability FROM BookAvailability ba
+                                                      INNER JOIN Book b ON b.baBAID = ba.BAID WHERE b.ISBN = '$ISBN';";
+                      $selectedBookAvailabilityResult = mysqli_query($databaseConn, $selectedBookAvailabilitySQL);
+                      while ($selectedBookAvailabilityRow = mysqli_fetch_array($selectedBookAvailabilityResult)) {
+                        $selectedBookAvailabilityID = $selectedBookAvailabilityRow["BAID"];
+                        $selectedBookAvailability = $selectedBookAvailabilityRow["Availability"];
+                      }echo $selectedBookAvailabilityID;echo $selectedBookAvailability;
+                    ?>
+
                     <!-- Retrieving the book availability types from the database -->
                     <?php
                       $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
-
                       $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
-
                       while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                     ?>
-                      <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
+                      <option value="<?php echo $bookAvailabilityRow["BAID"]; ?>"
+                        <?php
+                          if($bookAvailabilityRow["BAID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
+                          {
+                            echo "selected";
+                          }
+                        ?> ><?php echo $bookAvailabilityRow["Availability"]; ?>
+                      </option>
                     <?php } ?>
                   </select>
                   <br>
@@ -248,8 +262,6 @@
                 </form>
 
               </div>
-
-              <?php } ?>
 
 
               <button type="button" name="return" style="color: #FFFFFF;
