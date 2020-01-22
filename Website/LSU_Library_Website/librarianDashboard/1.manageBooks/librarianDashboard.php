@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="../../assets/css/formLayout.css">
 
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-    <script src="../assets/javascript/jquery.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/javascript/jquery.min.js"></script>
+    <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
 
   </head>
   <body>
@@ -188,7 +188,7 @@
 
               <p style="font-size: 20px;
                         padding-left: 50px;
-                        padding-top: 40px;" data-toggle="modal" data-target="#addBookModal"><b>Add New Book</b></p>
+                        padding-top: 40px;"><b>Add New Book</b></p>
 
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal"
                style="padding: 10px;
@@ -218,12 +218,12 @@
                   <div class="modal-body">
 
                     <style>
-                      #addBookFormText{
+                      .addBookFormText{
                         font-size: 18px;
                         padding-left: 75px;
                       }
 
-                      #addBookInput{
+                      .addBookInput{
                         padding: 10px;
                         border-radius: 7px;
                         width: 300px;
@@ -231,6 +231,14 @@
                         margin-left: 95px;;
                         margin-bottom: 20px;
                         border-color: #ccc;
+                      }
+
+                      .mandatoryAsterisk{
+                        color: red;
+                        font-size: 20px;
+                        font-weight: bold;
+                        position: absolute;
+                        left: 84%;
                       }
 
                       #addBookSubmitButton{
@@ -255,16 +263,23 @@
                     </style>
 
                     <form action="addNewBook.php" method="POST">
-                      <p id="addBookFormText">ISBN:</p>
-                      <input type="text" name="isbn" placeholder="Enter ISBN" required id="addBookInput">
-                      <p id="addBookFormText">Name:</p>
-                      <input type="message" name="name" placeholder="Enter Name" required id="addBookInput">
-                      <p id="addBookFormText">First Auther:</p>
-                      <input type="text" name="author1" placeholder="Enter Author 1" required id="addBookInput">
-                      <p id="addBookFormText">Second Author:</p>
-                      <input type="text" name="author2" placeholder="Enter Author 2" id="addBookInput">
-                      <p id="addBookFormText">Select Book Availability Type:</p>
-                      <select name="BookAvailabilitySelect" id="addBookInput">
+                      <p class="addBookFormText">ISBN:</p>
+                      <input type="text" name="isbn" placeholder="Enter ISBN" required class="addBookInput">
+                      <p class="mandatoryAsterisk" style="top: 55px;">*</p>
+
+                      <p class="addBookFormText">Book Name:</p>
+                      <textarea rows = "5" cols = "40" name="name" placeholder="Enter Book Name" required class="addBookInput"></textarea>
+                      <p class="mandatoryAsterisk" style="top: 170px;">*</p>
+
+                      <p class="addBookFormText">First Auther Name:</p>
+                      <input type="text" name="author1" placeholder="Enter First Author" required class="addBookInput">
+                      <p class="mandatoryAsterisk" style="top: 375px;">*</p>
+
+                      <p class="addBookFormText">Second Author Name:</p>
+                      <input type="text" name="author2" placeholder="Enter Second Author" class="addBookInput">
+
+                      <p class="addBookFormText">Select Book Availability Type:</p>
+                      <select name="bookAvailabilitySelect" class="addBookInput">
                         <!-- Retrieving the book availability types from the database -->
                         <?php
                           $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
@@ -276,6 +291,7 @@
                           <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
                         <?php } ?>
                       </select>
+                      <p class="mandatoryAsterisk" style="top: 595px;">*</p>
                       <br>
                       <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
                       <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>

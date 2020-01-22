@@ -325,6 +325,9 @@ CREATE TABLE ReservedBook(
 )ENGINE = INNODB;
 
 -- Inserting records to Table 20 - ReservedBook
+INSERT INTO ReservedBook VALUES
+('978-0984782857', '2020-01-02 14:23:12.233');
+
 
 -- Creating Table 21 - BookAuthor
 CREATE TABLE BookAuthor(
@@ -361,7 +364,8 @@ CREATE TABLE BorrowDetails(
 )ENGINE = INNODB;
 
 -- Inserting records to Table 23 - BorrowDetails
-
+INSERT INTO BorrowDetails (BorrowDateTime, ReturnDateTime) VALUES
+('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 1
 
 -- Creating Table 24 - Borrow
 CREATE TABLE Borrow(
@@ -375,7 +379,8 @@ CREATE TABLE Borrow(
 )ENGINE = INNODB;
 
 -- Inserting records to Table 24 - Borrow
-
+INSERT INTO Borrow VALUES
+(10004392, '978-0984782857', 1);
 
 -- Creating Table 25 - LibrarianManageBorrowDetails
 CREATE TABLE LibrarianManageBorrowDetails(
