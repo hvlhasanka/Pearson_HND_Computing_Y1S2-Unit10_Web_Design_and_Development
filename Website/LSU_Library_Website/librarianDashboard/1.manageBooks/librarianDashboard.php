@@ -163,7 +163,10 @@
                       <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
                         <a href="updateBookDetails.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
-						            <a href="deleteBook.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
+						            <a href="deleteBook.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"
+                          onClick="return confirm('This record and along with connections to this record will be removed.\nAre you such you want to continue?')">
+                          Delete
+                        </a>
                       </td>
                     </tr>
                       <?php } ?>
@@ -189,7 +192,7 @@
 
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal"
                style="padding: 10px;
-                      width: 200px;
+                      width: 35%;
                       position: absolute;
                       left: 270px;
                       top: 30px;">
