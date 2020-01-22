@@ -77,7 +77,7 @@
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Manage Books</a>
+                  <a class="nav-link" href="librarianDashboard.php">Manage Books</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
@@ -104,12 +104,12 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 800px;
+                      height: 880px;
                       background-color: #F6F6F6;">
 
             <!-- Existing Books section -->
-            <div style="width: 70%;
-                        height: 500px;
+            <div style="width: 45%;
+                        height: 840px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -118,183 +118,91 @@
                         top: 20px;">
 
               <p style="font-size: 20px;
-                        padding-left: 30px;
-                        padding-top: 20px;"><b>Existing Books</b></p>
+                        padding-left: 15%;;
+                        padding-top: 20px;"><b>Update Book Details</b></p>
 
-              <div style="width: 95%;
-                          height: 400px;
-                          background-color: white;
-                          position: absolute;
-                          left: 50%;
-                          transform: translateX(-50%);
-                          overflow-y: scroll;">
+              <style>
+                .addBookFormText{
+                  font-size: 18px;
+                  padding-left: 75px;
+                }
 
-                <!-- Retrieving details of the existing books from the database -->
-                <?php
-                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, bau.Author, ba.Availability, b.RegisteredDateTime FROM Book b
-                                    INNER JOIN BookAuthor bau ON b.ISBN = bau.bISBN
-                                    INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
-                                    ORDER BY RegisteredDateTime DESC;";
+                .addBookInput{
+                  padding: 10px;
+                  border-radius: 7px;
+                  width: 300px;
+                  margin-top: 0px;
+                  margin-left: 95px;;
+                  margin-bottom: 20px;
+                  border-color: #ccc;
+                }
 
-                  $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
+                #addBookSubmitButton{
+                  padding: 5px;
+                  border-radius: 5px;
+                  margin-top: 20px;
+                  margin-left: 35%;
+                  margin-right: 10px;
+                  background-color: #0081FF;
+                  color: #FFFFFF;
+                  width: 100px;
+                  border-color: #0081FF;
+                }
 
-                ?>
+                #addBookResetButton{
+                  padding: 5px;
+                  border-radius: 5px;
+                  background-color: #DEDEDE;
+                  color: #000000;
+                  width: 100px;
+                  border-color: #DEDEDE;
+                }
+              </style>
 
-                <table class="table table-hover" style="border-radius: 10px;">
-                  <thead>
-                    <tr>
-                      <th> ISBN </th>
-                      <th> Name </th>
-                      <th> Author Name </th>
-                      <th> Availability </th>
-                      <th> Registered Date Time </th>
-                      <th> Modifications </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      <?php
-                        while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
-                      ?>
-                    <tr>
-                      <td><?php echo $bookDetailsRow["ISBN"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Name"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Author"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Availability"]; ?></td>
-                      <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
-                      <td>
-                        <a href="edit.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
-						            <a href="delete.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
-                      </td>
-                    </tr>
-                      <?php } ?>
-                  </tbody>
-                </table>
+              <div style="position: absolute; left:50%; transform: translateX(-50%);">
+                <form action="addNewBook.php" method="POST">
+                  <p class="addBookFormText">ISBN:</p>
+                  <input type="text" name="isbn" placeholder="Enter ISBN" required class="addBookInput">
+
+                  <p class="addBookFormText">Book Name:</p>
+                  <textarea rows = "5" cols = "40" name="name" placeholder="Enter Book Name" required class="addBookInput"></textarea>
+
+                  <p class="addBookFormText">First Auther Name:</p>
+                  <input type="text" name="author1" placeholder="Enter First Author" required class="addBookInput">
+
+                  <p class="addBookFormText">Second Author Name:</p>
+                  <input type="text" name="author2" placeholder="Enter Second Author" class="addBookInput">
+
+                  <p class="addBookFormText">Select Book Availability Type:</p>
+                  <select name="bookAvailabilitySelect" class="addBookInput">
+                    <!-- Retrieving the book availability types from the database -->
+                    <?php
+                      $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
+
+                      $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
+
+                      while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
+                    ?>
+                      <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
+                    <?php } ?>
+                  </select>
+                  <br>
+                  <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
+                  <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
+
+                </form>
+
               </div>
 
-            </div>
-
-            <!-- Add new book section -->
-            <div style="width: 27%;
-                        height: 100px;
-                        background-color: #FFFFFF;
-                        border-radius: 10px;
-                        position: relative;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        top: 40px;">
-
-              <p style="font-size: 20px;
-                        padding-left: 50px;
-                        padding-top: 40px;" data-toggle="modal" data-target="#addBookModal"><b>Add New Book</b></p>
-
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal"
-               style="padding: 10px;
-                      width: 200px;
-                      position: absolute;
-                      left: 270px;
-                      top: 30px;">
-                Click Here
-              </button>
+              <button type="button" name="return" style="color: #FFFFFF;
+                                                        background-color: #5EAFFF;
+                                                        border-color: #5EAFFF;
+                                                        padding: 5px;
+                                                        border-radius: 5px;
+                                                        width: 100px;" onClick="window.location.href = 'librarianDashboard.php';">Return</button>
 
             </div>
-
-
-
-            <!-- Add new book modal -->
-            <div class="modal fade" id="addBookModal">
-              <div class="modal-dialog">
-                <div class="modal-content">
-
-                  <!-- Modal - Header -->
-                  <div class="modal-header">
-                    <h4 class="modal-title">Add New Book</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <!-- Modal - Body -->
-                  <div class="modal-body">
-
-                    <style>
-                      #addBookFormText{
-                        font-size: 18px;
-                        padding-left: 75px;
-                      }
-
-                      #addBookInput{
-                        padding: 10px;
-                        border-radius: 7px;
-                        width: 300px;
-                        margin-top: 0px;
-                        margin-left: 95px;;
-                        margin-bottom: 20px;
-                        border-color: #ccc;
-                      }
-
-                      #addBookSubmitButton{
-                        padding: 5px;
-                        border-radius: 5px;
-                        margin-left: 50%;
-                        margin-right: 10px;
-                        background-color: #0081FF;
-                        color: #FFFFFF;
-                        width: 100px;
-                        border-color: #0081FF;
-                      }
-
-                      #addBookResetButton{
-                        padding: 5px;
-                        border-radius: 5px;
-                        background-color: #DEDEDE;
-                        color: #000000;
-                        width: 100px;
-                        border-color: #DEDEDE;
-                      }
-                    </style>
-
-                    <form action="addNewBook.php" method="POST">
-                      <p id="addBookFormText">ISBN:</p>
-                      <input type="text" name="isbn" placeholder="Enter ISBN" required id="addBookInput">
-                      <p id="addBookFormText">Name:</p>
-                      <input type="message" name="name" placeholder="Enter Name" required id="addBookInput">
-                      <p id="addBookFormText">First Auther:</p>
-                      <input type="text" name="author1" placeholder="Enter Author 1" required id="addBookInput">
-                      <p id="addBookFormText">Second Author:</p>
-                      <input type="text" name="author2" placeholder="Enter Author 2" id="addBookInput">
-                      <p id="addBookFormText">Select Book Availability Type:</p>
-                      <select name="BookAvailabilitySelect" id="addBookInput">
-                        <!-- Retrieving the book availability types from the database -->
-                        <?php
-                          $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
-
-                          $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
-
-                          while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
-                        ?>
-                          <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
-                        <?php } ?>
-                      </select>
-                      <br>
-                      <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
-                      <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
-
-                    </form>
-
-
-
-                  </div>
-
-                  <!-- Modal - Footer -->
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-
           </div>
-
 
         <!-- BODY SECTION - End -->
 

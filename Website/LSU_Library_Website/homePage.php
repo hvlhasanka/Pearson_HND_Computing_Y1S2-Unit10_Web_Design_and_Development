@@ -3,15 +3,17 @@
   <head>
     <title> LSU Library - Home </title>
 
-    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="icon" type="image/png" sizes="1500x1500" href="assets/images/LSULibraryLogo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="assets/css/defaultLayout.css">
 
-    <!-- Retrieving  signPage script  -->
-    <script type="text/javascript" src="../JavaScript/signupPage.js"></script>
+    <!-- Retrieving signPage script  -->
+    <script type="text/javascript" src="assets/JavaScript/signupPage.js"></script>
 
+    <!-- Retrieving font-awesome library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif:100&display=swap" rel="stylesheet">
@@ -180,12 +182,13 @@
         <div id="header">
 
           <div id="logoSection">
+            <a href="homePage.php">
+              <img src="assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+            </a>
 
-            <img src="assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+              <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
-            <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
-
-            <p id="mainTitleSub">Lowa State University</p>
+              <p id="mainTitleSub">Lowa State University</p>
 
             <img src="assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 

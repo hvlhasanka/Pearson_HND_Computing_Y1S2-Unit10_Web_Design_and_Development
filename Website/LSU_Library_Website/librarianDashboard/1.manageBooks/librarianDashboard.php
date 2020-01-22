@@ -104,12 +104,12 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 800px;
+                      height: 1100px;
                       background-color: #F6F6F6;">
 
             <!-- Existing Books section -->
-            <div style="width: 70%;
-                        height: 500px;
+            <div style="width: 75%;
+                        height: 880px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -122,7 +122,7 @@
                         padding-top: 20px;"><b>Existing Books</b></p>
 
               <div style="width: 95%;
-                          height: 400px;
+                          height: 790px;
                           background-color: white;
                           position: absolute;
                           left: 50%;
@@ -131,8 +131,7 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, bau.Author, ba.Availability, b.RegisteredDateTime FROM Book b
-                                    INNER JOIN BookAuthor bau ON b.ISBN = bau.bISBN
+                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
                                     INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
                                     ORDER BY RegisteredDateTime DESC;";
 
@@ -140,7 +139,7 @@
 
                 ?>
 
-                <table class="table table-hover" style="border-radius: 10px;">
+                <table class="table table-hover fixed_header" style="border-radius: 10px;">
                   <thead>
                     <tr>
                       <th> ISBN </th>
@@ -154,16 +153,25 @@
                   <tbody>
                       <?php
                         while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                          $ISBN = $bookDetailsRow["ISBN"];
                       ?>
                     <tr>
-                      <td><?php echo $bookDetailsRow["ISBN"]; ?></td>
+                      <td><?php echo $ISBN ?></td>
                       <td><?php echo $bookDetailsRow["Name"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Author"]; ?></td>
+
+                        <?php
+                          // Retrieving the author names of the book
+                          $bookAuthorSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
+                          $bookAuthorResult = mysqli_query($databaseConn, $bookAuthorSQL);
+                          while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult))
+                        ?>
+                      <td><?php { echo $bookAuthorRow["Author"]; } ?></td>
+
                       <td><?php echo $bookDetailsRow["Availability"]; ?></td>
                       <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
-                        <a href="updateBookDetails.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
-						            <a href="deleteBook.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"
+                        <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>	|
+						            <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
                           onClick="return confirm('This record and along with connections to this record will be removed.\nAre you such you want to continue?')">
                           Delete
                         </a>
@@ -184,7 +192,7 @@
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 40px;">
+                        top: 35px;">
 
               <p style="font-size: 20px;
                         padding-left: 50px;
