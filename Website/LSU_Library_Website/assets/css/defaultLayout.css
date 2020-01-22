@@ -53,7 +53,7 @@
   #navSection{
     position: relative;
     top: -240px;
-    left: 1180px;
+    left: 1280px;
   }
 
   .navItem{
@@ -69,7 +69,7 @@
     border-style: solid;
     border-width: thin;
     border-radius: 6px;
-    padding: 6px;
+    padding: 10px;
   }
 
   #navItem1 a{
@@ -78,6 +78,7 @@
   }
 
   #navItem1 a:hover{
+    text-decoration: none;
     background-color: lightblue;
     color: white;
   }
@@ -87,6 +88,7 @@
   }
 
   #navItem2 a:hover{
+    text-decoration: none;
     border-color: #00B1D2FF;
     background-color: lightblue;
     color: white;

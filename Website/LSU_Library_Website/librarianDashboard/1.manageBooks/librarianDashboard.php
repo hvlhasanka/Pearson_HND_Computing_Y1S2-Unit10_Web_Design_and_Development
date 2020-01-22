@@ -1,5 +1,7 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
+
+  
 ?>
 
 <!DOCTYPE html>
@@ -13,9 +15,6 @@
 
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
-
-    <!-- Retrieving form layout style sheet -->
-    <link rel="stylesheet" href="../../assets/css/formLayout.css">
 
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <script src="../../assets/javascript/jquery.min.js"></script>
@@ -40,8 +39,8 @@
 
               <table id="navSection">
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td class="navItem" id="navItem1"> <a href="#">Welcome</a> </td>
+                  <td class="navItem" id="navItem2"> <a href="#" data-toggle="modal" data-target="#loginFormModel">Logout</a> </td>
                 </tr>
               </table>
 

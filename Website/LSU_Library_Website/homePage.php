@@ -1,3 +1,45 @@
+<?php
+  if(isset($_POST['submit'])){
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+  	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$username';";
+  	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
+    if($systemLoginResult == 0){
+      ?> <script>
+        alert("Account Not Available. Please Register");
+      </script> <?php
+    }
+    else if($systemLoginResult == 1){
+      while($systemLoginRow = mysqli_fetch_array($systemLoginResult)){
+
+      }
+    }
+
+
+
+  	if($numRows  == 1){
+  		$row = mysqli_fetch_assoc($rs);
+  		if(password_verify($password,$row['Password'])){
+              session_start();
+              $_SESSION["username"] = $email;
+              $_SESSION["email"] = $email;
+              $_SESSION['start'] = time();
+              $_SESSION['expire'] = $_SESSION['start'] + (720 * 60);  // 12 hour session window
+           header("Location: reporter");
+  		}
+  		else{
+      echo '<script>alert("Wrong Password")</script>';
+  		}
+  }
+  	else{
+      echo '<script language="javascript">';
+  echo 'alert("Account not found, please register!")';
+  echo '</script>';
+  	}
+  }
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -23,8 +65,6 @@
 		<script src="assets/javascript/jquery.min.js"></script>
 		<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Bootstrap links - end -->
-
-  </head>
 
   <style>
     .modal-dialog{
@@ -176,6 +216,7 @@
       margin-left: 545px;
     }
   </style>
+  </head>
 
   <body>
       <!-- HEADER SECTION - Begin -->
@@ -221,7 +262,7 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                  <form method="POST" action="#">
+                  <form method="POST" action="index.php">
                     <p class="formText">Username </p>
                     <i class="fa fa-user-circle-o"></i>
                     <input type="text" name="username" placeholder="Enter your USERNAME" required>
