@@ -1,5 +1,10 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
+
+  $ISBN = $_GET['isbn'];
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -21,8 +26,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-    <script src="../assets/javascript/jquery.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/javascript/jquery.min.js"></script>
+    <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
 
   </head>
   <body>
@@ -125,12 +130,12 @@
                         padding-top: 20px;"><b>Update Book Details</b></p>
 
               <style>
-                .addBookFormText{
+                .updateBookFormText{
                   font-size: 18px;
                   padding-left: 75px;
                 }
 
-                .addBookInput{
+                .updateBookInput{
                   padding: 10px;
                   border-radius: 7px;
                   width: 300px;
@@ -140,7 +145,7 @@
                   border-color: #ccc;
                 }
 
-                #addBookSubmitButton{
+                #updateBookUpdateButton{
                   padding: 5px;
                   border-radius: 5px;
                   margin-top: 20px;
@@ -152,7 +157,7 @@
                   border-color: #0081FF;
                 }
 
-                #addBookResetButton{
+                #updateBookResetButton{
                   padding: 5px;
                   border-radius: 5px;
                   background-color: #DEDEDE;
@@ -162,22 +167,53 @@
                 }
               </style>
 
+              <!-- Retrieving existing details of the existing books from the database -->
+              <?php
+                $bookDetailsSQL = "SELECT b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
+                                  INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
+                                  WHERE b.ISBN = '$ISBN';";
+
+                $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
+              ?>
+
+              <!-- Update Book Details Form -->
               <div style="position: absolute; left:50%; transform: translateX(-50%);">
-                <form action="addNewBook.php" method="POST">
-                  <p class="addBookFormText">ISBN:</p>
-                  <input type="text" name="isbn" placeholder="Enter ISBN" required class="addBookInput">
+                <form action="updateBookDetails.php" method="POST">
+                  <p class="updateBookFormText">ISBN:</p>
+                  <input type="text" name="isbn" placeholder="Enter ISBN" required class="updateBookInput" value="<?php echo $ISBN; ?>">
 
-                  <p class="addBookFormText">Book Name:</p>
-                  <textarea rows = "5" cols = "40" name="name" placeholder="Enter Book Name" required class="addBookInput"></textarea>
+                  <p class="updateBookFormText">Book Name:</p>
+                  <?php
+                    while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                  ?>
+                  <textarea rows = "5" cols = "40" name="name" placeholder="Enter Book Name" required class="updateBookInput"
+                    ><?php echo $bookDetailsRow['Name']; ?>
+                  </textarea>
 
-                  <p class="addBookFormText">First Auther Name:</p>
-                  <input type="text" name="author1" placeholder="Enter First Author" required class="addBookInput">
+                  <!-- Retrieving existing author names of the existing books from the database -->
+                  <?php
+                    $bookAuthorDetailsSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
 
-                  <p class="addBookFormText">Second Author Name:</p>
-                  <input type="text" name="author2" placeholder="Enter Second Author" class="addBookInput">
+                    $bookAuthorDetailsResult = mysqli_query($databaseConn, $bookAuthorDetailsSQL);
+                  ?>
 
-                  <p class="addBookFormText">Select Book Availability Type:</p>
-                  <select name="bookAvailabilitySelect" class="addBookInput">
+                  <p class="updateBookFormText">First Auther Name:</p>
+
+                  <?php
+                    while($bookAuthorDetailsRow = mysqli_fetch_array($bookAuthorDetailsResult)){
+                  ?>
+
+                  <input type="text" name="author1" placeholder="Enter First Author" required class="updateBookInput"
+                    value="<?php echo $bookAuthorDetailsRow['Author']; ?>">
+
+                  <p class="updateBookFormText">Second Author Name:</p>
+                  <input type="text" name="author2" placeholder="Enter Second Author" class="updateBookInput"
+                    value="<?php echo $bookAuthorDetailsRow['Author']; ?>">
+
+                <?php } ?>
+
+                  <p class="updateBookFormText">Select Book Availability Type:</p>
+                  <select name="bookAvailabilitySelect" class="updateBookInput">
                     <!-- Retrieving the book availability types from the database -->
                     <?php
                       $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
@@ -190,12 +226,14 @@
                     <?php } ?>
                   </select>
                   <br>
-                  <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
-                  <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
+                  <button type="submit" name="updateBookUpdate" id="updateBookUpdateButton">Update</button>
+                  <button type="reset" name="updateBookReset" id="updateBookResetButton">Reset</button>
 
                 </form>
 
               </div>
+
+              <?php } ?>
 
 
               <button type="button" name="return" style="color: #FFFFFF;
@@ -203,8 +241,12 @@
                                                         border-color: #5EAFFF;
                                                         padding: 5px;
                                                         border-radius: 5px;
-                                                        width: 140px;" onClick="window.location.href = 'librarianDashboard.php';">
-                <i class="fa fa-arrow-left" style="font-size: 20px;"></i>
+                                                        width: 140px;
+                                                        position: absolute;
+                                                        top: 770px;
+                                                        left: 40px;" onClick="window.location.href = 'librarianDashboard.php';">
+                <i class="fa fa-arrow-left" style="font-size: 20px;
+                                                  margin-right: 10px;"></i>
                 Return
               </button>
 
