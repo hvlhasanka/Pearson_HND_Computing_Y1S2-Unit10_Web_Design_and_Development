@@ -1,7 +1,62 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
 
+  // ISBN value that was retrieved from the previous web page
   $ISBN = $_GET['isbn'];
+
+  if(isset($_POST['updateBookUpdate'])){
+
+    $name = $_POST['name'];
+    $firstAuthor = $_POST['author1'];
+    $secondAuthor = $_POST['author2'];
+    $bookAvailabilityType = $_POST['bookAvailabilitySelect'];
+
+    if(empty($name) || empty($firstAuthor)){
+      if(empty($name)){
+        ?> <script>
+          alert("ERROR: Book Name field is not filled.");
+        </script> <?php
+      }
+      if(empty($firstAuthor)){
+        ?> <script>
+          alert("ERROR: First Author Name field is not filled.");
+        </script> <?php
+      }
+    }
+    else{
+      // Updating records in Book Table
+      $bookSQL = "UPDATE Book SET ISBN = '$ISBNNew', Name = '$name', baBAID = '$bookAvailabilityType'
+                  WHERE ISBN = '$ISBNPrevious';";
+      $bookResult = mysqli_query($databaseConn, $bookSQL);
+
+      // Checking if the second author field is empty
+      if(empty($secondAuthor)){
+        // Adding (first author) record into BookAuthor table
+        $bookAuthor1SQL = "UPDATE BookAuthor SET Author '$firstAuthor' WHERE bISBN = '$ISBN';";
+
+        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+      }
+      // Checking if the second author field is not empty
+      else if(!empty($secondAuthor)){
+        // Adding (first author) record into BookAuthor table
+        $bookAuthor1SQL = "UPDATE BookAuthor SET Author '$firstAuthor' WHERE bISBN = '$ISBN';";
+
+        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+
+        // Adding (second author) record into BookAuthor table
+        $bookAuthor2SQL = "UPDATE BookAuthor SET Author '$secondAuthor' WHERE bISBN = '$ISBN';";
+
+        $bookAuthor2Result = mysqli_query($databaseConn, $bookAuthor2SQL);
+      }
+
+      ?> <script>
+        alert("Record details Successfully Updated.");
+      </script> <?php
+
+      echo "<script> location.href='librarianDashboard.php'; </script>";
+      exit;
+    }
+  }
 
 
 
@@ -171,9 +226,10 @@
 
               <!-- Update Book Details Form -->
               <div style="position: absolute; left:50%; transform: translateX(-50%);">
-                <form action="updateBookDetails.php" method="POST">
+                <form action="updateBookDetails.php?isbn=<?php echo $ISBN; ?>" method="POST">
                   <p class="updateBookFormText">ISBN:</p>
-                  <input type="text" name="isbn" placeholder="Enter ISBN" required class="updateBookInput" value="<?php echo $ISBN; ?>">
+                  <input type="text" name="isbnNew" placeholder="Enter ISBN" required class="updateBookInput" value="<?php echo $ISBN; ?>" readonly
+                    style="background-color: #E4E4E4;">
 
                   <p class="updateBookFormText">Book Name:</p>
                   <!-- Retrieving existing details of the existing books from the database -->
@@ -247,6 +303,7 @@
                     ?>
                       <option value="<?php echo $bookAvailabilityRow["BAID"]; ?>"
                         <?php
+                          // If the book availability type is equal to the selected book availability type, 'selected will be echoed'
                           if($bookAvailabilityRow["BAID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
                           {
                             echo "selected";
