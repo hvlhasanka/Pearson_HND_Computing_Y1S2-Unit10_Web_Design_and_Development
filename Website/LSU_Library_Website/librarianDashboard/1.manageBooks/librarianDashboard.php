@@ -163,9 +163,24 @@
                           // Retrieving the author names of the book
                           $bookAuthorSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
                           $bookAuthorResult = mysqli_query($databaseConn, $bookAuthorSQL);
-                          while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult))
+                          $bookAuthorRowCount = mysqli_num_rows($bookAuthorResult);
+                          // Implemention if there is only one author name
+                          if($bookAuthorRowCount == 1){
+                            while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
+                              ?><td><?php echo $bookAuthorRow["Author"]; ?></td><?php
+                            }
+                          }
+                          // Implemention if there are two author names
+                          else if($bookAuthorRowCount == 2){
+                            $bookAuthor = [];
+
+                            while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
+                              $bookAuthor[] = $bookAuthorRow["Author"];
+                            }
+
+                            ?><td><?php echo $bookAuthor[0]." & ".$bookAuthor[1]; ?></td><?php
+                          }
                         ?>
-                      <td><?php { echo $bookAuthorRow["Author"]; } ?></td>
 
                       <td><?php echo $bookDetailsRow["Availability"]; ?></td>
                       <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>

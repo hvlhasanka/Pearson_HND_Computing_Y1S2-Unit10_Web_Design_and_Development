@@ -190,27 +190,43 @@
                     ><?php echo $bookDetailsRow['Name']; ?>
                   </textarea>
 
-                  <!-- Retrieving existing author names of the existing books from the database -->
+
+
                   <?php
+                    // Retrieving existing author names of the existing books from the database
                     $bookAuthorDetailsSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
-
                     $bookAuthorDetailsResult = mysqli_query($databaseConn, $bookAuthorDetailsSQL);
+                    $bookAuthorDetailsRowCount = mysqli_num_rows($bookAuthorDetailsResult);
+                    // Implemention if there is only one author name
+                    if($bookAuthorDetailsRowCount == 1){
+                      while($bookAuthorDetailsRow = mysqli_fetch_array($bookAuthorDetailsResult)){
+                        ?>
+                        <p class="updateBookFormText">First Auther Name:</p>
+                        <input type="text" name="author1" placeholder="Enter First Author" required class="updateBookInput"
+                          value="<?php echo $bookAuthorDetailsRow["Author"]; ?>">
+
+                        <p class="updateBookFormText">Second Author Name:</p>
+                        <input type="text" name="author2" placeholder="Not Available" class="updateBookInput">
+                        <?php
+                      }
+                    }
+                    // Implemention if there are two author names
+                    else if($bookAuthorDetailsRowCount == 2){
+                      $authorName = [];
+                      while($bookAuthorDetailsRow = mysqli_fetch_array($bookAuthorDetailsResult)){
+                        $authorName[] = $bookAuthorDetailsRow["Author"];
+                      }
+                      ?>
+                      <p class="updateBookFormText">First Auther Name:</p>
+                      <input type="text" name="author1" placeholder="Enter First Author" required class="updateBookInput"
+                        value="<?php echo $authorName[0]; ?>">
+
+                      <p class="updateBookFormText">Second Author Name:</p>
+                      <input type="text" name="author2" placeholder="Enter Second Author" class="updateBookInput"
+                        value="<?php echo $authorName[1]; ?>">
+                      <?php
+                    }
                   ?>
-
-                  <p class="updateBookFormText">First Auther Name:</p>
-
-                  <?php
-                    while($bookAuthorDetailsRow = mysqli_fetch_array($bookAuthorDetailsResult)){
-                  ?>
-
-                  <input type="text" name="author1" placeholder="Enter First Author" required class="updateBookInput"
-                    value="<?php echo $bookAuthorDetailsRow['Author']; ?>">
-
-                  <p class="updateBookFormText">Second Author Name:</p>
-                  <input type="text" name="author2" placeholder="Enter Second Author" class="updateBookInput"
-                    value="<?php echo $bookAuthorDetailsRow['Author']; ?>">
-
-                <?php } ?>
 
                   <p class="updateBookFormText">Select Book Availability Type:</p>
                   <select name="bookAvailabilitySelect" class="updateBookInput">
