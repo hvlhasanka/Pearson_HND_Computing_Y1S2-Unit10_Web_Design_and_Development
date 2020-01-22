@@ -17,6 +17,9 @@
     <!-- Retrieving form layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/formLayout.css">
 
+    <!-- Retrieving font-awesome library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <script src="../assets/javascript/jquery.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
@@ -194,12 +197,16 @@
 
               </div>
 
+
               <button type="button" name="return" style="color: #FFFFFF;
                                                         background-color: #5EAFFF;
                                                         border-color: #5EAFFF;
                                                         padding: 5px;
                                                         border-radius: 5px;
-                                                        width: 100px;" onClick="window.location.href = 'librarianDashboard.php';">Return</button>
+                                                        width: 140px;" onClick="window.location.href = 'librarianDashboard.php';">
+                <i class="fa fa-arrow-left" style="font-size: 20px;"></i>
+                Return
+              </button>
 
             </div>
           </div>
