@@ -3,6 +3,11 @@
 
     $ISBN = $_GET['isbn'];
 
+    /* Deleting record from Book table */
+    $bookSQL = "DELETE FROM Book WHERE ISBN='$ISBN';";
+
+    $bookResult = mysqli_query($databaseConn, $bookSQL);
+
     /* Deleting record from BookAuthor table */
     $bookAuthorSQL = "DELETE FROM BookAuthor WHERE bISBN='$ISBN';";
 
@@ -12,6 +17,11 @@
     $reservedBookSQL = "DELETE FROM ReservedBook WHERE bISBN='$ISBN';";
 
     $reservedBookResult = mysqli_query($databaseConn, $reservedBookSQL);
+
+    /* Deleting record from LibrarianManageBook table */
+    $LMBSQL = "DELETE FROM LibrarianManageBook WHERE bISBN='$ISBN';";
+
+    $LMBResult = mysqli_query($databaseConn, $LMBSQL);
 
     /* Retrieving BorrowDetails ID from the Borrow table */
     $borrowDetailsIDSQL = "SELECT bID FROM BorrowDetails WHERE bISBN = '$ISBN';";
@@ -40,15 +50,7 @@
       $borrowDetailsResult = mysqli_query($databaseConn, $borrowDetailsSQL);
     }
 
-    /* Deleting record from LibrarianManageBook table */
-    $LMBSQL = "DELETE FROM LibrarianManageBook WHERE bISBN='$ISBN';";
 
-    $LMBResult = mysqli_query($databaseConn, $LMBSQL);
-
-    /* Deleting record from Book table */
-    $bookSQL = "DELETE FROM Book WHERE ISBN='$ISBN';";
-
-    $bookResult = mysqli_query($databaseConn, $bookSQL);
 
     ?>
       <script>
