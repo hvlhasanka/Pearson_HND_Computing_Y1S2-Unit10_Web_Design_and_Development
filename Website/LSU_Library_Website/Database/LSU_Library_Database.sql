@@ -306,13 +306,14 @@ INSERT INTO BookAvailability(Availability) VALUES
 CREATE TABLE BookCatalog(
   ID INT AUTO_INCREMENT,
   Name VARCHAR(40) NOT NULL,
-  NoOfBooks INT NOT NULL,
+  NoOfBooks INT DEFAULT '0',
   CreatedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 19 - BookCatalog
-
+INSERT INTO BookCatalog (Name, NoOfBooks, CreatedDateTime) VALUES
+('Computing', 1, '2020-01-02 10:25:34.131');
 
 -- Creating Table 20 - Book
 CREATE TABLE Book(

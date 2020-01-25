@@ -14,12 +14,9 @@
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
-    <!-- Retrieving form layout style sheet -->
-    <link rel="stylesheet" href="../../assets/css/formLayout.css">
-
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-    <script src="../assets/javascript/jquery.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../assets/javascript/jquery.min.js"></script>
+    <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
 
   </head>
   <body>
@@ -140,6 +137,7 @@
                 <table class="table table-hover" style="border-radius: 10px;">
                   <thead>
                     <tr>
+                      <th>  </th>
                       <th> ID </th>
                       <th> Name </th>
                       <th> No Of Books </th>
@@ -152,17 +150,14 @@
                         while($bookCatalogDetailsRow = mysqli_fetch_array($bookCatalogDetailsResult)){
                       ?>
                     <tr>
+                      <td> <a href="view.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> View Books </a> </td>
                       <td><?php echo $bookCatalogDetailsRow["ID"]; ?></td>
                       <td><?php echo $bookCatalogDetailsRow["Name"]; ?></td>
                       <td><?php echo $bookCatalogDetailsRow["NoOfBooks"]; ?></td>
                       <td><?php echo $bookCatalogDetailsRow["CreatedDateTime"]; ?></td>
                       <td>
-                        <p> View Books </p>	|
-                        
-                        <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>	|
-						            <a href="delete.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a> |
-                        <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Add Book </a>	|
-                        <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Remove Book </a>
+                           <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>
+						            |  <a href="delete.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
                       </td>
                     </tr>
                       <?php } ?>
@@ -173,7 +168,7 @@
             </div>
 
             <!-- Add new book section -->
-            <div style="width: 27%;
+            <div style="width: 620px;
                         height: 100px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
@@ -184,13 +179,13 @@
 
               <p style="font-size: 20px;
                         padding-left: 50px;
-                        padding-top: 40px;" data-toggle="modal" data-target="#addBookModal"><b>Add New Book</b></p>
+                        padding-top: 40px;" data-toggle="modal" data-target="#addBookModal"><b>Create New Book Catalog</b></p>
 
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal"
                style="padding: 10px;
                       width: 200px;
                       position: absolute;
-                      left: 270px;
+                      left: 370px;
                       top: 30px;">
                 Click Here
               </button>
@@ -206,7 +201,7 @@
 
                   <!-- Modal - Header -->
                   <div class="modal-header">
-                    <h4 class="modal-title">Add New Book</h4>
+                    <h4 class="modal-title">Create New Book Catalog</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                   </div>
 
@@ -214,12 +209,12 @@
                   <div class="modal-body">
 
                     <style>
-                      #addBookFormText{
+                      .formText{
                         font-size: 18px;
                         padding-left: 75px;
                       }
 
-                      #addBookInput{
+                      .formInput{
                         padding: 10px;
                         border-radius: 7px;
                         width: 300px;
@@ -229,7 +224,7 @@
                         border-color: #ccc;
                       }
 
-                      #addBookSubmitButton{
+                      #formSubmitButton{
                         padding: 5px;
                         border-radius: 5px;
                         margin-left: 50%;
@@ -240,7 +235,7 @@
                         border-color: #0081FF;
                       }
 
-                      #addBookResetButton{
+                      #formResetButton{
                         padding: 5px;
                         border-radius: 5px;
                         background-color: #DEDEDE;
@@ -250,36 +245,27 @@
                       }
                     </style>
 
-                    <form action="addNewBook.php" method="POST">
-                      <p id="addBookFormText">ISBN:</p>
-                      <input type="text" name="isbn" placeholder="Enter ISBN" required id="addBookInput">
-                      <p id="addBookFormText">Name:</p>
-                      <input type="message" name="name" placeholder="Enter Name" required id="addBookInput">
-                      <p id="addBookFormText">First Auther:</p>
-                      <input type="text" name="author1" placeholder="Enter Author 1" required id="addBookInput">
-                      <p id="addBookFormText">Second Author:</p>
-                      <input type="text" name="author2" placeholder="Enter Author 2" id="addBookInput">
-                      <p id="addBookFormText">Select Book Availability Type:</p>
-                      <select name="BookAvailabilitySelect" id="addBookInput">
-                        <!-- Retrieving the book availability types from the database -->
+                    <form action="createNewBookCatalog.php" method="POST">
+                      <p class="formText">ID:</p>
+
                         <?php
-                          $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
-
-                          $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
-
-                          while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
+                          // Retrieving the latest book catalog ID and incrementing it by one to represent the new book catalog ID
+                          $bookCatalogIDSQL = "SELECT ID FROM BookCatalog ORDER BY CreatedDateTime DESC LIMIT 1;";
+                          $bookCatalogIDResult = mysqli_query($databaseConn, $bookCatalogIDSQL);
+                          $bookCatalogID = "";
+                          while($bookCatalogIDRow = mysqli_fetch_array($bookCatalogIDResult)){
+                            $bookCatalogID = $bookCatalogIDRow["ID"];
+                          }
                         ?>
-                          <option value="<?php echo $bookAvailabilityRow["BAID"] ?>"><?php echo $bookAvailabilityRow["Availability"] ?></option>
-                        <?php } ?>
-                      </select>
+
+                      <input type="text" name="id" required class="formInput" readonly value="<?php echo ($bookCatalogID + 1); ?>">
+                      <p class="formText">Name:</p>
+                      <input type="message" name="name" placeholder="Enter Name" required class="formInput">
                       <br>
-                      <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
-                      <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
+                      <button type="submit" name="createBookCatalogSubmit" id="formSubmitButton">Submit</button>
+                      <button type="reset" name="createBookCatalogReset" id="formResetButton">Reset</button>
 
                     </form>
-
-
-
                   </div>
 
                   <!-- Modal - Footer -->

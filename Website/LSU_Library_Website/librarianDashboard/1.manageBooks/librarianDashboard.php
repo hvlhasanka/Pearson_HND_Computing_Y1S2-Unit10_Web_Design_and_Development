@@ -184,8 +184,8 @@
                       <td><?php echo $bookDetailsRow["Availability"]; ?></td>
                       <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
-                        <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>	|
-						            <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
+                          <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
+						            | <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
                           onClick="return confirm('This record and along with connections to this record will be removed.\nAre you such you want to continue?')">
                           Delete
                         </a>
@@ -310,7 +310,7 @@
 
                           while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                         ?>
-                          <option value="<?php echo $bookAvailabilityRow["BAID"]; ?>"><?php echo $bookAvailabilityRow["Availability"]; ?></option>
+                          <option value="<?php echo $bookAvailabilityRow["ID"]; ?>"><?php echo $bookAvailabilityRow["Availability"]; ?></option>
                         <?php } ?>
                       </select>
                       <p class="mandatoryAsterisk" style="top: 595px;">*</p>

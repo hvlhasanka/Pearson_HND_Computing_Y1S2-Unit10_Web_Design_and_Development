@@ -52,7 +52,7 @@
       }
 
       ?> <script>
-        alert("New Record successfully added.");
+        alert("Book has been successfully added.");
       </script> <?php
 
       echo "<script> location.href='librarianDashboard.php'; </script>";
