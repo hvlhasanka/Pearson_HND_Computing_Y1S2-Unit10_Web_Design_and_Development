@@ -1,0 +1,134 @@
+/* Setting margin to default size */
+  *{
+    margin: 0;
+  }
+
+/* Header Style */
+  #header{
+    height: 120px;
+  }
+
+  #lsuLibraryLogoIcon{
+    height: 95px;
+    width: 95px;
+    position: relative;
+    top: 122px;
+    left: -120px;
+  }
+
+  #logoSection{
+    position: relative;
+    top: -100px;
+    left: 440px;
+  }
+
+  #mainTitle{
+    color: #0692c2;
+    letter-spacing: 4px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 40px;
+    padding-top: 30px;
+    padding-left: 8px;
+  }
+
+  #mainTitleSpan{
+    letter-spacing: 1px;
+  }
+
+  #mainTitleSub{
+    font-size: 22px;
+    font-family: verdana;
+    color: #0692c2;
+    letter-spacing: 1px;
+  }
+
+  #lsuLogoIcon{
+    height: 62px;
+    width: 150px;
+    position: relative;
+    top: -90px;
+    left: 300px;
+  }
+
+  #navSection{
+    position: relative;
+    top: -240px;
+    left: 1280px;
+  }
+
+  .navItem{
+    padding-left: 20px;
+  }
+
+  .navItem a{
+    font-size: 25px;
+    text-decoration: none;
+    color: #00B1D2FF;
+    font-family: verdana;
+    font-size: 20px;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 6px;
+    padding: 10px;
+  }
+
+  #navItem1 a{
+    border-color: white;
+    transition-duration: 0.4s;
+  }
+
+  #navItem1 a:hover{
+    text-decoration: none;
+    background-color: lightblue;
+    color: white;
+  }
+
+  #navItem2 a{
+    transition-duration: 0.4s;
+  }
+
+  #navItem2 a:hover{
+    text-decoration: none;
+    border-color: #00B1D2FF;
+    background-color: lightblue;
+    color: white;
+  }
+
+/* Foot Style */
+  #footer{
+    background-image: linear-gradient(to right, #9993ff, #86e9fd);
+    height: 200px;
+  }
+
+  #footerLogoSection{
+    position:relative;
+    top: -100px;
+    left: 700px;
+  }
+
+  #footerLogoSection h1{
+    color: white;
+  }
+
+  #footerLogoSection span{
+    color: white;
+  }
+
+  #footerLogoSection p{
+    color: white;
+  }
+
+  #footerText1Main{
+    position: relative;
+    top: -140px;
+    left: 650px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+  }
+
+  #footerText1Sub{
+    font-family: serif;
+    font-size: 20px;
+    color: white;
+  }
