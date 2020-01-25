@@ -311,9 +311,12 @@ CREATE TABLE BookCatalog(
   PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
+-- Alterting table to change the starting point of the ID in Table 19 - BookCatalog
+ALTER TABLE BookCatalog AUTO_INCREMENT = 22450000;
+
 -- Inserting records to Table 19 - BookCatalog
 INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
-('Computing', '2020-01-02 10:25:34.131'); -- ID: 1
+('Computing', '2020-01-02 10:25:34.131'); -- ID: 22450001
 
 -- Creating Table 20 - Book
 CREATE TABLE Book(
@@ -397,9 +400,12 @@ CREATE TABLE BorrowDetails(
   PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
+-- Alterting table to change the starting point of the ID in Table 25 - BorrowDetails
+ALTER TABLE BookCatalog AUTO_INCREMENT = 44250000;
+
 -- Inserting records to Table 25 - BorrowDetails
 INSERT INTO BorrowDetails (BorrowDateTime, ReturnDateTime) VALUES
-('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 1
+('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 44250001
 
 -- Creating Table 26 - Borrow
 CREATE TABLE Borrow(
