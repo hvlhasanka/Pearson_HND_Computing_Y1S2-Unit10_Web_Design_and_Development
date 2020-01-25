@@ -13,11 +13,14 @@ CREATE TABLE LoginMembershipType(
   PRIMARY KEY (MembershipTypeID)
 )ENGINE = INNODB;
 
+-- Alterting table to change the starting point of the ID in Table 1 - LoginMembershipType
+ALTER TABLE LoginMembershipType AUTO_INCREMENT = 65350001;
+
 -- Inserting records to Table 1 - LoginMembershipType
 INSERT INTO LoginMembershipType (MembershipType) VALUES
-('Student'),
-('Professor'),
-('Librarian');
+('Student'),    -- MembershipTypeID: 65350001
+('Professor'),  -- MembershipTypeID: 65350002
+('Librarian');  -- MembershipTypeID: 65350003
 
 -- Creating Table 2 - Login
 CREATE TABLE Login(
@@ -33,7 +36,7 @@ CREATE TABLE Login(
 
 -- Inserting records to Table 2 - Login
 INSERT INTO Login(Username, Password, lmtMembershipTypeID) VALUES
-('jakeanderson52', SHA1('andRewsand_er2'), 1);
+('jakeanderson52', SHA1('andRewsand_er2'), 65350001);
 
 -- Creating Table 3 - MemberCity
 CREATE TABLE MemberCity(

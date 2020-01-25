@@ -1,23 +1,29 @@
 <?php
-  if(isset($_POST['submit'])){
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+  include_once("LSULibraryDBConnection.php");
 
-  	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$username';";
+  if(isset($_POST['submit'])){
+    $enteredUsername = $_POST['username'];
+    $enteredPassword = $_POST['password'];
+    $selectedMembershipType = $_POST['membershipTypeLogin'];
+
+  	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lmtMembershipTypeID = '$selectedMembershipType';";
   	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
-    if($systemLoginResult == 0){
+    $passwordDB = "";
+    if($systemLoginResult = false){
       ?> <script>
         alert("Account Not Available. Please Register");
       </script> <?php
     }
-    else if($systemLoginResult == 1){
-      while($systemLoginRow = mysqli_fetch_array($systemLoginResult)){
-
-      }
+  else if($systemLoginResult = true){
+    while($systemLoginRow = mysqli_fetch_array($systemLoginResult)){
+      $passwordDB = $systemLoginRow["Password"];
     }
+    $t= password_verify($enteredPassword,$passwordDB);
+    echo $t;
+  }
 
 
-
+/*
   	if($numRows  == 1){
   		$row = mysqli_fetch_assoc($rs);
   		if(password_verify($password,$row['Password'])){
@@ -36,7 +42,7 @@
       echo '<script language="javascript">';
   echo 'alert("Account not found, please register!")';
   echo '</script>';
-  	}
+}*/
   }
 ?>
 
@@ -273,7 +279,7 @@
 
                     <p class="formText">Membership Type </p>
                     <i class="fa fa-group"></i>
-                    <select name="membershipType">
+                    <select name="membershipTypeLogin">
                       <option value="NULL">Select a Category</option>
                       <option value="Student">Student</option>
                       <option value="Professor">Professor</option>
@@ -325,11 +331,11 @@
                   <p class="formText">Select a Membership Type</p>
                   <form method="GET" action="#" onsubmit="generatePathway(this);">
                     <i class="fa fa-group"></i>
-                    <select name="membershipType">
-                      <option value="">Membership Type</option>
-                      <option value="student">Student</option>
-                      <option value="professor">Professor</option>
-                      <option value="librarian">Librarian</option>
+                    <select name="membershipTypeSignUp">
+                      <option value="#">Membership Type</option>
+                      <option value="65350001">Student</option>
+                      <option value="65350002">Professor</option>
+                      <option value="65350003">Librarian</option>
                     </select>
                     <br>
                     <input type="submit" name="continue" value="Continue" id="signupFormButton">

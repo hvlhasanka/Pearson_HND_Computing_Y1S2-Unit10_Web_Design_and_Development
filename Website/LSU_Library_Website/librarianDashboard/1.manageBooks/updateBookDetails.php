@@ -140,7 +140,7 @@
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
                 <li class="nav-item active">
-                  <a class="nav-link" href="librarianDashboard.php">Manage Books</a>
+                  <a class="nav-link" href="manageBooks.php">Manage Books</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
