@@ -6,12 +6,12 @@
     /* Deleting record from BookAuthor table */
     $bookAuthorSQL = "DELETE FROM BookAuthor WHERE bISBN='$ISBN';";
 
-    $bookAuthorResult = mysqli_query($databaseConn, $bookAuthorSQL);
+    mysqli_query($databaseConn, $bookAuthorSQL);
 
     /* Deleting record from ReservedBook table */
     $reservedBookSQL = "DELETE FROM ReservedBook WHERE bISBN='$ISBN';";
 
-    $reservedBookResult = mysqli_query($databaseConn, $reservedBookSQL);
+    mysqli_query($databaseConn, $reservedBookSQL);
 
       /* Retrieving BorrowDetails ID from the Borrow table */
       $borrowDetailsIDSQL = "SELECT bdBDID FROM Borrow WHERE bISBN = '$ISBN';";
@@ -25,30 +25,30 @@
         $borrowDetailsID = $borrowDetailsIDRow['bdBDID'];
 
         /* Deleting record from Borrow table */
-        $borrowSQL = "DELETE FROM Borrow WHERE bID='$borrowDetailsID';";
+        $borrowSQL = "DELETE FROM Borrow WHERE bdBDID='$borrowDetailsID';";
 
-        $borrowResult = mysqli_query($databaseConn, $borrowSQL);
+        mysqli_query($databaseConn, $borrowSQL);
 
         /* Deleting record from LibrarianManageBorrowDetails table */
-        $LMBDSQL = "DELETE FROM LibrarianManageBorrowDetails WHERE bID='$borrowDetailsID';";
+        $LMBDSQL = "DELETE FROM LibrarianManageBorrowDetails WHERE bdBDID='$borrowDetailsID';";
 
-        $LMBDResult = mysqli_query($databaseConn, $LMBDSQL);
+        mysqli_query($databaseConn, $LMBDSQL);
 
         /* Deleting record from BorrowDetails table */
-        $borrowDetailsSQL = "DELETE FROM BorrowDetails WHERE bID='$borrowDetailsID';";
+        $borrowDetailsSQL = "DELETE FROM BorrowDetails WHERE ID='$borrowDetailsID';";
 
-        $borrowDetailsResult = mysqli_query($databaseConn, $borrowDetailsSQL);
+        mysqli_query($databaseConn, $borrowDetailsSQL);
       }
 
     /* Deleting record from LibrarianManageBook table */
-    $LMBSQL = "DELETE FROM LibrarianManageBook WHERE bISBN='.$ISBN.';";
+    $LMBSQL = "DELETE FROM LibrarianManageBook WHERE bISBN='$ISBN';";
 
-    $LMBResult = mysqli_query($databaseConn, $LMBSQL);
+    mysqli_query($databaseConn, $LMBSQL);
 
     /* Deleting record from Book table */
-    $bookSQL = "DELETE FROM Book WHERE ISBN='.$ISBN.';";
-echo $ISBN;
-    $bookResult = mysqli_query($databaseConn, $bookSQL);
+    $bookSQL = "DELETE FROM Book WHERE ISBN='$ISBN';";
+
+    mysqli_query($databaseConn, $bookSQL);
 
     ?>
       <script>
@@ -57,7 +57,6 @@ echo $ISBN;
     <?php
 
     echo "<script> location.href='librarianDashboard.php'; </script>";
-  //  exit;
 
     //header("Location: librarianDashboard.php");
 
