@@ -294,13 +294,16 @@ CREATE TABLE BookAvailability(
   PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
+-- Alterting table to change the starting point of the ID in Table 18 - BookAvailability
+ALTER TABLE BookAvailability AUTO_INCREMENT = 55240001;
+
 -- Inserting records to Table 18 - BookAvailability
 INSERT INTO BookAvailability(Availability) VALUES
-('Available'),      -- BAID: 1
-('Not Available'),  -- BAID: 2
-('Pending'),        -- BAID: 3
-('Reserved'),       -- BAID: 4
-('Borrowed');       -- BAID: 5
+('Available'),      -- BAID: 55240001
+('Not Available'),  -- BAID: 55240002
+('Pending'),        -- BAID: 55240003
+('Reserved'),       -- BAID: 55240004
+('Borrowed');       -- BAID: 55240005
 
 -- Creating Table 19 - BookCatalog
 CREATE TABLE BookCatalog(
@@ -318,22 +321,41 @@ ALTER TABLE BookCatalog AUTO_INCREMENT = 22450001;
 INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
 ('Computing', '2020-01-02 10:25:34.131'); -- ID: 22450001
 
+-- Creating Table 20 - BookCategory
+CREATE TABLE BookCategory(
+  ID INT AUTO_INCREMENT,
+  Category VARCHAR(50) NOT NULL,
+  PRIMARY KEY (ID)
+)ENGINE = INNODB;
+
+-- Alterting table to change the starting point of the ID in Table 20 - BookCategory
+ALTER TABLE BookCategory AUTO_INCREMENT = 75330001;
+
+-- Inserting crecords to Table 120 - BookCategory
+INSERT INTO BookCatalog (Category) VALUES
+('Novels'),     -- ID: 75330001
+('Fictions');   -- ID: 75330002
+('Textbook');   -- ID: 75330003
+
+
 -- Creating Table 20 - Book
 CREATE TABLE Book(
   ISBN VARCHAR(17) NOT NULL,
   Name VARCHAR(200) NOT NULL,
   baID INT NOT NULL,
+  bacID INT NOT NULL,
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
-  FOREIGN KEY (baID) REFERENCES BookAvailability (ID)
+  FOREIGN KEY (baID) REFERENCES BookAvailability (ID),
+  FOREIGN KEY (bacID) REFERENCES BookCategory (ID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 20 - Book
 INSERT INTO Book (ISBN, Name, baID, RegisteredDateTime) VALUES
 ('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
-  1, '2020-01-01 12:34:06.693'),
+  55240001, 75330003, '2020-01-01 12:34:06.693'),
 ('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
-  2, '2020-01-01 12:39:23.234');
+  55240002, 75330003, '2020-01-01 12:39:23.234');
 
 -- Creating Table 21 - BookCatalogHasBook
 CREATE TABLE BookCatalogHasBook(
