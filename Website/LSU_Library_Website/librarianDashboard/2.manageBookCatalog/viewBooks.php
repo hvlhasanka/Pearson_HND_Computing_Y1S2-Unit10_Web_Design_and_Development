@@ -30,6 +30,13 @@
 
         mysqli_query($databaseConn, $addBookSQL);
 
+        // Retrieving the current no of books in the book catalog and incrementing it by one.
+        // Updating the NoOfBooks in book catalog
+        $noOfBooksSQL = "UPDATE BookCatalog SET NoOfBooks = (SELECT (COUNT(bISBN) + 1)
+                        FROM bookcataloghasbook WHERE bcID = '$bookCatalogID') WHERE ID = '$bookCatalogID';";
+
+        mysqli_query($databaseConn, $noOfBooksSQL);
+
         ?> <script>
           alert("Book successfully added into book catalog.");
         </script> <?php
@@ -146,8 +153,23 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1100px;
+                      height: 1185px;
                       background-color: #F6F6F6;">
+
+            <!-- Return Button -->
+            <button type="button" name="return" style="color: #FFFFFF;
+                                                      background-color: #5EAFFF;
+                                                      border-color: #5EAFFF;
+                                                      padding: 5px;
+                                                      border-radius: 5px;
+                                                      width: 140px;
+                                                      position: absolute;
+                                                      top: 420px;
+                                                      left: 250px;" onClick="window.location.href = 'manageBookCatalog.php';">
+              <i class="fa fa-arrow-left" style="font-size: 20px;
+                                                margin-right: 10px;"></i>
+              Return
+            </button>
 
             <!-- Existing Books section -->
             <div style="width: 75%;
@@ -157,7 +179,7 @@
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 20px;">
+                        top: 100px;">
 
                 <?php
                   $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE ID = '$bookCatalogID';";
@@ -184,6 +206,9 @@
                 <?php
                   $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
                                     INNER JOIN BookAvailability ba ON ba.ID = b.baID
+                                    INNER JOIN BookCatalogHasBook bchb ON bchb.bISBN = b.ISBN
+                                    INNER JOIN BookCatalog bc ON bc.ID = bchb.bcID
+                                    WHERE bchb.bcID = '$bookCatalogID'
                                     ORDER BY RegisteredDateTime DESC;";
 
                   $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
@@ -257,7 +282,7 @@
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 35px;">
+                        top: 130px;">
 
               <p style="font-size: 20px;
                         padding-left: 50px;
@@ -357,19 +382,7 @@
               </div>
             </div>
 
-            <!-- Return Button -->
-            <button type="button" name="return" style="color: #FFFFFF;
-                                                      background-color: #5EAFFF;
-                                                      border-color: #5EAFFF;
-                                                      padding: 5px;
-                                                      border-radius: 5px;
-                                                      width: 140px;
-                                                      position: absolute;
-                                                      top: 1430px;
-                                                      left: 250px;" onClick="window.location.href = 'manageBookCatalog.php';">
-              <i class="fa fa-arrow-left" style="font-size: 20px;
-                                                margin-right: 10px;"></i>
-              Return
+
 
           </div>
 

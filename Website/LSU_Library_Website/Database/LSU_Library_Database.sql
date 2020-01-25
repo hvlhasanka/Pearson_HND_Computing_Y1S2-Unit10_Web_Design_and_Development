@@ -312,8 +312,8 @@ CREATE TABLE BookCatalog(
 )ENGINE = INNODB;
 
 -- Inserting records to Table 19 - BookCatalog
-INSERT INTO BookCatalog (Name, NoOfBooks, CreatedDateTime) VALUES
-('Computing', 1, '2020-01-02 10:25:34.131'); -- ID: 1
+INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
+('Computing', '2020-01-02 10:25:34.131'); -- ID: 1
 
 -- Creating Table 20 - Book
 CREATE TABLE Book(
@@ -328,7 +328,9 @@ CREATE TABLE Book(
 -- Inserting records to Table 20 - Book
 INSERT INTO Book (ISBN, Name, baID, RegisteredDateTime) VALUES
 ('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
-  1, '2020-01-01 12:34:06.693');
+  1, '2020-01-01 12:34:06.693'),
+('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
+  2, '2020-01-01 12:39:23.234');
 
 -- Creating Table 21 - BookCatalogHasBook
 CREATE TABLE BookCatalogHasBook(
@@ -341,7 +343,11 @@ CREATE TABLE BookCatalogHasBook(
 
 -- Inserting records to Table 21 - BookCatalogHasBook
 INSERT INTO BookCatalogHasBook VALUES
-(1, '978-0984782857');
+(1, '978-0984782857'),
+(1, '978-1517671273');
+
+-- Updating the NoOfBooks in book catalog
+UPDATE BookCatalog SET NoOfBooks = 2 WHERE ID = 1;
 
 -- Creating Table 22 - ReservedBook
 CREATE TABLE ReservedBook(
@@ -365,7 +371,9 @@ CREATE TABLE BookAuthor(
 
 -- Inserting records to Table 23 - BookAuthor
 INSERT INTO BookAuthor VALUES
-('978-0984782857', 'Gayle Laakmann McDowell');
+('978-0984782857', 'Gayle Laakmann McDowell'),
+('978-1517671273', 'Adnan Aziz'),
+('978-1517671273', 'Tsung-Hsien Lee');
 
 -- Creating Table 24 - LibrarianManageBook
 CREATE TABLE LibrarianManageBook(
