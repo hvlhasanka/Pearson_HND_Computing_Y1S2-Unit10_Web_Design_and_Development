@@ -54,7 +54,7 @@
       </script> <?php
 
       echo "<script> location.href='librarianDashboard.php'; </script>";
-      exit;
+
     }
   }
 

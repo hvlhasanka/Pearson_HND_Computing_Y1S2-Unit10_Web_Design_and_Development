@@ -1,5 +1,47 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
+
+  // ID retrieved from the previous web page
+  $bookCatalogID = $_GET['id'];
+
+  if(isset($_POST['addBookSubmit'])){
+
+    $ISBN = $_POST['isbn'];
+
+    if(empty($ISBN)){
+      ?> <script>
+        alert("ERROR: ISBN field is not filled.");
+      </script> <?php
+    }
+    else{
+      // Checking if this book was already added to this book catalog
+      $checkISBNSQL = "SELECT bISBN FROM BookCatalogHasBook WHERE bcID = '$bookCatalogID' AND bISBN = '$ISBN';";
+      $checkISBNResult = mysqli_query($databaseConn, $checkISBNSQL); ;
+      if($checkISBNResult = 1){
+        ?> <script>
+          alert("Book already added into this book catalog");
+        </script> <?php
+
+        echo "<script> location.href='viewBooks.php?id=</script> <?php echo $bookCatalogID; ?> <script>'; </script>";
+      }
+      else if($checkISBNResult = 0){
+        // Adding book into a book catalog
+        $addBookSQL = "INSERT INTO BookCatalogHasBook VALUES ('$bookCatalogID', '$ISBN');";
+
+        mysqli_query($databaseConn, $addBookSQL);
+
+        ?> <script>
+          alert("Book successfully added into book catalog.");
+        </script> <?php
+
+        echo "<script> location.href='viewBooks.php?id=<?php echo $bookCatalogID; ?>'; </script>";
+      }
+
+    }
+  }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +55,9 @@
 
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
+
+    <!-- Retrieving font-awesome library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <script src="../../assets/javascript/jquery.min.js"></script>
@@ -37,8 +82,8 @@
 
               <table id="navSection">
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td class="navItem" id="navItem1"> <a href="#">Welcome</a> </td>
+                  <td class="navItem" id="navItem2"> <a href="#" data-toggle="modal" data-target="#loginFormModel">Logout</a> </td>
                 </tr>
               </table>
 
@@ -74,10 +119,10 @@
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
                 <li class="nav-item">
-                  <a class="nav-link" href="../1.manageBooks/librarianDashboard.php">Manage Books</a>
+                  <a class="nav-link" href="../1.manageBook/manageBook.php">Manage Books</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>
+                  <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
@@ -101,12 +146,12 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 715px;
+                      height: 1100px;
                       background-color: #F6F6F6;">
 
             <!-- Existing Books section -->
-            <div style="width: 70%;
-                        height: 500px;
+            <div style="width: 75%;
+                        height: 880px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -114,12 +159,21 @@
                         transform: translateX(-50%);
                         top: 20px;">
 
+                <?php
+                  $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE ID = '$bookCatalogID';";
+                  $bookCatalogNameResult = mysqli_query($databaseConn, $bookCatalogNameSQL);
+                  $bookCatalogName = "";
+                  while($bookCatalogNameRow = mysqli_fetch_array($bookCatalogNameResult)){
+                    $bookCatalogName = $bookCatalogNameRow["Name"];
+                  }
+                ?>
+
               <p style="font-size: 20px;
                         padding-left: 30px;
-                        padding-top: 20px;"><b>Existing Book Catalogs</b></p>
+                        padding-top: 20px;"><b>Available Books in Book Catalog: <?php echo $bookCatalogName; ?></b></p>
 
               <div style="width: 95%;
-                          height: 400px;
+                          height: 790px;
                           background-color: white;
                           position: absolute;
                           left: 50%;
@@ -128,36 +182,64 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookCatalogDetailsSQL = "SELECT ID, Name, NoOfBooks, CreatedDateTime FROM BookCatalog;";
+                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
+                                    INNER JOIN BookAvailability ba ON ba.ID = b.baID
+                                    ORDER BY RegisteredDateTime DESC;";
 
-                  $bookCatalogDetailsResult = mysqli_query($databaseConn, $bookCatalogDetailsSQL);
+                  $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
 
                 ?>
 
-                <table class="table table-hover" style="border-radius: 10px;">
+                <table class="table table-hover fixed_header" style="border-radius: 10px;">
                   <thead>
                     <tr>
-                      <th>  </th>
-                      <th> ID </th>
+                      <th> ISBN </th>
                       <th> Name </th>
-                      <th> No Of Books </th>
-                      <th> Created Date Time </th>
+                      <th> Author Name </th>
+                      <th> Availability </th>
+                      <th> Registered Date Time </th>
                       <th> Modifications </th>
                     </tr>
                   </thead>
                   <tbody>
                       <?php
-                        while($bookCatalogDetailsRow = mysqli_fetch_array($bookCatalogDetailsResult)){
+                        while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                          $ISBN = $bookDetailsRow["ISBN"];
                       ?>
                     <tr>
-                      <td title="View, Add, Remove Books"> <a href="viewBooks.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>"> View Books </a> </td>
-                      <td title="Book Catalog ID"> <?php echo $bookCatalogDetailsRow["ID"]; ?></td>
-                      <td title="Book Catalog Name"> <?php echo $bookCatalogDetailsRow["Name"]; ?></td>
-                      <td title="No Of Books"> <?php echo $bookCatalogDetailsRow["NoOfBooks"]; ?></td>
-                      <td title="Created Date Time"> <?php echo $bookCatalogDetailsRow["CreatedDateTime"]; ?></td>
-                      <td title="Modifications">
-                           <a href="updateBookCatalogDetails.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>
-						            |  <a href="deleteBookCatalog.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this Book Catalog?')"> Delete </a>
+                      <td title="ISBN"><?php echo $ISBN ?></td>
+                      <td title="Book Name"><?php echo $bookDetailsRow["Name"]; ?></td>
+
+                        <?php
+                          // Retrieving the author names of the book
+                          $bookAuthorSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
+                          $bookAuthorResult = mysqli_query($databaseConn, $bookAuthorSQL);
+                          $bookAuthorRowCount = mysqli_num_rows($bookAuthorResult);
+                          // Implemention if there is only one author name
+                          if($bookAuthorRowCount == 1){
+                            while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
+                              ?><td  title="Book Author"><?php echo $bookAuthorRow["Author"]; ?></td><?php
+                            }
+                          }
+                          // Implemention if there are two author names
+                          else if($bookAuthorRowCount == 2){
+                            $bookAuthor = [];
+
+                            while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
+                              $bookAuthor[] = $bookAuthorRow["Author"];
+                            }
+
+                            ?><td  title="Book Author"><?php echo $bookAuthor[0]." & ".$bookAuthor[1]; ?></td><?php
+                          }
+                        ?>
+
+                      <td title="Availability"><?php echo $bookDetailsRow["Availability"]; ?></td>
+                      <td title="Registered Date Time"><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
+                      <td>
+						            <a href="removeBook.php?id=<?php echo $ISBN ?>"
+                          onClick="return confirm('This book will be removed from this catalog.\nAre you such you want to continue?')">
+                          Remove Book
+                        </a>
                       </td>
                     </tr>
                       <?php } ?>
@@ -168,24 +250,24 @@
             </div>
 
             <!-- Add new book section -->
-            <div style="width: 620px;
+            <div style="width: 35%;
                         height: 100px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 40px;">
+                        top: 35px;">
 
               <p style="font-size: 20px;
                         padding-left: 50px;
-                        padding-top: 40px;" data-toggle="modal" data-target="#addBookModal"><b>Create New Book Catalog</b></p>
+                        padding-top: 40px;"><b>Add Book to Book Catalog</b></p>
 
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBookModal"
                style="padding: 10px;
-                      width: 200px;
+                      width: 35%;
                       position: absolute;
-                      left: 370px;
+                      left: 350px;
                       top: 30px;">
                 Click Here
               </button>
@@ -201,7 +283,7 @@
 
                   <!-- Modal - Header -->
                   <div class="modal-header">
-                    <h4 class="modal-title">Create New Book Catalog</h4>
+                    <h4 class="modal-title">Add Book</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                   </div>
 
@@ -232,7 +314,7 @@
                         left: 84%;
                       }
 
-                      #formSubmitButton{
+                      #addBookSubmitButton{
                         padding: 5px;
                         border-radius: 5px;
                         margin-left: 50%;
@@ -243,7 +325,7 @@
                         border-color: #0081FF;
                       }
 
-                      #formResetButton{
+                      #addBookResetButton{
                         padding: 5px;
                         border-radius: 5px;
                         background-color: #DEDEDE;
@@ -253,28 +335,17 @@
                       }
                     </style>
 
-                    <form action="createNewBookCatalog.php" method="POST">
-                      <p class="formText">ID:</p>
+                    <form action="viewBooks.php?id=<?php echo $bookCatalogID; ?>" method="POST">
+                      <p class="formText">ISBN:</p>
+                      <input type="text" name="isbn" placeholder="Enter ISBN" required class="formInput">
+                      <p class="mandatoryAsterisk" style="top: 55px;">*</p>
 
-                        <?php
-                          // Retrieving the latest book catalog ID and incrementing it by one to represent the new book catalog ID
-                          $bookCatalogIDSQL = "SELECT ID FROM BookCatalog ORDER BY CreatedDateTime DESC LIMIT 1;";
-                          $bookCatalogIDResult = mysqli_query($databaseConn, $bookCatalogIDSQL);
-                          $bookCatalogID = "";
-                          while($bookCatalogIDRow = mysqli_fetch_array($bookCatalogIDResult)){
-                            $bookCatalogID = $bookCatalogIDRow["ID"];
-                          }
-                        ?>
-
-                      <input type="text" name="id" class="formInput" readonly value="<?php echo ($bookCatalogID + 1); ?> " style="background-color: #E4E4E4;">
-                      <p class="formText">Name:</p>
-                      <input type="message" name="name" placeholder="Enter Name" required class="formInput">
-                      <p class="mandatoryAsterisk" style="top: 170px;">*</p>
                       <br>
-                      <button type="submit" name="createBookCatalogSubmit" id="formSubmitButton">Submit</button>
-                      <button type="reset" name="createBookCatalogReset" id="formResetButton">Reset</button>
+                      <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
+                      <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
 
                     </form>
+
                   </div>
 
                   <!-- Modal - Footer -->
@@ -286,6 +357,19 @@
               </div>
             </div>
 
+            <!-- Return Button -->
+            <button type="button" name="return" style="color: #FFFFFF;
+                                                      background-color: #5EAFFF;
+                                                      border-color: #5EAFFF;
+                                                      padding: 5px;
+                                                      border-radius: 5px;
+                                                      width: 140px;
+                                                      position: absolute;
+                                                      top: 1430px;
+                                                      left: 250px;" onClick="window.location.href = 'manageBookCatalog.php';">
+              <i class="fa fa-arrow-left" style="font-size: 20px;
+                                                margin-right: 10px;"></i>
+              Return
 
           </div>
 

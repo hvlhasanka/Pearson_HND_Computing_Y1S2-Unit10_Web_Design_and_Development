@@ -18,13 +18,13 @@
       $bookCatalogSQL = "UPDATE BookCatalog SET Name = '$name' WHERE ID = '$bookCatalogID';";
 
       mysqli_query($databaseConn, $bookCatalogSQL);
+
+      ?> <script>
+        alert("Book Catalog details successfully updated.");
+      </script> <?php
+
+      echo "<script> location.href='manageBookCatalog.php'; </script>";
     }
-
-    ?> <script>
-      alert("Book Catalog details successfully updated.");
-    </script> <?php
-
-    echo "<script> location.href='manageBookCatalog.php'; </script>";
   }
 
 
