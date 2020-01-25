@@ -186,7 +186,7 @@
                       <td>
                           <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
 						            | <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
-                          onClick="return confirm('This record and along with connections to this record will be removed.\nAre you such you want to continue?')">
+                          onClick="return confirm('This book and along with connections to this book will be removed.\nAre you such you want to continue?')">
                           Delete
                         </a>
                       </td>

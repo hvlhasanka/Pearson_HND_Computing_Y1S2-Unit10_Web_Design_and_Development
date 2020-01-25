@@ -150,14 +150,14 @@
                         while($bookCatalogDetailsRow = mysqli_fetch_array($bookCatalogDetailsResult)){
                       ?>
                     <tr>
-                      <td> <a href="view.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> View Books </a> </td>
-                      <td><?php echo $bookCatalogDetailsRow["ID"]; ?></td>
-                      <td><?php echo $bookCatalogDetailsRow["Name"]; ?></td>
-                      <td><?php echo $bookCatalogDetailsRow["NoOfBooks"]; ?></td>
-                      <td><?php echo $bookCatalogDetailsRow["CreatedDateTime"]; ?></td>
-                      <td>
-                           <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>
-						            |  <a href="delete.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
+                      <td  title="View, Add, Remove Books"> <a href="view.php?isbn= <?php echo $bookCatalogDetailsRow["ID"] ?> "> View Books </a> </td>
+                      <td title="Book Catalog ID"> <?php echo $bookCatalogDetailsRow["ID"]; ?></td>
+                      <td title="Book Catalog Name"> <?php echo $bookCatalogDetailsRow["Name"]; ?></td>
+                      <td title="No Of Books"> <?php echo $bookCatalogDetailsRow["NoOfBooks"]; ?></td>
+                      <td title="Created Date Time"> <?php echo $bookCatalogDetailsRow["CreatedDateTime"]; ?></td>
+                      <td title="Modifications">
+                           <a href="updateBookCatalogDetails.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>
+						            |  <a href="deleteBookCatalog.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this Book Catalog?')"> Delete </a>
                       </td>
                     </tr>
                       <?php } ?>
