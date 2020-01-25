@@ -289,9 +289,9 @@ CREATE TABLE LibrarianManageMember(
 
 -- Creating Table 18 - BookAvailability
 CREATE TABLE BookAvailability(
-  BAID INT AUTO_INCREMENT,
+  ID INT AUTO_INCREMENT,
   Availability VARCHAR(15) NOT NULL,
-  PRIMARY KEY (BAID)
+  PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 18 - BookAvailability
@@ -302,34 +302,48 @@ INSERT INTO BookAvailability(Availability) VALUES
 ('Reserved'),       -- BAID: 4
 ('Borrowed');       -- BAID: 5
 
--- Creating Table 19 - Book
+-- Creating Table 19 - BookCatalog
+CREATE TABLE BookCatalog(
+  ID INT AUTO_INCREMENT,
+  Name VARCHAR(40) NOT NULL,
+  NoOfBooks INT NOT NULL,
+  CreatedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (ID)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 19 - BookCatalog
+
+
+-- Creating Table 20 - Book
 CREATE TABLE Book(
   ISBN VARCHAR(17) NOT NULL,
   Name VARCHAR(200) NOT NULL,
-  baBAID INT NOT NULL,
+  baID INT NOT NULL,
+  bcID INT,
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
-  FOREIGN KEY (baBAID) REFERENCES BookAvailability (BAID)
+  FOREIGN KEY (baID) REFERENCES BookAvailability (ID),
+  FOREIGN KEY (bcID) REFERENCES BookCatalog (ID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 19 - Book
-INSERT INTO Book VALUES
+-- Inserting records to Table 20 - Book
+INSERT INTO Book (ISBN, Name, baID, RegisteredDateTime) VALUES
 ('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
   1, '2020-01-01 12:34:06.693');
 
--- Creating Table 20 - ReservedBook
+-- Creating Table 21 - ReservedBook
 CREATE TABLE ReservedBook(
   bISBN VARCHAR(17) NOT NULL,
   ReservedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (bISBN, ReservedDateTime)
 )ENGINE = INNODB;
 
--- Inserting records to Table 20 - ReservedBook
+-- Inserting records to Table 21 - ReservedBook
 INSERT INTO ReservedBook VALUES
 ('978-0984782857', '2020-01-02 14:23:12.233');
 
 
--- Creating Table 21 - BookAuthor
+-- Creating Table 22 - BookAuthor
 CREATE TABLE BookAuthor(
   bISBN VARCHAR(17) NOT NULL,
   Author VARCHAR(50) NOT NULL,
@@ -337,11 +351,11 @@ CREATE TABLE BookAuthor(
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
 )ENGINE = INNODB;
 
--- Inserting records to Table 21 - BookAuthor
+-- Inserting records to Table 22 - BookAuthor
 INSERT INTO BookAuthor VALUES
 ('978-0984782857', 'Gayle Laakmann McDowell');
 
--- Creating Table 22 - LibrarianManageBook
+-- Creating Table 23 - LibrarianManageBook
 CREATE TABLE LibrarianManageBook(
   lLibrarianID INT NOT NULL,
   bISBN VARCHAR(17) NOT NULL,
@@ -351,70 +365,57 @@ CREATE TABLE LibrarianManageBook(
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
 )ENGINE = INNODB;
 
--- Inserting records to Table 22 - LibrarianManageBook
+-- Inserting records to Table 23 - LibrarianManageBook
 
 
--- Creating Table 23 - BorrowDetails
+-- Creating Table 24 - BorrowDetails
 CREATE TABLE BorrowDetails(
-  BDID INT AUTO_INCREMENT,
+  ID INT AUTO_INCREMENT,
   BorrowDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   ReturnDateTime DATETIME NOT NULL,
   LateFine FLOAT,
-  PRIMARY KEY (BDID)
+  PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 23 - BorrowDetails
+-- Inserting records to Table 24 - BorrowDetails
 INSERT INTO BorrowDetails (BorrowDateTime, ReturnDateTime) VALUES
 ('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 1
 
--- Creating Table 24 - Borrow
+-- Creating Table 25 - Borrow
 CREATE TABLE Borrow(
   mUniversityID INT(8) NOT NULL,
   bISBN VARCHAR(17) NOT NULL,
-  bdBDID INT NOT NULL,
-  PRIMARY KEY (mUniversityID, bISBN, bdBDID),
+  bdID INT NOT NULL,
+  PRIMARY KEY (mUniversityID, bISBN, bdID),
   FOREIGN KEY (mUniversityID) REFERENCES Member (UniversityID),
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN),
-  FOREIGN KEY (bdBDID) REFERENCES BorrowDetails (BDID)
+  FOREIGN KEY (bdID) REFERENCES BorrowDetails (ID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 24 - Borrow
+-- Inserting records to Table 25 - Borrow
 INSERT INTO Borrow VALUES
 (10004392, '978-0984782857', 1);
 
--- Creating Table 25 - LibrarianManageBorrowDetails
+-- Creating Table 26 - LibrarianManageBorrowDetails
 CREATE TABLE LibrarianManageBorrowDetails(
   lLibrarianID INT NOT NULL,
-  bdBDID INT NOT NULL,
+  bdID INT NOT NULL,
   EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lLibrarianID, bdBDID, EditDateTime),
+  PRIMARY KEY (lLibrarianID, bdID, EditDateTime),
   FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
-  FOREIGN KEY (bdBDID) REFERENCES BorrowDetails (BDID)
+  FOREIGN KEY (bdID) REFERENCES BorrowDetails (ID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 25 - LibrarianManageBorrowDetails
-
-
--- Creating Table 26 - BookCatalog
-CREATE TABLE BookCatalog(
-  BCID INT AUTO_INCREMENT,
-  Name VARCHAR(40) NOT NULL,
-  NoOfBooks INT NOT NULL,
-  CreationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (BCID)
-)ENGINE = INNODB;
-
--- Inserting records to Table 26 - BookCatalog
-
+-- Inserting records to Table 26 - LibrarianManageBorrowDetails
 
 -- Creating Table 27 - LibrarianManageBookCatalog
 CREATE TABLE LibrarianManageBookCatalog(
   lLibrarianID INT NOT NULL,
-  bcBCID INT NOT NULL,
+  bcID INT NOT NULL,
   EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lLibrarianID, bcBCID, EditDateTime),
+  PRIMARY KEY (lLibrarianID, bcID, EditDateTime),
   FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
-  FOREIGN KEY (bcBCID) REFERENCES BookCatalog (BCID)
+  FOREIGN KEY (bcID) REFERENCES BookCatalog (ID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 27 - LibrarianManageBookCatalog

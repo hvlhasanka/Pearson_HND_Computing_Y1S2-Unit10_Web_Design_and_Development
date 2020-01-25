@@ -80,7 +80,7 @@
                   <a class="nav-link" href="../1.manageBooks/librarianDashboard.php">Manage Books</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Manage Book Catalogs</a>
+                  <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
@@ -119,7 +119,7 @@
 
               <p style="font-size: 20px;
                         padding-left: 30px;
-                        padding-top: 20px;"><b>Existing Books</b></p>
+                        padding-top: 20px;"><b>Existing Book Catalogs</b></p>
 
               <div style="width: 95%;
                           height: 400px;
@@ -131,39 +131,38 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, bau.Author, ba.Availability, b.RegisteredDateTime FROM Book b
-                                    INNER JOIN BookAuthor bau ON b.ISBN = bau.bISBN
-                                    INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
-                                    ORDER BY RegisteredDateTime DESC;";
+                  $bookCatalogDetailsSQL = "SELECT ID, Name, NoOfBooks, CreatedDateTime FROM BookCatalog;";
 
-                  $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
+                  $bookCatalogDetailsResult = mysqli_query($databaseConn, $bookCatalogDetailsSQL);
 
                 ?>
 
                 <table class="table table-hover" style="border-radius: 10px;">
                   <thead>
                     <tr>
-                      <th> ISBN </th>
+                      <th> ID </th>
                       <th> Name </th>
-                      <th> Author Name </th>
-                      <th> Availability </th>
-                      <th> Registered Date Time </th>
+                      <th> No Of Books </th>
+                      <th> Created Date Time </th>
                       <th> Modifications </th>
                     </tr>
                   </thead>
                   <tbody>
                       <?php
-                        while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                        while($bookCatalogDetailsRow = mysqli_fetch_array($bookCatalogDetailsResult)){
                       ?>
                     <tr>
-                      <td><?php echo $bookDetailsRow["ISBN"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Name"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Author"]; ?></td>
-                      <td><?php echo $bookDetailsRow["Availability"]; ?></td>
-                      <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
+                      <td><?php echo $bookCatalogDetailsRow["ID"]; ?></td>
+                      <td><?php echo $bookCatalogDetailsRow["Name"]; ?></td>
+                      <td><?php echo $bookCatalogDetailsRow["NoOfBooks"]; ?></td>
+                      <td><?php echo $bookCatalogDetailsRow["CreatedDateTime"]; ?></td>
                       <td>
-                        <a href="edit.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>"> Edit </a>	|
-						            <a href="delete.php?isbn=<?php echo $bookDetailsRow["ISBN"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a>
+                        <p> View Books </p>	|
+                        
+                        <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>	|
+						            <a href="delete.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this record?')"> Delete </a> |
+                        <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Add Book </a>	|
+                        <a href="edit.php?isbn=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Remove Book </a>
                       </td>
                     </tr>
                       <?php } ?>

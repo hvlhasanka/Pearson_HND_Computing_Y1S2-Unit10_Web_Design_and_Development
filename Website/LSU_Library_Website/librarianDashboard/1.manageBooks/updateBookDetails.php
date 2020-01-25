@@ -286,8 +286,8 @@
                     <?php
                       $selectedBookAvailabilityID = "";
                       $selectedBookAvailability = "";
-                      $selectedBookAvailabilitySQL = "SELECT ba.BAID, ba.Availability FROM BookAvailability ba
-                                                      INNER JOIN Book b ON b.baBAID = ba.BAID WHERE b.ISBN = '$ISBN';";
+                      $selectedBookAvailabilitySQL = "SELECT ba.ID, ba.Availability FROM BookAvailability ba
+                                                      INNER JOIN Book b ON b.baID = ba.ID WHERE b.ISBN = '$ISBN';";
                       $selectedBookAvailabilityResult = mysqli_query($databaseConn, $selectedBookAvailabilitySQL);
                       while ($selectedBookAvailabilityRow = mysqli_fetch_array($selectedBookAvailabilityResult)) {
                         $selectedBookAvailabilityID = $selectedBookAvailabilityRow["BAID"];

@@ -1,7 +1,7 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
 
-  
+
 ?>
 
 <!DOCTYPE html>
@@ -131,7 +131,7 @@
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
                   $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
-                                    INNER JOIN BookAvailability ba ON ba.BAID = b.baBAID
+                                    INNER JOIN BookAvailability ba ON ba.ID = b.baID
                                     ORDER BY RegisteredDateTime DESC;";
 
                   $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);

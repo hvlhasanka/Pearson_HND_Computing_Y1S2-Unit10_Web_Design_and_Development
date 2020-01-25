@@ -14,7 +14,7 @@
     mysqli_query($databaseConn, $reservedBookSQL);
 
       /* Retrieving BorrowDetails ID from the Borrow table */
-      $borrowDetailsIDSQL = "SELECT bdBDID FROM Borrow WHERE bISBN = '$ISBN';";
+      $borrowDetailsIDSQL = "SELECT bdID FROM Borrow WHERE bISBN = '$ISBN';";
 
       $borrowDetailsIDResult = mysqli_query($databaseConn, $borrowDetailsIDSQL);
 
@@ -22,15 +22,15 @@
 
       while($borrowDetailsIDRow = mysqli_fetch_array($borrowDetailsIDResult)){
 
-        $borrowDetailsID = $borrowDetailsIDRow['bdBDID'];
+        $borrowDetailsID = $borrowDetailsIDRow['bdID'];
 
         /* Deleting record from Borrow table */
-        $borrowSQL = "DELETE FROM Borrow WHERE bdBDID='$borrowDetailsID';";
+        $borrowSQL = "DELETE FROM Borrow WHERE bdID='$borrowDetailsID';";
 
         mysqli_query($databaseConn, $borrowSQL);
 
         /* Deleting record from LibrarianManageBorrowDetails table */
-        $LMBDSQL = "DELETE FROM LibrarianManageBorrowDetails WHERE bdBDID='$borrowDetailsID';";
+        $LMBDSQL = "DELETE FROM LibrarianManageBorrowDetails WHERE bdID='$borrowDetailsID';";
 
         mysqli_query($databaseConn, $LMBDSQL);
 
