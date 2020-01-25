@@ -167,18 +167,32 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 880px;
+                      height: 1060px;
                       background-color: #F6F6F6;">
 
-            <!-- Existing Books section -->
+            <button type="button" name="return" style="color: #FFFFFF;
+                                                      background-color: #5EAFFF;
+                                                      border-color: #5EAFFF;
+                                                      padding: 5px;
+                                                      border-radius: 5px;
+                                                      width: 140px;
+                                                      position: absolute;
+                                                      top: 430px;
+                                                      left: 470px;" onClick="window.location.href = 'manageBooks.php';">
+              <i class="fa fa-arrow-left" style="font-size: 20px;
+                                                margin-right: 10px;"></i>
+              Return
+            </button>
+
+            <!-- Update Book Details section -->
             <div style="width: 45%;
-                        height: 840px;
+                        height: 920px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 20px;">
+                        top: 100px;">
 
               <p style="font-size: 20px;
                         padding-left: 15%;;
@@ -280,6 +294,40 @@
                     }
                   ?>
 
+
+                  <p class="updateBookFormText">Select Book Category Type:</p>
+                  <select name="bookCategorySelect" class="updateBookInput">
+                    <!-- Retrieving the selected book category type from the database -->
+                    <?php
+                      $selectedBookCategoryID = "";
+                      $selectedBookCategory = "";
+                      $selectedBookCategorySQL = "SELECT bka.ID, bkc.Category FROM BookCategory bka
+                                                      INNER JOIN Book b ON b.bkcID = bkc.ID WHERE b.ISBN = '$ISBN';";
+                      $selectedBookCategoryResult = mysqli_query($databaseConn, $selectedBookCategorySQL);
+                      while ($selectedBookCategoryRow = mysqli_fetch_array($selectedBookCategoryResult)) {
+                        $selectedBookCategoryID = $selectedBookCategoryRow["ID"];
+                        $selectedBookCategory = $selectedBookCategoryRow["Category"];
+                      }
+                    ?>
+                    <!-- Retrieving the book category types from the database -->
+                    <?php
+                      $bookCategorySQL = "SELECT * FROM BookCategory";
+                      $bookCategoryResult = mysqli_query($databaseConn, $bookCategorySQL);
+                      while($bookCategoryRow = mysqli_fetch_array($bookCategoryResult)){
+                    ?>
+                      <option value="<?php echo $bookCategoryRow["ID"]; ?>"
+                        <?php
+                          // If the book category type is equal to the selected book category type, 'selected will be echoed'
+                          if($bookCategoryRow["ID"] == $selectedBookCategoryID && $bookCategoryRow["Category"] == $selectedBookCategory)
+                          {
+                            echo "selected";
+                          }
+                        ?> ><?php echo $bookCategoryRow["Category"]; ?>
+                      </option>
+                    <?php } ?>
+                  </select>
+
+
                   <p class="updateBookFormText">Select Book Availability Type:</p>
                   <select name="bookAvailabilitySelect" class="updateBookInput">
                     <!-- Retrieving the selected book availability type from the database -->
@@ -290,21 +338,20 @@
                                                       INNER JOIN Book b ON b.baID = ba.ID WHERE b.ISBN = '$ISBN';";
                       $selectedBookAvailabilityResult = mysqli_query($databaseConn, $selectedBookAvailabilitySQL);
                       while ($selectedBookAvailabilityRow = mysqli_fetch_array($selectedBookAvailabilityResult)) {
-                        $selectedBookAvailabilityID = $selectedBookAvailabilityRow["BAID"];
+                        $selectedBookAvailabilityID = $selectedBookAvailabilityRow["ID"];
                         $selectedBookAvailability = $selectedBookAvailabilityRow["Availability"];
-                      }echo $selectedBookAvailabilityID;echo $selectedBookAvailability;
+                      }
                     ?>
-
                     <!-- Retrieving the book availability types from the database -->
                     <?php
                       $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
                       $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
                       while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                     ?>
-                      <option value="<?php echo $bookAvailabilityRow["BAID"]; ?>"
+                      <option value="<?php echo $bookAvailabilityRow["ID"]; ?>"
                         <?php
                           // If the book availability type is equal to the selected book availability type, 'selected will be echoed'
-                          if($bookAvailabilityRow["BAID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
+                          if($bookAvailabilityRow["ID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
                           {
                             echo "selected";
                           }
@@ -319,21 +366,6 @@
                 </form>
 
               </div>
-
-
-              <button type="button" name="return" style="color: #FFFFFF;
-                                                        background-color: #5EAFFF;
-                                                        border-color: #5EAFFF;
-                                                        padding: 5px;
-                                                        border-radius: 5px;
-                                                        width: 140px;
-                                                        position: absolute;
-                                                        top: 770px;
-                                                        left: 40px;" onClick="window.location.href = 'librarianDashboard.php';">
-                <i class="fa fa-arrow-left" style="font-size: 20px;
-                                                  margin-right: 10px;"></i>
-                Return
-              </button>
 
             </div>
           </div>

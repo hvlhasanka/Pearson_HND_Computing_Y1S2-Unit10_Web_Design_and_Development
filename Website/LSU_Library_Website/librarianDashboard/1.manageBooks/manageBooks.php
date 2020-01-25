@@ -1,6 +1,66 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
 
+  // Add New Book Process
+  if(isset($_POST['addBookSubmit'])){
+
+    $ISBN = $_POST['isbn'];
+    $Name = $_POST['name'];
+    $author1 = $_POST['author1'];
+    $author2 = $_POST['author2'];
+    $bookCategoryType = $_POST['bookCategorySelect'];
+    $bookAvailabilityType = $_POST['bookAvailabilitySelect'];
+
+    if (empty($ISBN) || empty($Name) || empty($author1)){
+      if(empty($ISBN)){
+        ?> <script>
+          alert("ERROR: ISBN field is not filled.");
+        </script> <?php
+      }
+      if(empty($Name)){
+        ?> <script>
+          alert("ERROR: Book Name field is not filled.");
+        </script> <?php
+      }
+      if(empty($author1)){
+        ?> <script>
+          alert("ERROR: First Author Name field is not filled.");
+        </script> <?php
+      }
+    }
+    else{
+
+      // Adding record into Book table
+      $bookSQL = "INSERT INTO Book (ISBN, Name, bkcID, baID) VALUES ('$ISBN', '$Name', '$bookCategoryType', '$bookAvailabilityType');";
+
+      $bookResult = mysqli_query($databaseConn, $bookSQL);
+
+      if(empty($author2)){
+        // Adding (first author) record into BookAuthor table
+        $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
+
+        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+      }
+      else if(!empty($author2)){
+        // Adding (first author) record into BookAuthor table
+        $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
+
+        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+
+        // Adding (second author) record into BookAuthor table
+        $bookAuthor2SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author2');";
+
+        $bookAuthor2Result = mysqli_query($databaseConn, $bookAuthor2SQL);
+      }
+
+      ?> <script>
+        alert("Book has been successfully added.");
+      </script> <?php
+
+      echo "<script> location.href='manageBooks.php'; </script>";
+
+    }
+  }
 
 ?>
 
@@ -76,7 +136,7 @@
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Manage Books</a>
+                  <a class="nav-link" href="manageBooks.php">Manage Books</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
@@ -130,8 +190,9 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
+                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, bkc.Category, b.RegisteredDateTime FROM Book b
                                     INNER JOIN BookAvailability ba ON ba.ID = b.baID
+                                    INNER JOIN BookCategory bkc ON bkc.ID = b.bkcID
                                     ORDER BY RegisteredDateTime DESC;";
 
                   $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
@@ -144,6 +205,7 @@
                       <th> ISBN </th>
                       <th> Name </th>
                       <th> Author Name </th>
+                      <th> Category </th>
                       <th> Availability </th>
                       <th> Registered Date Time </th>
                       <th> Modifications </th>
@@ -181,7 +243,10 @@
                           }
                         ?>
 
+                      <td title="Category"><?php echo $bookDetailsRow["Category"]; ?></td>
+
                       <td title="Availability"><?php echo $bookDetailsRow["Availability"]; ?></td>
+
                       <td title="Registered Date Time"><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
                           <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
@@ -284,7 +349,7 @@
                       }
                     </style>
 
-                    <form action="addNewBook.php" method="POST">
+                    <form action="manageBooks.php" method="POST">
                       <p class="addBookFormText">ISBN:</p>
                       <input type="text" name="isbn" placeholder="Enter ISBN" required class="addBookInput">
                       <p class="mandatoryAsterisk" style="top: 55px;">*</p>
@@ -300,6 +365,21 @@
                       <p class="addBookFormText">Second Author Name:</p>
                       <input type="text" name="author2" placeholder="Enter Second Author" class="addBookInput">
 
+                      <p class="addBookFormText">Select Book Category Type:</p>
+                      <select name="bookCategorySelect" class="addBookInput">
+                        <!-- Retrieving the book category types from the database -->
+                        <?php
+                          $bookCategorySQL = "SELECT * FROM BookCategory";
+
+                          $bookCategoryResult = mysqli_query($databaseConn, $bookCategorySQL);
+
+                          while($bookCategoryRow = mysqli_fetch_array($bookCategoryResult)){
+                        ?>
+                          <option value="<?php echo $bookCategoryRow["ID"]; ?>"><?php echo $bookCategoryRow["Category"]; ?></option>
+                        <?php } ?>
+                      </select>
+                      <p class="mandatoryAsterisk" style="top: 595px;">*</p>
+
                       <p class="addBookFormText">Select Book Availability Type:</p>
                       <select name="bookAvailabilitySelect" class="addBookInput">
                         <!-- Retrieving the book availability types from the database -->
@@ -313,20 +393,13 @@
                           <option value="<?php echo $bookAvailabilityRow["ID"]; ?>"><?php echo $bookAvailabilityRow["Availability"]; ?></option>
                         <?php } ?>
                       </select>
-                      <p class="mandatoryAsterisk" style="top: 595px;">*</p>
+                      <p class="mandatoryAsterisk" style="top: 706px;">*</p>
                       <br>
                       <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
                       <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
 
                     </form>
 
-
-
-                  </div>
-
-                  <!-- Modal - Footer -->
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                   </div>
 
                 </div>

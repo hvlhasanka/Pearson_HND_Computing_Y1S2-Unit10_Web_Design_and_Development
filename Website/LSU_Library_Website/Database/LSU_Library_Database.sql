@@ -332,9 +332,9 @@ CREATE TABLE BookCategory(
 ALTER TABLE BookCategory AUTO_INCREMENT = 75330001;
 
 -- Inserting crecords to Table 120 - BookCategory
-INSERT INTO BookCatalog (Category) VALUES
+INSERT INTO BookCategory (Category) VALUES
 ('Novels'),     -- ID: 75330001
-('Fictions');   -- ID: 75330002
+('Fictions'),   -- ID: 75330002
 ('Textbook');   -- ID: 75330003
 
 
@@ -342,16 +342,16 @@ INSERT INTO BookCatalog (Category) VALUES
 CREATE TABLE Book(
   ISBN VARCHAR(17) NOT NULL,
   Name VARCHAR(200) NOT NULL,
+  bkcID INT NOT NULL,
   baID INT NOT NULL,
-  bacID INT NOT NULL,
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
-  FOREIGN KEY (baID) REFERENCES BookAvailability (ID),
-  FOREIGN KEY (bacID) REFERENCES BookCategory (ID)
+  FOREIGN KEY (bkcID) REFERENCES BookCategory (ID),
+  FOREIGN KEY (baID) REFERENCES BookAvailability (ID)
 )ENGINE = INNODB;
 
 -- Inserting records to Table 20 - Book
-INSERT INTO Book (ISBN, Name, baID, RegisteredDateTime) VALUES
+INSERT INTO Book (ISBN, Name, baID, bkcID, RegisteredDateTime) VALUES
 ('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
   55240001, 75330003, '2020-01-01 12:34:06.693'),
 ('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
