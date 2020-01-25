@@ -16,7 +16,7 @@
     else{
       // Checking if this book was already added to this book catalog
       $checkISBNSQL = "SELECT bISBN FROM BookCatalogHasBook WHERE bcID = '$bookCatalogID' AND bISBN = '$ISBN';";
-      $checkISBNResult = mysqli_query($databaseConn, $checkISBNSQL); ;
+      $checkISBNResult = mysqli_query($databaseConn, $checkISBNSQL);
       if($checkISBNResult = 1){
         ?> <script>
           alert("Book already added into this book catalog");
@@ -126,7 +126,7 @@
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
                 <li class="nav-item">
-                  <a class="nav-link" href="../1.manageBook/manageBook.php">Manage Books</a>
+                  <a class="nav-link" href="../1.manageBooks/librarianDashboard.php">Manage Books</a>
                 </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>

@@ -312,7 +312,7 @@ CREATE TABLE BookCatalog(
 )ENGINE = INNODB;
 
 -- Alterting table to change the starting point of the ID in Table 19 - BookCatalog
-ALTER TABLE BookCatalog AUTO_INCREMENT = 22450000;
+ALTER TABLE BookCatalog AUTO_INCREMENT = 22450001;
 
 -- Inserting records to Table 19 - BookCatalog
 INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
@@ -346,11 +346,11 @@ CREATE TABLE BookCatalogHasBook(
 
 -- Inserting records to Table 21 - BookCatalogHasBook
 INSERT INTO BookCatalogHasBook VALUES
-(1, '978-0984782857'),
-(1, '978-1517671273');
+(22450001, '978-0984782857'),
+(22450001, '978-1517671273');
 
 -- Updating the NoOfBooks in book catalog
-UPDATE BookCatalog SET NoOfBooks = 2 WHERE ID = 1;
+UPDATE BookCatalog SET NoOfBooks = 2 WHERE ID = 22450001;
 
 -- Creating Table 22 - ReservedBook
 CREATE TABLE ReservedBook(
@@ -401,7 +401,7 @@ CREATE TABLE BorrowDetails(
 )ENGINE = INNODB;
 
 -- Alterting table to change the starting point of the ID in Table 25 - BorrowDetails
-ALTER TABLE BookCatalog AUTO_INCREMENT = 44250000;
+ALTER TABLE BorrowDetails AUTO_INCREMENT = 44250001;
 
 -- Inserting records to Table 25 - BorrowDetails
 INSERT INTO BorrowDetails (BorrowDateTime, ReturnDateTime) VALUES
@@ -420,7 +420,7 @@ CREATE TABLE Borrow(
 
 -- Inserting records to Table 26 - Borrow
 INSERT INTO Borrow VALUES
-(10004392, '978-0984782857', 1);
+(10004392, '978-0984782857', 44250001);
 
 -- Creating Table 27 - LibrarianManageBorrowDetails
 CREATE TABLE LibrarianManageBorrowDetails(
