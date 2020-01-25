@@ -50,7 +50,7 @@
       }
 
       ?> <script>
-        alert("Record details Successfully Updated.");
+        alert("Book details Successfully Updated.");
       </script> <?php
 
       echo "<script> location.href='librarianDashboard.php'; </script>";

@@ -52,7 +52,7 @@
 
     ?>
       <script>
-        alert("Record and Connections to this record has been successfully removed.");
+        alert("Book and connections to this book has been successfully removed.");
       </script>
     <?php
 

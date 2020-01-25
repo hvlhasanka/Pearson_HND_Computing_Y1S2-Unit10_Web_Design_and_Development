@@ -155,8 +155,8 @@
                           $ISBN = $bookDetailsRow["ISBN"];
                       ?>
                     <tr>
-                      <td><?php echo $ISBN ?></td>
-                      <td><?php echo $bookDetailsRow["Name"]; ?></td>
+                      <td title="ISBN"><?php echo $ISBN ?></td>
+                      <td title="Book Name"><?php echo $bookDetailsRow["Name"]; ?></td>
 
                         <?php
                           // Retrieving the author names of the book
@@ -166,7 +166,7 @@
                           // Implemention if there is only one author name
                           if($bookAuthorRowCount == 1){
                             while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
-                              ?><td><?php echo $bookAuthorRow["Author"]; ?></td><?php
+                              ?><td  title="Book Author"><?php echo $bookAuthorRow["Author"]; ?></td><?php
                             }
                           }
                           // Implemention if there are two author names
@@ -177,12 +177,12 @@
                               $bookAuthor[] = $bookAuthorRow["Author"];
                             }
 
-                            ?><td><?php echo $bookAuthor[0]." & ".$bookAuthor[1]; ?></td><?php
+                            ?><td  title="Book Author"><?php echo $bookAuthor[0]." & ".$bookAuthor[1]; ?></td><?php
                           }
                         ?>
 
-                      <td><?php echo $bookDetailsRow["Availability"]; ?></td>
-                      <td><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
+                      <td title="Availability"><?php echo $bookDetailsRow["Availability"]; ?></td>
+                      <td title="Registered Date Time"><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
                           <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
 						            | <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"

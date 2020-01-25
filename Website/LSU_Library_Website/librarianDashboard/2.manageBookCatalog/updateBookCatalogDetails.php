@@ -2,62 +2,30 @@
   include_once("../../LSULibraryDBConnection.php");
 
   // ISBN value that was retrieved from the previous web page
-  $ISBN = $_GET['isbn'];
+  $bookCatalogID = $_GET['id'];
 
-  if(isset($_POST['updateBookUpdate'])){
+  if(isset($_POST['updateUpdateButton'])){
 
     $name = $_POST['name'];
-    $firstAuthor = $_POST['author1'];
-    $secondAuthor = $_POST['author2'];
-    $bookAvailabilityType = $_POST['bookAvailabilitySelect'];
 
-    if(empty($name) || empty($firstAuthor)){
-      if(empty($name)){
-        ?> <script>
-          alert("ERROR: Book Name field is not filled.");
-        </script> <?php
-      }
-      if(empty($firstAuthor)){
-        ?> <script>
-          alert("ERROR: First Author Name field is not filled.");
-        </script> <?php
-      }
+    if(empty($name)){
+      ?> <script>
+        alert("ERROR: Book Catalog Name field is not filled.");
+      </script> <?php
     }
     else{
-      // Updating records in Book Table
-      $bookSQL = "UPDATE Book SET ISBN = '$ISBNNew', Name = '$name', baBAID = '$bookAvailabilityType'
-                  WHERE ISBN = '$ISBNPrevious';";
-      $bookResult = mysqli_query($databaseConn, $bookSQL);
+      // Updating record in BookCatalog Table
+      $bookCatalogSQL = "UPDATE BookCatalog SET Name = '$name' WHERE ID = '$bookCatalogID';";
 
-      // Checking if the second author field is empty
-      if(empty($secondAuthor)){
-        // Adding (first author) record into BookAuthor table
-        $bookAuthor1SQL = "UPDATE BookAuthor SET Author '$firstAuthor' WHERE bISBN = '$ISBN';";
-
-        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
-      }
-      // Checking if the second author field is not empty
-      else if(!empty($secondAuthor)){
-        // Adding (first author) record into BookAuthor table
-        $bookAuthor1SQL = "UPDATE BookAuthor SET Author '$firstAuthor' WHERE bISBN = '$ISBN';";
-
-        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
-
-        // Adding (second author) record into BookAuthor table
-        $bookAuthor2SQL = "UPDATE BookAuthor SET Author '$secondAuthor' WHERE bISBN = '$ISBN';";
-
-        $bookAuthor2Result = mysqli_query($databaseConn, $bookAuthor2SQL);
-      }
-
-      ?> <script>
-        alert("Record details Successfully Updated.");
-      </script> <?php
-
-      echo "<script> location.href='librarianDashboard.php'; </script>";
-      exit;
+      mysqli_query($databaseConn, $bookCatalogSQL);
     }
-  }
 
+    ?> <script>
+      alert("Book Catalog details successfully updated.");
+    </script> <?php
+
+    echo "<script> location.href='manageBookCatalog.php'; </script>";
+  }
 
 
 ?>
@@ -139,10 +107,10 @@
                                             left: 50%;
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link" href="librarianDashboard.php">Manage Books</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
@@ -182,15 +150,15 @@
 
               <p style="font-size: 20px;
                         padding-left: 15%;;
-                        padding-top: 20px;"><b>Update Book Details</b></p>
+                        padding-top: 20px;"><b>Update Book Catalog Details</b></p>
 
               <style>
-                .updateBookFormText{
+                .formText{
                   font-size: 18px;
                   padding-left: 75px;
                 }
 
-                .updateBookInput{
+                .formInput{
                   padding: 10px;
                   border-radius: 7px;
                   width: 300px;
@@ -200,7 +168,7 @@
                   border-color: #ccc;
                 }
 
-                #updateBookUpdateButton{
+                #formUpdateButton{
                   padding: 5px;
                   border-radius: 5px;
                   margin-top: 20px;
@@ -212,7 +180,7 @@
                   border-color: #0081FF;
                 }
 
-                #updateBookResetButton{
+                #formResetButton{
                   padding: 5px;
                   border-radius: 5px;
                   background-color: #DEDEDE;
@@ -225,96 +193,26 @@
 
 
               <!-- Update Book Details Form -->
-              <div style="position: absolute; left:50%; transform: translateX(-50%);">
-                <form action="updateBookDetails.php?isbn=<?php echo $ISBN; ?>" method="POST">
-                  <p class="updateBookFormText">ISBN:</p>
-                  <input type="text" name="isbnNew" placeholder="Enter ISBN" required class="updateBookInput" value="<?php echo $ISBN; ?>" readonly
+              <div style="position: absolute;
+                          left:50%;
+                          transform: translateX(-50%);">
+                <form action="updateBookCatalogDetails.php?id=<?php echo $bookCatalogID; ?>" method="POST">
+                  <p class="formText">ID:</p>
+                  <input type="text" name="id" placeholder="Enter ID" required class="formInput" value="<?php echo $bookCatalogID; ?>" readonly
                     style="background-color: #E4E4E4;">
 
-                  <p class="updateBookFormText">Book Name:</p>
-                  <!-- Retrieving existing details of the existing books from the database -->
+                  <p class="formText">Name:</p>
+                  <!-- Retrieving existing details of the existing book catalog from the database -->
                   <?php
-                    $bookDetailsSQL = "SELECT Name FROM Book WHERE ISBN = '$ISBN';";
-                    $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
-                    while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                    $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE ID = '$bookCatalogID';";
+                    $bookCatalogNameResult = mysqli_query($databaseConn, $bookCatalogNameSQL);
+                    while($bookCatalogNameRow = mysqli_fetch_array($bookCatalogNameResult)){
                   ?>
-                  <textarea rows = "5" cols = "40" name="name" placeholder="Enter Book Name" required class="updateBookInput"
-                    ><?php echo $bookDetailsRow['Name']; ?>
-                  </textarea>
-                <?php } ?>
+                  <input type="text" name="name" value=" <?php echo $bookCatalogNameRow['Name']; } ?> " required class="formInput">
 
-
-                  <?php
-                    // Retrieving existing author names of the existing books from the database
-                    $bookAuthorDetailsSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
-                    $bookAuthorDetailsResult = mysqli_query($databaseConn, $bookAuthorDetailsSQL);
-                    $bookAuthorDetailsRowCount = mysqli_num_rows($bookAuthorDetailsResult);
-                    // Implemention if there is only one author name
-                    if($bookAuthorDetailsRowCount == 1){
-                      while($bookAuthorDetailsRow = mysqli_fetch_array($bookAuthorDetailsResult)){
-                        ?>
-                        <p class="updateBookFormText">First Auther Name:</p>
-                        <input type="text" name="author1" placeholder="Enter First Author" required class="updateBookInput"
-                          value="<?php echo $bookAuthorDetailsRow["Author"]; ?>">
-
-                        <p class="updateBookFormText">Second Author Name:</p>
-                        <input type="text" name="author2" placeholder="Not Available" class="updateBookInput">
-                        <?php
-                      }
-                    }
-                    // Implemention if there are two author names
-                    else if($bookAuthorDetailsRowCount == 2){
-                      $authorName = [];
-                      while($bookAuthorDetailsRow = mysqli_fetch_array($bookAuthorDetailsResult)){
-                        $authorName[] = $bookAuthorDetailsRow["Author"];
-                      }
-                      ?>
-                      <p class="updateBookFormText">First Auther Name:</p>
-                      <input type="text" name="author1" placeholder="Enter First Author" required class="updateBookInput"
-                        value="<?php echo $authorName[0]; ?>">
-
-                      <p class="updateBookFormText">Second Author Name:</p>
-                      <input type="text" name="author2" placeholder="Enter Second Author" class="updateBookInput"
-                        value="<?php echo $authorName[1]; ?>">
-                      <?php
-                    }
-                  ?>
-
-                  <p class="updateBookFormText">Select Book Availability Type:</p>
-                  <select name="bookAvailabilitySelect" class="updateBookInput">
-                    <!-- Retrieving the selected book availability type from the database -->
-                    <?php
-                      $selectedBookAvailabilityID = "";
-                      $selectedBookAvailability = "";
-                      $selectedBookAvailabilitySQL = "SELECT ba.ID, ba.Availability FROM BookAvailability ba
-                                                      INNER JOIN Book b ON b.baID = ba.ID WHERE b.ISBN = '$ISBN';";
-                      $selectedBookAvailabilityResult = mysqli_query($databaseConn, $selectedBookAvailabilitySQL);
-                      while ($selectedBookAvailabilityRow = mysqli_fetch_array($selectedBookAvailabilityResult)) {
-                        $selectedBookAvailabilityID = $selectedBookAvailabilityRow["BAID"];
-                        $selectedBookAvailability = $selectedBookAvailabilityRow["Availability"];
-                      }echo $selectedBookAvailabilityID;echo $selectedBookAvailability;
-                    ?>
-
-                    <!-- Retrieving the book availability types from the database -->
-                    <?php
-                      $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
-                      $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
-                      while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
-                    ?>
-                      <option value="<?php echo $bookAvailabilityRow["BAID"]; ?>"
-                        <?php
-                          // If the book availability type is equal to the selected book availability type, 'selected will be echoed'
-                          if($bookAvailabilityRow["BAID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
-                          {
-                            echo "selected";
-                          }
-                        ?> ><?php echo $bookAvailabilityRow["Availability"]; ?>
-                      </option>
-                    <?php } ?>
-                  </select>
                   <br>
-                  <button type="submit" name="updateBookUpdate" id="updateBookUpdateButton">Update</button>
-                  <button type="reset" name="updateBookReset" id="updateBookResetButton">Reset</button>
+                  <button type="submit" name="updateUpdateButton" id="formUpdateButton">Update</button>
+                  <button type="reset" name="updateResetButton" id="formResetButton">Reset</button>
 
                 </form>
 
@@ -329,7 +227,7 @@
                                                         width: 140px;
                                                         position: absolute;
                                                         top: 770px;
-                                                        left: 40px;" onClick="window.location.href = 'librarianDashboard.php';">
+                                                        left: 40px;" onClick="window.location.href = 'manageBookCatalog.php';">
                 <i class="fa fa-arrow-left" style="font-size: 20px;
                                                   margin-right: 10px;"></i>
                 Return

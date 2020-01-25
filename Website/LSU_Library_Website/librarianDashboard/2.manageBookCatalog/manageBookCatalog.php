@@ -258,7 +258,7 @@
                           }
                         ?>
 
-                      <input type="text" name="id" required class="formInput" readonly value="<?php echo ($bookCatalogID + 1); ?>">
+                      <input type="text" name="id" class="formInput" readonly value="<?php echo ($bookCatalogID + 1); ?> " style="background-color: #E4E4E4;">
                       <p class="formText">Name:</p>
                       <input type="message" name="name" placeholder="Enter Name" required class="formInput">
                       <br>
