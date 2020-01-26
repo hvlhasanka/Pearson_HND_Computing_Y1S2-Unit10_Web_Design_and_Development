@@ -52,14 +52,19 @@
           // Assigning session variables with the details of the current username
           session_start();
           $_SESSION['email'] = $email;
+          $_SESSION['membershipType'] = $selectedMembershipType;
           $_SESSION['start'] = time();
           $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
 
-          if($selectedMembershipType == "65350001" && $selectedMembershipType == "65350002"){
+          // For membershipType: Student and Professor
+          if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
+            header("location: studentProfessorDashboard/studentProfessorDashboard.php");
 
           }
-          else if($selectedMembershipType == "65350003"){
-
+          // For membershipType: Librarian
+          else if($selectedMembershipType == 65350003){
+            echo "eef";
+            header("location: librarianDashboard/1.manageBooks/manageBooks.php");
           }
         }
         else{

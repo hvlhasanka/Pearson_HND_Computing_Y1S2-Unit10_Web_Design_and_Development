@@ -1,4 +1,12 @@
 <?php
+  // Starts the SESSION period
+  session_start();
+
+  // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
+  if (!isset($_SESSION['email']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
+    header("location: ../../logout.php");
+  }
+
   include_once("../../LSULibraryDBConnection.php");
 
   // Add New Book Process
@@ -100,7 +108,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1"> <a href="#">Welcome</a> </td>
-                  <td class="navItem" id="navItem2"> <a href="#" data-toggle="modal" data-target="#loginFormModel">Logout</a> </td>
+                  <td class="navItem" id="navItem2"> <a href="../../logout.php">Logout</a> </td>
                 </tr>
               </table>
 
@@ -135,6 +143,9 @@
                                             left: 50%;
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
+                <li class="nav-item">
+                  <a class="nav-link" href="../librarianDashboard.php">Home</a>
+                </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="manageBooks.php">Manage Books</a>
                 </li>
@@ -157,6 +168,7 @@
               nav li{
                 margin-left:30px;
                 margin-right:30px;
+                width: 160px;
               }
             </style>
           <!-- NavBar - End -->

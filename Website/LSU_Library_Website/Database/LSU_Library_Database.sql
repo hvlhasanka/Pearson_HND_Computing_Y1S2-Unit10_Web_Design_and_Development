@@ -34,10 +34,15 @@ CREATE TABLE Login(
   FOREIGN KEY (lmtMembershipTypeID) REFERENCES LoginMembershipType (MembershipTypeID)
 )ENGINE = INNODB;
 
+-- Alterting table to change the starting point of the ID in Table 2 - Login
+ALTER TABLE Login AUTO_INCREMENT = 11250001;
+
 -- Inserting records to Table 2 - Login
 -- Password encryption: password_hash (php function)
 INSERT INTO Login(Username, Password, lmtMembershipTypeID) VALUES
-('jakeanderson52', '$2y$10$xb8OmUOyNtbCV.q99/p/j.xbeEs/pK0M1dSN2XZrQO7uPKmXReICm', 65350001); -- Password: andRewsand_er2 | MembershipType: Student
+('jakeanderson52', '$2y$10$xb8OmUOyNtbCV.q99/p/j.xbeEs/pK0M1dSN2XZrQO7uPKmXReICm', 65350001), -- Password: andRewsand_er2 | LoginID: 11250001 | MembershipType: Student
+('NickieLangham22', '$2y$10$3gNWnpV5nw0LMrBsSAV/rev2YRwB8tYJkZwbLDfmmZHuJglmwIBy6', 65350003); -- Password: WeLannick4_k33 | LoginID: 11250002 |  MembershipType: Librarian
+
 
 -- Creating Table 3 - MemberCity
 CREATE TABLE MemberCity(
@@ -181,7 +186,7 @@ INSERT INTO Member
   mpMemberProvienceID, MobilePhoneNumber, LandPhoneNumber, mtMemberTypeID, msMembershipStatusID, mpMemberPositionID,
   mfMemberFacultyID, lLoginID) VALUES
 (10004392, 'Jake', 'Andrews', 'Anderson', 'jakeanderson12@gmail.com', '818 School Park', 1, 1, 9, '089-5874693',
-  '034-1569634', 1, 1, 1, 3, 1);
+  '034-1569634', 1, 1, 1, 3, 11250001);
 
 -- Creating Table 11 - Student
 CREATE TABLE Student(
@@ -275,7 +280,7 @@ INSERT INTO Librarian
 (FirstName, MiddleName, LastName, Email, StreetAddress, lcLibrarianCityID, lzpcLibrarianZipPostalCodeID,
   lpLibrarianProvienceID, MobilePhoneNumber, LandPhoneNumber, RegistrationDateTime, lLoginID) VALUES
 ('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 1, 1, 9, '015-8521592', '034-8521596',
-  '2020-01-01 09:23:34.131', 1);
+  '2020-01-01 09:23:34.131', 11250002);
 
 
 -- Creating Table 17 - LibrarianManageMember

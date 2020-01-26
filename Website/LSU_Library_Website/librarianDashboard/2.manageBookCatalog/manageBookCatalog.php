@@ -73,6 +73,10 @@
                                             left: 50%;
                                             transform: translate(-50%,-0%);
                                             font-size: 20px;">
+
+                <li class="nav-item">
+                  <a class="nav-link" href="../librarianDashboard.php">Home</a>
+                </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../1.manageBooks/librarianDashboard.php">Manage Books</a>
                 </li>
@@ -95,6 +99,7 @@
               nav li{
                 margin-left:30px;
                 margin-right:30px;
+                width: 160px;
               }
             </style>
           <!-- NavBar - End -->
