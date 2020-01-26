@@ -24,32 +24,54 @@
       }
     }
     else{
+
     	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lmtMembershipTypeID = '$selectedMembershipType';";
     	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
       $rowCount = mysqli_num_rows($systemLoginResult);
       $passwordDB = "";
+
       if($rowCount == 0){
         ?> <script>
           alert("Account Not Available. Please Register");
         </script> <?php
       }
       else if($rowCount == 1){
+        // Retrieving the password hash value from the database
         $systemLoginRow = mysqli_fetch_array($systemLoginResult);
-          $passwordDB = $systemLoginRow["Password"];
+        $passwordDB = $systemLoginRow["Password"];
+
+        // Checking if the user entered password and hash value from the database is similar
         if(password_verify($enteredPassword, $passwordDB)){
-          ?> <script>
-            alert("Account Not p. Please Register");
-          </script> <?php
+
+          $userEmailSQL = "SELECT m.Email FROM Member m
+                          INNER JOIN Login l ON l.LoginID = m.lLoginID
+                          WHERE l.Username = '$enteredUsername';";
+          $userEmailResult = mysqli_query($databaseConn, $userEmailSQL);
+          $userEmailRow = mysqli_fetch_array($userEmailResult);
+          $email = $userEmailRow["Email"];
+          // Assigning session variables with the details of the current username
+          session_start();
+          $_SESSION['email'] = $email;
+          $_SESSION['start'] = time();
+          $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
+
+          if($selectedMembershipType == "65350001" && $selectedMembershipType == "65350002"){
+
+          }
+          else if($selectedMembershipType == "65350003"){
+
+          }
         }
         else{
           ?> <script>
-            alert("Account Not f. Please Register");
+            alert("Entered credentials are incorrect. Please recheck.");
           </script> <?php
         }
       }
-    }
-  }
 
+    }
+
+  }
 
 /*
   	if($numRows  == 1){
