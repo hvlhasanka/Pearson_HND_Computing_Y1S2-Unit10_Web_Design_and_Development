@@ -6,20 +6,48 @@
     $enteredPassword = $_POST['password'];
     $selectedMembershipType = $_POST['membershipTypeLogin'];
 
-  	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lmtMembershipTypeID = '$selectedMembershipType';";
-  	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
-    $passwordDB = "";
-    if($systemLoginResult = false){
-      ?> <script>
-        alert("Account Not Available. Please Register");
-      </script> <?php
+    if(empty($enteredUsername) || empty($enteredPassword) || $selectedMembershipType == "NULL"){
+      if(empty($enteredUsername)){
+        ?> <script>
+          alert("ERROR: Username field was not filled");
+        </script> <?php
+      }
+      if(empty($enteredPassword)){
+        ?> <script>
+          alert("ERROR: Password field was not filled");
+        </script> <?php
+      }
+      if($selectedMembershipType == "NULL"){
+        ?> <script>
+          alert("ERROR: Membership type was not selected.");
+        </script> <?php
+      }
     }
-  else if($systemLoginResult = true){
-    while($systemLoginRow = mysqli_fetch_array($systemLoginResult)){
-      $passwordDB = $systemLoginRow["Password"];
+    else{
+    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lmtMembershipTypeID = '$selectedMembershipType';";
+    	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
+      $rowCount = mysqli_num_rows($systemLoginResult);
+      $passwordDB = "";
+      if($rowCount == 0){
+        ?> <script>
+          alert("Account Not Available. Please Register");
+        </script> <?php
+      }
+      else if($rowCount == 1){
+        $systemLoginRow = mysqli_fetch_array($systemLoginResult);
+          $passwordDB = $systemLoginRow["Password"];
+        if(password_verify($enteredPassword, $passwordDB)){
+          ?> <script>
+            alert("Account Not p. Please Register");
+          </script> <?php
+        }
+        else{
+          ?> <script>
+            alert("Account Not f. Please Register");
+          </script> <?php
+        }
+      }
     }
-    $t= password_verify($enteredPassword,$passwordDB);
-    echo $t;
   }
 
 
@@ -43,7 +71,7 @@
   echo 'alert("Account not found, please register!")';
   echo '</script>';
 }*/
-  }
+
 ?>
 
 <!DOCTYPE html>
@@ -280,10 +308,10 @@
                     <p class="formText">Membership Type </p>
                     <i class="fa fa-group"></i>
                     <select name="membershipTypeLogin">
-                      <option value="NULL">Select a Category</option>
-                      <option value="Student">Student</option>
-                      <option value="Professor">Professor</option>
-                      <option value="Librarian">Librarian</option>
+                      <option value="NULL" selected>Select a Category</option>
+                      <option value="65350001">Student</option>
+                      <option value="65350002">Professor</option>
+                      <option value="65350003">Librarian</option>
                     </select>
                     <br>
 
@@ -332,7 +360,7 @@
                   <form method="GET" action="#" onsubmit="generatePathway(this);">
                     <i class="fa fa-group"></i>
                     <select name="membershipTypeSignUp">
-                      <option value="#">Membership Type</option>
+                      <option value="NULL" selected>Membership Type</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
                       <option value="65350003">Librarian</option>

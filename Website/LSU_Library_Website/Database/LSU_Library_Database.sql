@@ -26,7 +26,7 @@ INSERT INTO LoginMembershipType (MembershipType) VALUES
 CREATE TABLE Login(
   LoginID INT AUTO_INCREMENT,
   Username VARCHAR(15) NOT NULL,
-  Password CHAR(40) NOT NULL,
+  Password VARCHAR(150) NOT NULL,
   lmtMembershipTypeID INT NOT NULL,
   CreationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   EditDateTime DATETIME,
@@ -35,8 +35,9 @@ CREATE TABLE Login(
 )ENGINE = INNODB;
 
 -- Inserting records to Table 2 - Login
+-- Password encryption: password_hash (php function)
 INSERT INTO Login(Username, Password, lmtMembershipTypeID) VALUES
-('jakeanderson52', SHA1('andRewsand_er2'), 65350001);
+('jakeanderson52', '$2y$10$xb8OmUOyNtbCV.q99/p/j.xbeEs/pK0M1dSN2XZrQO7uPKmXReICm', 65350001); -- Password: andRewsand_er2 | MembershipType: Student
 
 -- Creating Table 3 - MemberCity
 CREATE TABLE MemberCity(
