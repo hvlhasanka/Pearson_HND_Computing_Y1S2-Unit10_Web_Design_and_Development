@@ -102,9 +102,7 @@ INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress, StreetAddress, 
   ('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 22120001, 23130001, 24140009, '015-8521592', '034-8521596',
     '2020-01-01 09:23:34.131'),  -- UserID: 45150001
   ('Jake', 'Andrews', 'Anderson', 'jakeanderson12@gmail.com', '818 School Park',  22120001, 23130001, 24140009, '089-5874693','034-1569634',
-    '2020-01-01 10:32:12.132'),  -- UserID: 45150002
-  ('Peter', 'Andy', 'Jackson', 'JacksonAny42@gmail.com', 'A23 Palace Lane',  22120001, 23130001, 24140009, '023-5316489','042-5268313',
-    '2020-01-01 11:23:13.342');  -- UserID: 45150003
+    '2020-01-01 10:32:12.132');  -- UserID: 45150002
 
 -- ||
 
@@ -216,8 +214,7 @@ CREATE TABLE Member(
 -- Inserting records into Table 10 - Member
 INSERT INTO Member
 (UserID, UniversityID, mmtMemberTypeID, mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES
-(45150002, 10004392, 44120001, 93140001, 91120001, 92130003),
-(45150003, 10003242, 44120002, 93140001, 91120003, 92130005);
+(45150002, 10004392, 44120001, 93140001, 91120001, 92130003);
 
 -- ||
 
@@ -257,13 +254,11 @@ INSERT INTO StudentBatch (DegreeProgram) VALUES
 
 -- Creating Table 13 - Student
 CREATE TABLE Student(
-  mUserID INT(8) NOT NULL,
-  mUniversityID INT(8) NOT NULL,
+  UserID INT(8) NOT NULL,
+  UniversityID INT(8) NOT NULL,
   sbBatchID INT(8) NOT NULL,
   sdpDegreeProgramID INT(8) NOT NULL,
   PRIMARY KEY (UserID, UniversityID)
-  FOREIGN KEY (mUserID) REFERENCES Member (UserID),
-  FOREIGN KEY (mUniversityID) REFERENCES Member (UniversityID),
   FOREIGN KEY (sbBatchID) REFERENCES StudentBatch (BatchID),
   FOREIGN KEY (sdpDegreeProgramID) REFERENCES StudentDegreeProgram (DegreeProgramID)
 )ENGINE = INNODB;
@@ -274,104 +269,271 @@ INSERT INTO Student VALUES
 
 -- ||
 
--- Creating Table 14 - ProfessorSpecialization
-CREATE TABLE ProfessorSpecialization(
-  SpecializationID INT(8) AUTO_INCREMENT,
-  Specialization VARCHAR(50),
-  PRIMARY KEY (SpecializationID)
+
+
+
+
+-- Creating Table 1 - LoginMembershipType
+CREATE TABLE LoginMembershipType(
+  MembershipTypeID INT AUTO_INCREMENT,
+  MembershipType VARCHAR(9) NOT NULL,
+  PRIMARY KEY (MembershipTypeID)
 )ENGINE = INNODB;
 
--- Alterting table to change the starting point of the ID in Table 14 - ProfessorSpecialization
-ALTER TABLE ProfessorSpecialization AUTO_INCREMENT = 33110001;
+-- Alterting table to change the starting point of the ID in Table 1 - LoginMembershipType
+ALTER TABLE LoginMembershipType AUTO_INCREMENT = 65350001;
 
--- Inserting records into Table 14 - ProfessorSpecialization
-INSERT INTO ProfessorSpecialization (Specialization) VALUES
-('Computing'),  -- SpecializationID: 33110001
-('Business');   -- SpecializationID: 33110001
+-- Inserting records into Table 1 - LoginMembershipType
+INSERT INTO LoginMembershipType (MembershipType) VALUES
+('Student'),    -- MembershipTypeID: 65350001
+('Professor'),  -- MembershipTypeID: 65350002
+('Librarian');  -- MembershipTypeID: 65350003
 
--- ||
+-- Creating Table 2 - Login
+CREATE TABLE Login(
+  LoginID INT AUTO_INCREMENT,
+  Username VARCHAR(15) NOT NULL,
+  Password VARCHAR(150) NOT NULL,
+  lmtMembershipTypeID INT NOT NULL,
+  CreationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  EditDateTime DATETIME,
+  PRIMARY KEY (LoginID),
+  FOREIGN KEY (lmtMembershipTypeID) REFERENCES LoginMembershipType (MembershipTypeID)
+)ENGINE = INNODB;
 
--- Creating Table 15 - Professor
-CREATE TABLE Professor(
-  mUserID INT(8) NOT NULL,
+-- Alterting table to change the starting point of the ID in Table 2 - Login
+ALTER TABLE Login AUTO_INCREMENT = 11250001;
+
+-- Inserting records to Table 2 - Login
+-- Password encryption: password_hash (php function)
+INSERT INTO Login(Username, Password, lmtMembershipTypeID) VALUES
+('jakeanderson52', '$2y$10$xb8OmUOyNtbCV.q99/p/j.xbeEs/pK0M1dSN2XZrQO7uPKmXReICm', 65350001), -- Password: andRewsand_er2 | LoginID: 11250001 | MembershipType: Student
+('NickieLangham22', '$2y$10$3gNWnpV5nw0LMrBsSAV/rev2YRwB8tYJkZwbLDfmmZHuJglmwIBy6', 65350003); -- Password: WeLannick4_k33 | LoginID: 11250002 |  MembershipType: Librarian
+
+
+
+
+
+
+
+
+
+
+
+-- Creating Table 7 - MembershipStatus
+CREATE TABLE MembershipStatus(
+  MembershipStatusID INT AUTO_INCREMENT,
+  MembershipStatus VARCHAR(11) NOT NULL,
+  PRIMARY KEY (MembershipStatusID)
+)ENGINE = INNODB;
+
+
+
+-- Creating Table 8 - MemberPosition
+CREATE TABLE MemberPosition(
+  MemberPositionID INT AUTO_INCREMENT,
+  Position VARCHAR(21) NOT NULL,
+  PRIMARY KEY (MemberPositionID)
+)ENGINE = INNODB;
+
+
+
+-- Creating Table 9 - MemberFaculty
+CREATE TABLE MemberFaculty(
+  MemberFacultyID INT AUTO_INCREMENT,
+  Faculty VARCHAR(22) NOT NULL,
+  PRIMARY KEY (MemberFacultyID)
+)ENGINE = INNODB;
+
+
+
+
+
+-- Creating Table 11 - Student
+CREATE TABLE Student(
+  mUniversityID INT NOT NULL,
+  DegreeProgram VARCHAR(50),
+  Batch VARCHAR(20),
+  PRIMARY KEY (mUniversityID),
+  FOREIGN KEY (mUniversityID) REFERENCES Member(UniversityID)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 11 - Student
+INSERT INTO Student VALUES
+(10004392, );
+
+-- Creating Table 12 - Professor
+-- Inserting records to Table 12 - Professor
+
+-- Creating Table 13 - LibrarianCity
+CREATE TABLE LibrarianCity(
+  LibrarianCityID INT AUTO_INCREMENT,
+  City VARCHAR(30) NOT NULL,
+  PRIMARY KEY (LibrarianCityID)
+)ENGINE = INNODB;
+
+
+
+-- Creating Table 14 - LibrarianZipPostalCode
+CREATE TABLE LibrarianZipPostalCode(
+  LibrarianZipPostalCodeID INT AUTO_INCREMENT,
+  ZipPostalCode INT(5) NOT NULL,
+  PRIMARY KEY (LibrarianZipPostalCodeID)
+)ENGINE = INNODB;
+
+
+
+-- Creating Table 15 - LibrarianProvience
+CREATE TABLE LibrarianProvience(
+  LibrarianProvienceID INT AUTO_INCREMENT,
+  Provience VARCHAR(12) NOT NULL,
+  PRIMARY KEY (LibrarianProvienceID)
+)ENGINE = INNODB;
+
+
+
+-- Creating Table 16 - Librarian
+CREATE TABLE Librarian(
+  LibrarianID INT(8) AUTO_INCREMENT,
+  FirstName VARCHAR(30) NOT NULL,
+  MiddleName VARCHAR(30),
+  LastName VARCHAR(50) NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  StreetAddress VARCHAR(40) NOT NULL,
+  lcLibrarianCityID INT NOT NULL,
+  lzpcLibrarianZipPostalCodeID INT NOT NULL,
+  lpLibrarianProvienceID INT NOT NULL,
+  MobilePhoneNumber VARCHAR(11) NOT NULL,
+  LandPhoneNumber VARCHAR(11),
+  RegistrationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  lLoginID INT NOT NULL,
+  PRIMARY KEY (LibrarianID),
+  FOREIGN KEY (lcLibrarianCityID) REFERENCES LibrarianCity(LibrarianCityID),
+  FOREIGN KEY (lzpcLibrarianZipPostalCodeID) REFERENCES LibrarianZipPostalCode(LibrarianZipPostalCodeID),
+  FOREIGN KEY (lpLibrarianProvienceID) REFERENCES LibrarianProvience(LibrarianProvienceID),
+  FOREIGN KEY (lLoginID) REFERENCES Login(LoginID)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 16 - Librarian
+INSERT INTO Librarian
+(FirstName, MiddleName, LastName, Email, StreetAddress, lcLibrarianCityID, lzpcLibrarianZipPostalCodeID,
+  lpLibrarianProvienceID, MobilePhoneNumber, LandPhoneNumber, RegistrationDateTime, lLoginID) VALUES
+(, 11250002);
+
+
+-- Creating Table 17 - LibrarianManageMember
+CREATE TABLE LibrarianManageMember(
+  lLibrarianID INT NOT NULL,
   mUniversityID INT(8) NOT NULL,
-  psSpecializationID INT(8) NOT NULL,
-  PRIMARY KEY (UserID, UniversityID)
-  FOREIGN KEY (mUserID) REFERENCES Member (UserID)
-  FOREIGN KEY (mUniversityID) REFERENCES Member (UniversityID)
-  FOREIGN KEY (psSpecializationID) REFERENCES ProfessorSpecialization (SpecializationID)
+  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (lLibrarianID, mUniversityID, EditDateTime),
+  FOREIGN KEY (lLibrarianID) REFERENCES Librarian(LibrarianID),
+  FOREIGN KEY (mUniversityID) REFERENCES Member(UniversityID)
 )ENGINE = INNODB;
 
--- Inserting records into Table 15 - Professor
-INSERT INTO Professor VALUES
-(45150003, 10003242, 33110001);
+-- Inserting records to Table 17 - LibrarianManageMember
 
--- ||
 
--- Creating Table 16 - BookCategory
-CREATE TABLE BookCategory(
-  CategoryID INT AUTO_INCREMENT,
-  Category VARCHAR(50) NOT NULL,
-  PRIMARY KEY (CategoryID)
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 16 - BookCategory
-ALTER TABLE BookCategory AUTO_INCREMENT = 75330001;
-
--- Inserting crecords into Table 16 - BookCategory
-INSERT INTO BookCategory (Category) VALUES
-('Novels'),     -- CategoryID: 75330001
-('Fictions'),   -- CategoryID: 75330002
-('Textbook');   -- CategoryID: 75330003
-
--- ||
-
--- Creating Table 17 - BookAvailability
+-- Creating Table 18 - BookAvailability
 CREATE TABLE BookAvailability(
-  AvailabilityID INT AUTO_INCREMENT,
+  ID INT AUTO_INCREMENT,
   Availability VARCHAR(15) NOT NULL,
-  PRIMARY KEY (IAvailabilityIDD)
+  PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
--- Alterting table to change the starting point of the ID in Table 17 - BookAvailability
+-- Alterting table to change the starting point of the ID in Table 18 - BookAvailability
 ALTER TABLE BookAvailability AUTO_INCREMENT = 55240001;
 
--- Inserting records into Table 17 - BookAvailability
+-- Inserting records to Table 18 - BookAvailability
 INSERT INTO BookAvailability(Availability) VALUES
-('Available'),      -- AvailabilityID: 55240001
-('Not Available'),  -- AvailabilityID: 55240002
-('Pending'),        -- AvailabilityID: 55240003
-('Reserved'),       -- AvailabilityID: 55240004
-('Borrowed');       -- AvailabilityID: 55240005
+('Available'),      -- BAID: 55240001
+('Not Available'),  -- BAID: 55240002
+('Pending'),        -- BAID: 55240003
+('Reserved'),       -- BAID: 55240004
+('Borrowed');       -- BAID: 55240005
 
--- ||
+-- Creating Table 19 - BookCatalog
+CREATE TABLE BookCatalog(
+  ID INT AUTO_INCREMENT,
+  Name VARCHAR(40) NOT NULL,
+  NoOfBooks INT DEFAULT '0',
+  CreatedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (ID)
+)ENGINE = INNODB;
 
--- Creating Table 18 - Book
+-- Alterting table to change the starting point of the ID in Table 19 - BookCatalog
+ALTER TABLE BookCatalog AUTO_INCREMENT = 22450001;
+
+-- Inserting records to Table 19 - BookCatalog
+INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
+('Computing', '2020-01-02 10:25:34.131'); -- ID: 22450001
+
+-- Creating Table 20 - BookCategory
+CREATE TABLE BookCategory(
+  ID INT AUTO_INCREMENT,
+  Category VARCHAR(50) NOT NULL,
+  PRIMARY KEY (ID)
+)ENGINE = INNODB;
+
+-- Alterting table to change the starting point of the ID in Table 20 - BookCategory
+ALTER TABLE BookCategory AUTO_INCREMENT = 75330001;
+
+-- Inserting crecords to Table 120 - BookCategory
+INSERT INTO BookCategory (Category) VALUES
+('Novels'),     -- ID: 75330001
+('Fictions'),   -- ID: 75330002
+('Textbook');   -- ID: 75330003
+
+
+-- Creating Table 20 - Book
 CREATE TABLE Book(
   ISBN VARCHAR(17) NOT NULL,
   Name VARCHAR(200) NOT NULL,
-  bkcCategoryID INT NOT NULL,
-  baAvailabilityID INT NOT NULL,
-  ReserveDateTime DATETIME,
+  bkcID INT NOT NULL,
+  baID INT NOT NULL,
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
-  FOREIGN KEY (bkcCategoryID) REFERENCES BookCategory (CategoryID),
-  FOREIGN KEY (baAvailabilityID) REFERENCES BookAvailability (AvailabilityID)
+  FOREIGN KEY (bkcID) REFERENCES BookCategory (ID),
+  FOREIGN KEY (baID) REFERENCES BookAvailability (ID)
 )ENGINE = INNODB;
 
--- Inserting records into Table 18 - Book
-INSERT INTO Book (ISBN, Name, bkcCategoryID, baAvailabilityID, RegisteredDateTime) VALUES
+-- Inserting records to Table 20 - Book
+INSERT INTO Book (ISBN, Name, baID, bkcID, RegisteredDateTime) VALUES
+('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
+  55240001, 75330003, '2020-01-01 12:34:06.693'),
 ('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
   55240002, 75330003, '2020-01-01 12:39:23.234');
 
--- Inserting records into Table 18 - Book
-INSERT INTO Book VALUES
-('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
-  55240001, 75330003, '2020-01-02 14:23:12.233', '2020-01-01 12:34:06.693'),
+-- Creating Table 21 - BookCatalogHasBook
+CREATE TABLE BookCatalogHasBook(
+  bcID INT NOT NULL,
+  bISBN VARCHAR(17) NOT NULL,
+  PRIMARY KEY (bcID, bISBN),
+  FOREIGN KEY (bcID) REFERENCES BookCatalog (ID),
+  FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
+)ENGINE = INNODB;
 
--- ||
+-- Inserting records to Table 21 - BookCatalogHasBook
+INSERT INTO BookCatalogHasBook VALUES
+(22450001, '978-0984782857'),
+(22450001, '978-1517671273');
 
--- Creating Table 19 - BookAuthor
+-- Updating the NoOfBooks in book catalog
+UPDATE BookCatalog SET NoOfBooks = 2 WHERE ID = 22450001;
+
+-- Creating Table 22 - ReservedBook
+CREATE TABLE ReservedBook(
+  bISBN VARCHAR(17) NOT NULL,
+  ReservedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (bISBN, ReservedDateTime)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 22 - ReservedBook
+INSERT INTO ReservedBook VALUES
+('978-0984782857', '2020-01-02 14:23:12.233');
+
+
+-- Creating Table 23 - BookAuthor
 CREATE TABLE BookAuthor(
   bISBN VARCHAR(17) NOT NULL,
   Author VARCHAR(50) NOT NULL,
@@ -379,260 +541,76 @@ CREATE TABLE BookAuthor(
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
 )ENGINE = INNODB;
 
--- Inserting records into Table 19 - BookAuthor
+-- Inserting records to Table 23 - BookAuthor
 INSERT INTO BookAuthor VALUES
 ('978-0984782857', 'Gayle Laakmann McDowell'),
 ('978-1517671273', 'Adnan Aziz'),
 ('978-1517671273', 'Tsung-Hsien Lee');
 
--- ||
-
--- Creating Table 20 - BookBorrow
-CREATE TABLE BookBorrow(
-  BorrowID INT(8) AUTO_INCREMENT,
-  BorrowDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  ReturnDateTime DATETIME NOT NULL,
-  LateFine FLOAT,
-  PRIMARY KEY (BorrowID)
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 20 - BookBorrow
-ALTER TABLE BookBorrow AUTO_INCREMENT = 44250001;
-
--- Inserting records to Table 20 - BookBorrow
-INSERT INTO BookBorrow (BorrowDateTime, ReturnDateTime) VALUES
-('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 44250001
-
--- ||
-
--- Creating Table 21 - BookCatalog
-CREATE TABLE BookCatalog(
-  CatalogID INT(8) AUTO_INCREMENT,
-  Name VARCHAR(40) NOT NULL,
-  NoOfBooks INT DEFAULT '0',
-  CreatedDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (CatalogID)
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 21 - BookCatalog
-ALTER TABLE BookCatalog AUTO_INCREMENT = 22450001;
-
--- Inserting records to Table 21 - BookCatalog
-INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
-('Computing', '2020-01-02 10:25:34.131'); -- CatalogID: 22450001
-
--- ||
-
--- Creating Table 22 - ManageModification
-CREATE TABLE ManageModification(
-  ModificationID INT(8) AUTO_INCREMENT,
-  Modification VARCHAR(50) NOT NULL,
-  PRIMARY KEY (ModificationID)
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 22 - ManageModification
-ALTER TABLE ManageModification AUTO_INCREMENT = 65220001;
-
--- Inserting records to Table 22 - ManageModification
-INSERT INTO ManageModification (Modification) VALUES
-('Updated Password'); -- ModificationID: 65220001
-
--- ||
-
--- Creating Table 23 - MemberManageLogin
-CREATE TABLE MemberManageLogin(
-  MLID INT(8) AUTO_INCREMENT,
-  mUserID INT(8) NOT NULL,
-  mUniversityID INT(8) NOT NULL,
-  mmModificationID INT(8) NOT NULL,
-  EditDateTime DATETIME,
-  PRIMARY KEY (MLID),
-  FOREIGN KEY (mUserID) REFERENCES Member (UserID),
-  FOREIGN KEY (mUniversityID) REFERENCES Member (UniversityID),
-  FOREIGN KEY (mUserID) REFERENCES User (UserID),
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 23 - MemberManageLogin
-ALTER TABLE MemberManageLogin AUTO_INCREMENT = 25320001;
-
--- Inserting records to Table 23 - MemberManageLogin
-INSERT INTO MemberManageLogin (mUserID, mUniversityID, mmModificationID, EditDateTime) VALUES
-(45150002, 10004392, 65220001, '2020-01-03 12:36:01.254'); -- MLID: 25320001
-
--- ||
-
--- Creating Table 24 - LoginUserType
-CREATE TABLE LoginUserType(
-  UserTypeID INT AUTO_INCREMENT,
-  UserType VARCHAR(9) NOT NULL,
-  PRIMARY KEY (UserTypeID)
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 24 - LoginUserType
-ALTER TABLE LoginUserType AUTO_INCREMENT = 65350001;
-
--- Inserting records into Table 24 - LoginUserType
-INSERT INTO LoginUserType (UserType) VALUES
-('Student'),    -- UserTypeID: 65350001
-('Professor'),  -- UserTypeID: 65350002
-('Librarian');  -- UserTypeID: 65350003
-
--- ||
-
-
--- Creating Table 25 - Login
-CREATE TABLE Login(
-  LoginID INT(8) AUTO_INCREMENT,
-  Username VARCHAR(15) NOT NULL,
-  Password VARCHAR(150) NOT NULL,
-  lutUserTypeID INT(8) NOT NULL,
-  mmlMLID INT(8) NOT NULL,
-  CreationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (LoginID),
-  FOREIGN KEY (lutUserTypeID) REFERENCES LoginUserType (UserTypeID),
-  FOREIGN KEY (mmlMLID) REFERENCES ManageModification (MLID)
-)ENGINE = INNODB;
-
--- Alterting table to change the starting point of the ID in Table 25 - Login
-ALTER TABLE Login AUTO_INCREMENT = 11250001;
-
--- Inserting records to Table 25 - Login
--- Password encryption: password_hash (php function)
-INSERT INTO Login(Username, Password, lutUserTypeID) VALUES
-('jakeanderson52', '$2y$10$xb8OmUOyNtbCV.q99/p/j.xbeEs/pK0M1dSN2XZrQO7uPKmXReICm', 65350001),
--- Password: andRewsand_er2 | LoginID: 11250001 | MembershipType: Student
-('NickieLangham22', '$2y$10$3gNWnpV5nw0LMrBsSAV/rev2YRwB8tYJkZwbLDfmmZHuJglmwIBy6', 65350003);
--- Password: WeLannick4_k33 | LoginID: 11250002 |  MembershipType: Librarian
-
--- ||
-
--- Creating Table 26 - LoginLogin
-CREATE TABLE LoginLogin(
-  lLoginID INT(8) NOT NULL,
-  LoginDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lLoginID, LoginDateTime)
-)ENGINE = INNODB;
-
--- Inserting records into Table 26 - LoginLogin
-INSERT INTO LoginLogin VALUES
-(11250001, '2020-01-04 14:42:25.562');
-
--- ||
-
--- Creating Table 27 - LoginLogout
-CREATE TABLE LoginLogout(
-  lLoginID INT(8) NOT NULL,
-  LogoutDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lLoginID, LogoutDateTime)
-)ENGINE = INNODB;
-
--- Inserting records into Table 27 - LoginLogout
-INSERT INTO LoginLogout VALUES
-(11250001, '2020-01-04 14:55:21.253');
-
--- ||
-
-
--- Creating Table 28 - LibrarianManageBook
+-- Creating Table 24 - LibrarianManageBook
 CREATE TABLE LibrarianManageBook(
-  lUserID INT(8) NOT NULL,
+  lLibrarianID INT NOT NULL,
   bISBN VARCHAR(17) NOT NULL,
-  mmModificationID INT(8) NOT NULL,
   EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lUserID, bISBN, EditDateTime),
-  FOREIGN KEY (lUserID) REFERENCES Librarian (UserID),
-  FOREIGN KEY (bISBN) REFERENCES Book (ISBN),
-  FOREIGN KEY (mmModificationID) REFERENCES ManageModification (ModificationID)
-)ENGINE = INNODB;
-
--- Inserting records to Table 28 - LibrarianManageBook
-
-
--- ||
-
--- Creating Table 29 - LibrarianManageBookBorrow
-CREATE TABLE LibrarianManageBookBorrow(
-  lUserID INT(8) NOT NULL,
-  bbBorrowID INT(8) NOT NULL,
-  mmModificationID INT(8) NOT NULL,
-  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lUserID, bbBorrowID, EditDateTime),
-  FOREIGN KEY (lUserID) REFERENCES Librarian (lUserID),
-  FOREIGN KEY (bbBorrowID) REFERENCES BookBorrow (BorrowID),
-  FOREIGN KEY (mmModificationID) REFERENCES ManageModification (ModificationID)
-)ENGINE = INNODB;
-
--- Inserting records to Table 29 - LibrarianManageBookBorrow
-
-
--- ||
-
--- Creating Table 30 - LibrarianManageBookCatalog
-CREATE TABLE LibrarianManageBookCatalog(
-  lUserID INT NOT NULL,
-  bcCatalogID INT NOT NULL,
-  mmModificationID INT(8) NOT NULL,
-  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lUserID, bcCatalogID, EditDateTime),
-  FOREIGN KEY (lUserID) REFERENCES Librarian (UserID),
-  FOREIGN KEY (bcCatalogID) REFERENCES BookCatalog (CatalogID),
-  FOREIGN KEY (mmModificationID) REFERENCES ManageModification (ModificationID)
-)ENGINE = INNODB;
-
--- Inserting records to Table 30 - LibrarianManageBookCatalog
-
-
--- ||
-
--- Creating Table 31 - LibrarianManageLogin
-CREATE TABLE LibrarianManageLogin(
-  lUserID INT NOT NULL,
-  lLoginID INT NOT NULL,
-  mmModificationID INT(8) NOT NULL,
-  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (lUserID, lLoginID, EditDateTime),
-  FOREIGN KEY (lUserID) REFERENCES Librarian (UserID),
-  FOREIGN KEY (lLoginID) REFERENCES Login (LoginID),
-  FOREIGN KEY (mmModificationID) REFERENCES ManageModification (ModificationID)
-)ENGINE = INNODB;
-
--- Inserting records to Table 31 - LibrarianManageLogin
-
-
--- ||
-
--- Creating Table 32 - BookCatalogHasBook
-CREATE TABLE BookCatalogHasBook(
-  bcCatalogID INT NOT NULL,
-  bISBN VARCHAR(17) NOT NULL,
-  PRIMARY KEY (bcCatalogID, bISBN),
-  FOREIGN KEY (bcCatalogID) REFERENCES BookCatalog (CatalogID),
+  PRIMARY KEY (lLibrarianID, bISBN, EditDateTime),
+  FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN)
 )ENGINE = INNODB;
 
--- Inserting records to Table 32 - BookCatalogHasBook
-INSERT INTO BookCatalogHasBook VALUES
-(22450001, '978-0984782857'),
-(22450001, '978-1517671273');
+-- Inserting records to Table 24 - LibrarianManageBook
 
--- Updating the NoOfBooks in Table 21: BookCatalog
-UPDATE BookCatalog SET NoOfBooks = 2 WHERE ID = 22450001;
 
--- ||
-
--- Creating Table 33 - Borrow
-CREATE TABLE Borrow(
-  mUserID INT(8) NOT NULL,
-  mUniversityID INT(8) NOT NULL,
-  bISBN VARCHAR(17) NOT NULL,
-  bbBorrowID INT NOT NULL,
-  PRIMARY KEY (mUserID, mUniversityID, bISBN, bbBorrowID),
-  FOREIGN KEY (mUserID) REFERENCES Member (UserID),
-  FOREIGN KEY (mUniversityID) REFERENCES Member (UniversityID),
-  FOREIGN KEY (bISBN) REFERENCES Book (ISBN),
-  FOREIGN KEY (bbBorrowID) REFERENCES BookBorrow (BorrowID)
+-- Creating Table 25 - BorrowDetails
+CREATE TABLE BorrowDetails(
+  ID INT AUTO_INCREMENT,
+  BorrowDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  ReturnDateTime DATETIME NOT NULL,
+  LateFine FLOAT,
+  PRIMARY KEY (ID)
 )ENGINE = INNODB;
 
--- Inserting records to Table 33 - Borrow
+-- Alterting table to change the starting point of the ID in Table 25 - BorrowDetails
+ALTER TABLE BorrowDetails AUTO_INCREMENT = 44250001;
+
+-- Inserting records to Table 25 - BorrowDetails
+INSERT INTO BorrowDetails (BorrowDateTime, ReturnDateTime) VALUES
+('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 44250001
+
+-- Creating Table 26 - Borrow
+CREATE TABLE Borrow(
+  mUniversityID INT(8) NOT NULL,
+  bISBN VARCHAR(17) NOT NULL,
+  bdID INT NOT NULL,
+  PRIMARY KEY (mUniversityID, bISBN, bdID),
+  FOREIGN KEY (mUniversityID) REFERENCES Member (UniversityID),
+  FOREIGN KEY (bISBN) REFERENCES Book (ISBN),
+  FOREIGN KEY (bdID) REFERENCES BorrowDetails (ID)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 26 - Borrow
 INSERT INTO Borrow VALUES
-(45150002, 10004392, '978-0984782857', 44250001);
+(10004392, '978-0984782857', 44250001);
+
+-- Creating Table 27 - LibrarianManageBorrowDetails
+CREATE TABLE LibrarianManageBorrowDetails(
+  lLibrarianID INT NOT NULL,
+  bdID INT NOT NULL,
+  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (lLibrarianID, bdID, EditDateTime),
+  FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
+  FOREIGN KEY (bdID) REFERENCES BorrowDetails (ID)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 27 - LibrarianManageBorrowDetails
+
+-- Creating Table 28 - LibrarianManageBookCatalog
+CREATE TABLE LibrarianManageBookCatalog(
+  lLibrarianID INT NOT NULL,
+  bcID INT NOT NULL,
+  EditDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (lLibrarianID, bcID, EditDateTime),
+  FOREIGN KEY (lLibrarianID) REFERENCES Librarian (LibrarianID),
+  FOREIGN KEY (bcID) REFERENCES BookCatalog (ID)
+)ENGINE = INNODB;
+
+-- Inserting records to Table 28 - LibrarianManageBookCatalog
