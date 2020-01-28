@@ -1,19 +1,19 @@
 function generatePathway(form){
   var selectedPosition = form.membershipType.value;
 
-  if(selectedPosition == "student"){
+  if(selectedPosition == "65350001"){
     var selectedPositionConfirmation = confirm("Are you sure you want to continue: ");
     if(selectedPositionConfirmation == true){
       window.open("signupPage/signupStudentPage.html","_self")
     }
   }
-  else if(selectedPosition == "professor"){
+  else if(selectedPosition == "65350002"){
     var selectedPositionConfirmation = confirm("Are you sure you want to continue: ");
     if(selectedPositionConfirmation == true){
       window.open("signupPage/signupProfessorPage.html","_self")
     }
   }
-  else if(selectedPosition == "librarian"){
+  else if(selectedPosition == "65350003"){
     var selectedPositionConfirmation = confirm("Are you sure you want to continue: ");
     if(selectedPositionConfirmation == true){
       window.open("signupPage/signupLibrarianPage.html","_self")

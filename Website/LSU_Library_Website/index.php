@@ -1,6 +1,34 @@
 <?php
   include_once("LSULibraryDBConnection.php");
 
+  // SignUp process
+  if(isset($_POST['signUp'])){
+
+    $selectMemberType = $_POST['memberTypeSignUp'];
+
+    if($selectMemberType == "65350001"){
+      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupStudentPage.html'; } </script>";
+    }
+    if($selectMemberType == "65350002"){
+      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupProfessorPage.html'; } </script>";
+    }
+    else if($selectMemberType == "65350003"){
+      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupLibrarianPage.html'; } </script>";
+    }
+    else{
+      ?> <script>
+        alert("ERROR: Member Type not selected");
+      </script> <?php
+    }
+
+  }
+
+
+
+  // Login Process
   if(isset($_POST['submit'])){
     $enteredUsername = $_POST['username'];
     $enteredPassword = $_POST['password'];
@@ -134,9 +162,10 @@
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif:100&display=swap" rel="stylesheet">
 
     <!-- Bootstrap links - begin -->
-		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-		<script src="assets/javascript/jquery.min.js"></script>
-		<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <script src="assets/bootstrap/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/popper.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Bootstrap links - end -->
 
   <style>
@@ -395,17 +424,17 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                  <p class="formText">Select a Membership Type</p>
-                  <form method="GET" action="#" onsubmit="generatePathway(this);">
+                  <p class="formText">Select a Member Type</p>
+                  <form method="POST" action="index.php">
                     <i class="fa fa-group"></i>
-                    <select name="membershipTypeSignUp">
-                      <option value="NULL" selected>Membership Type</option>
+                    <select name="memberTypeSignUp">
+                      <option value="NULL" selected>Member Type</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
                       <option value="65350003">Librarian</option>
                     </select>
                     <br>
-                    <input type="submit" name="continue" value="Continue" id="signupFormButton">
+                    <input type="submit" name="signUp" value="Continue" id="signupFormButton">
                   </form>
                 </div>
 
