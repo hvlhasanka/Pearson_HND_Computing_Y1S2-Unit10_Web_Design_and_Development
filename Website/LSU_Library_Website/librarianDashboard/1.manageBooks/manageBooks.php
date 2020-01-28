@@ -3,9 +3,9 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
-    header("location: ../../logout.php");
-  }
+  //if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
+  //  header("location: ../../logout.php");
+  //}
 
   include_once("../../LSULibraryDBConnection.php");
 

@@ -125,7 +125,7 @@
     <link rel="stylesheet" href="assets/css/defaultLayout.css">
 
     <!-- Retrieving signPage script  -->
-    <script type="text/javascript" src="assets/JavaScript/signupPage.js"></script>
+    <script type="text/javascript" src="assets/javascript/signupPage.js"></script>
 
     <!-- Retrieving font-awesome library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
