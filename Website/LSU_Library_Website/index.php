@@ -25,10 +25,15 @@
     }
     else{
 
-    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lmtMembershipTypeID = '$selectedMembershipType';";
+    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMembershipType';";
     	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
       $rowCount = mysqli_num_rows($systemLoginResult);
       $passwordDB = "";
+
+      $systemLoginRow = mysqli_fetch_array($systemLoginResult);
+
+      // Retrieving lLoginID of the user from the database
+      $lLoginIDDB = $systemLoginRow["LoginID"];
 
       if($rowCount == 0){
         ?> <script>
@@ -36,40 +41,60 @@
         </script> <?php
       }
       else if($rowCount == 1){
-        // Retrieving the password hash value from the database
-        $systemLoginRow = mysqli_fetch_array($systemLoginResult);
-        $passwordDB = $systemLoginRow["Password"];
 
-        // Checking if the user entered password and hash value from the database is similar
-        if(password_verify($enteredPassword, $passwordDB)){
+        // Checking if the account status (member status) is active
+        $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
+                            INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
+                            INNER JOIN User u ON u.UserID = um.uUserID
+                            WHERE u.lLoginID = '$lLoginIDDB';";
+        $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
 
-          $userEmailSQL = "SELECT m.Email FROM Member m
-                          INNER JOIN Login l ON l.LoginID = m.lLoginID
-                          WHERE l.Username = '$enteredUsername';";
-          $userEmailResult = mysqli_query($databaseConn, $userEmailSQL);
-          $userEmailRow = mysqli_fetch_array($userEmailResult);
-          $email = $userEmailRow["Email"];
-          // Assigning session variables with the details of the current username
-          session_start();
-          $_SESSION['email'] = $email;
-          $_SESSION['membershipType'] = $selectedMembershipType;
-          $_SESSION['start'] = time();
-          $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
+        $accountStatus = "";
 
-          // For membershipType: Student and Professor
-          if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
-            header("location: studentProfessorDashboard/studentProfessorDashboard.php");
+        while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
+          $accountStatus = $accountStatusRow["MemberStatus"];
+        }
+
+        if($accountStatus == "Active"){
+
+          // Retrieving the password hash value from the database
+          $passwordDB = $systemLoginRow["Password"];
+
+          // Checking if the user entered password and hash value from the database is similar
+          if(password_verify($enteredPassword, $passwordDB)){
+
+            // Assigning the username from the database to this variable
+            $usernameDB = $systemLoginRow["Username"];
+
+            // Assigning session variables with the details of the current username
+            session_start();
+            $_SESSION['username'] = $usernameDB;
+            $_SESSION['membershipType'] = $selectedMembershipType;
+            $_SESSION['start'] = time();
+            $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
+
+            // For userType: Student and Professor
+            if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
+              header("location: studentProfessorDashboard/studentProfessorDashboard.php");
+
+            }
+            // For userType: Librarian
+            else if($selectedMembershipType == 65350003){
+              header("location: librarianDashboard/librarianDashboard.php");
+            }
 
           }
-          // For membershipType: Librarian
-          else if($selectedMembershipType == 65350003){
-            echo "eef";
-            header("location: librarianDashboard/1.manageBooks/manageBooks.php");
+
+          else{
+            ?> <script>
+              alert("Entered credentials are incorrect. Please recheck.");
+            </script> <?php
           }
+
         }
         else{
           ?> <script>
-            alert("Entered credentials are incorrect. Please recheck.");
+            alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
           </script> <?php
         }
       }
