@@ -167,11 +167,11 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1100px;
+                      height: 850px;
                       background-color: #F6F6F6;">
 
             <div style="width: 55%;
-                        height: 880px;
+                        height: 800px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -179,63 +179,89 @@
                         transform: translateX(-50%);
                         top: 20px;">
 
+              <p style="font-size: 30px;
+                        padding-top: 25px;
+                        text-align: center;"><b>HOME</b></p>
+
               <style>
                 #container{
                   height: 1000px;
                   width: 80%;
                   position: absolute;
-                  top: 50px;
-                  left: 10%;
+                  top: 100px;
+                  left: 25%;
+                  transition: translateX(-75%);
+
                 }
 
-                #container button{
-                  height: 100%;
-                  width: 100%;
-                  margin-top: 10px;
-                  border-radius: 10px;
-                }
               </style>
 
               <!-- Main Container -->
               <div id="container">
-                <div class="row">
-                  <div class="col-md-6">
 
-                    <!-- First Cell -->
-                    <div class="row">
-                      <div class="col-md-12">
-                        <button type="button" class="btn btn-secondary">Secondary</button>
-                      </div>
-                    </div>
-
-                    <!-- Third Cell -->
-                    <div class="row">
-                      <div class="col-md-12" style="background-color:yellow;">
-                        <button type="button" class="btn btn-secondary">Secondary</button>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <!-- Second Cell -->
-                  <div class="col-md-6" style="background-color:orange;">
-                    <button type="button" class="btn btn-secondary">Secondary</button>
-                  </div>
+                <!-- Manage Books Cell -->
+                <div style="width: 240px;
+                            height: 200px;
+                            background-color: #e42c64;
+                            border-radius: 10px;
+                            margin: 10px;
+                            margin-bottom: 30px;">
+                  <p style="font-size: 30px;
+                            color: #FFFFFF;
+                            margin-left: 20px;
+                            position: absolute;
+                            top: 60px;">Manage <br> Books</p>
+                </div>
+                
+                <!-- Manage Book Catalogs Cell -->
+                <div style="width: 240px;
+                            height: 200px;
+                            background-color: #614ad3;
+                            border-radius: 10px;
+                            margin: 10px;
+                            margin-bottom: 30px;">
+                  <p style="font-size: 30px;
+                            color: #FFFFFF;
+                            margin-left: 20px;
+                            position: absolute;
+                            top: 290px;">Manage <br> Book Catalogs</p>
                 </div>
 
-                <!-- Fourth Cell -->
-                <div class="row">
-                  <div class="col-md-12" style="background-color:yellow;">
-                    <button type="button" class="btn btn-secondary">Secondary</button>
-                  </div>
+                <!-- Manage Borrow and Return Details Cell -->
+                <div style="width: 240px;
+                            height: 430px;
+                            background-color: #2d248a;
+                            border-radius: 10px;
+                            position: absolute;
+                            top: 0px;
+                            left: 240px;
+                            margin: 10px;
+                            margin-left: 40px;">
+                  <p style="font-size: 30px;
+                            color: #FFFFFF;
+                            margin-left: 20px;
+                            position: absolute;
+                            top: 110px;">Manage <br> Borrow and <br> Returning Details</p>
                 </div>
+
+                <!-- Manage Member Details Cell -->
+                <div style="width: 510px;
+                            height: 180px;
+                            background-color: #2330B2;
+                            border-radius: 10px;
+                            margin: 10px;">
+                  <p style="font-size: 30px;
+                            color: #FFFFFF;
+                            margin-left: 20px;
+                            position: absolute;
+                            top: 510px;">Manage <br> Member Details</p>
+                </div>
+
               </div>
-
-            </div>
 
 
           </div>
-
+        </div>
 
         <!-- BODY SECTION - End -->
 
