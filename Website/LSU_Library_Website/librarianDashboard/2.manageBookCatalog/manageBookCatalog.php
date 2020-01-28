@@ -1,6 +1,11 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
 
+  // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
+    header("location: ../../logout.php");
+  }
+
   // Creating a new book catalog process
   if(isset($_POST['createBookCatalogSubmit'])){
 
@@ -12,7 +17,7 @@
       </script> <?php
     }
     else{
-      
+
       // Checking if this book catalog already exists
       $checkBCSQL = "SELECT * FROM BookCatalog WHERE Name = '$Name';";
 
@@ -62,8 +67,16 @@
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
-    <script src="../../assets/javascript/jquery.min.js"></script>
+    <script src="../../assets/bootstrap/js/jquery.min.js"></script>
+    <script src="../../assets/bootstrap/js/popper.min.js"></script>
     <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- jQuery to enable the popover implementation -->
+    <script>
+      $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+      });
+    </script>
 
   </head>
   <body>
@@ -84,8 +97,9 @@
 
               <table id="navSection">
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td class="navItem" id="navItem1"> <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    data-content="View Account Details" style="color: black;"><?php echo $_SESSION['username']; ?></a> </td>
+                  <td class="navItem" id="navItem2"> <a href="../../logout.php">Logout</a> </td>
                 </tr>
               </table>
 

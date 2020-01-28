@@ -42,21 +42,6 @@
       }
       else if($rowCount == 1){
 
-        // Checking if the account status (member status) is active
-        $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
-                            INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
-                            INNER JOIN User u ON u.UserID = um.uUserID
-                            WHERE u.lLoginID = '$lLoginIDDB';";
-        $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
-
-        $accountStatus = "";
-
-        while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
-          $accountStatus = $accountStatusRow["MemberStatus"];
-        }
-
-        if($accountStatus == "Active"){
-
           // Retrieving the password hash value from the database
           $passwordDB = $systemLoginRow["Password"];
 
@@ -73,15 +58,43 @@
             $_SESSION['start'] = time();
             $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
 
-            // For userType: Student and Professor
-            if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
-              header("location: studentProfessorDashboard/studentProfessorDashboard.php");
-
-            }
             // For userType: Librarian
-            else if($selectedMembershipType == 65350003){
+            if($selectedMembershipType == 65350003){
               header("location: librarianDashboard/librarianDashboard.php");
             }
+
+
+            // For userType: Student and Professor
+            if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
+
+              // Checking if the account status (member status) is active
+              $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
+                                  INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
+                                  INNER JOIN User u ON u.UserID = um.uUserID
+                                  WHERE u.lLoginID = '$lLoginIDDB';";
+              $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
+
+              $accountStatus = "";
+
+              while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
+                $accountStatus = $accountStatusRow["MemberStatus"];
+              }
+
+              if($accountStatus == "Active"){
+
+                header("location: studentProfessorDashboard/studentProfessorDashboard.php");
+
+              }
+              else{
+                ?> <script>
+                  alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
+                </script> <?php
+
+                echo "<script> location.href='logout.php'; </script>";
+              }
+
+            }
+
 
           }
 
@@ -91,38 +104,12 @@
             </script> <?php
           }
 
-        }
-        else{
-          ?> <script>
-            alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
-          </script> <?php
-        }
+
       }
 
     }
 
   }
-
-/*
-  	if($numRows  == 1){
-  		$row = mysqli_fetch_assoc($rs);
-  		if(password_verify($password,$row['Password'])){
-              session_start();
-              $_SESSION["username"] = $email;
-              $_SESSION["email"] = $email;
-              $_SESSION['start'] = time();
-              $_SESSION['expire'] = $_SESSION['start'] + (720 * 60);  // 12 hour session window
-           header("Location: reporter");
-  		}
-  		else{
-      echo '<script>alert("Wrong Password")</script>';
-  		}
-  }
-  	else{
-      echo '<script language="javascript">';
-  echo 'alert("Account not found, please register!")';
-  echo '</script>';
-}*/
 
 ?>
 
