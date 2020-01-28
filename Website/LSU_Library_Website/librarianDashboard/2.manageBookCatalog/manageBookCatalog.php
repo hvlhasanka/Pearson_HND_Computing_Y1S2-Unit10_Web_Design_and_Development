@@ -1,5 +1,52 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
+
+  // Creating a new book catalog process
+  if(isset($_POST['createBookCatalogSubmit'])){
+
+    $Name = $_POST['name'];
+
+    if (empty($Name)){
+      ?> <script>
+        alert("ERROR: Book Catalog Name field is not filled.");
+      </script> <?php
+    }
+    else{
+      
+      // Checking if this book catalog already exists
+      $checkBCSQL = "SELECT * FROM BookCatalog WHERE Name = '$Name';";
+
+      $checkBCResult = mysqli_query($databaseConn, $checkBCSQL);
+
+      $checkBCCount = mysqli_num_rows($checkBCResult);
+
+      if($checkBCCount == 0){
+
+        // Inserting new book catalog details into the BookCatalog table
+        $bookCatalogSQL = "INSERT INTO BookCatalog (Name) VALUES ('$Name')";
+
+        mysqli_query($databaseConn, $bookCatalogSQL);
+
+
+        ?> <script>
+          alert("New Book Catalog successfully created.");
+        </script> <?php
+
+        echo "<script> location.href='manageBookCatalog.php'; </script>";
+
+      }
+      else{
+
+        ?> <script>
+          alert("Book catalog already exists");
+        </script> <?php
+
+      }
+
+    }
+  }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -133,7 +180,7 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookCatalogDetailsSQL = "SELECT ID, Name, NoOfBooks, CreatedDateTime FROM BookCatalog;";
+                  $bookCatalogDetailsSQL = "SELECT CatalogID, Name, NoOfBooks, CreatedDateTime FROM BookCatalog;";
 
                   $bookCatalogDetailsResult = mysqli_query($databaseConn, $bookCatalogDetailsSQL);
 
@@ -155,14 +202,14 @@
                         while($bookCatalogDetailsRow = mysqli_fetch_array($bookCatalogDetailsResult)){
                       ?>
                     <tr>
-                      <td title="View, Add, Remove Books"> <a href="viewBooks.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>"> View Books </a> </td>
-                      <td title="Book Catalog ID"> <?php echo $bookCatalogDetailsRow["ID"]; ?></td>
+                      <td title="View, Add, Remove Books"> <a href="viewBooks.php?id=<?php echo $bookCatalogDetailsRow["CatalogID"] ?>"> View Books </a> </td>
+                      <td title="Book Catalog ID"> <?php echo $bookCatalogDetailsRow["CatalogID"]; ?></td>
                       <td title="Book Catalog Name"> <?php echo $bookCatalogDetailsRow["Name"]; ?></td>
                       <td title="No Of Books"> <?php echo $bookCatalogDetailsRow["NoOfBooks"]; ?></td>
                       <td title="Created Date Time"> <?php echo $bookCatalogDetailsRow["CreatedDateTime"]; ?></td>
                       <td title="Modifications">
-                           <a href="updateBookCatalogDetails.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>"> Edit </a>
-						            |  <a href="deleteBookCatalog.php?id=<?php echo $bookCatalogDetailsRow["ID"] ?>" onClick="return confirm('Are you sure you want to delete this Book Catalog?')"> Delete </a>
+                           <a href="updateBookCatalogDetails.php?id=<?php echo $bookCatalogDetailsRow["CatalogID"] ?>"> Edit </a>
+						            |  <a href="deleteBookCatalog.php?id=<?php echo $bookCatalogDetailsRow["CatalogID"] ?>" onClick="return confirm('Are you sure you want to delete this Book Catalog?')"> Delete </a>
                       </td>
                     </tr>
                       <?php } ?>
@@ -258,20 +305,20 @@
                       }
                     </style>
 
-                    <form action="createNewBookCatalog.php" method="POST">
+                    <form action="manageBookCatalog.php" method="POST">
                       <p class="formText">ID:</p>
 
                         <?php
                           // Retrieving the latest book catalog ID and incrementing it by one to represent the new book catalog ID
-                          $bookCatalogIDSQL = "SELECT ID FROM BookCatalog ORDER BY CreatedDateTime DESC LIMIT 1;";
+                          $bookCatalogIDSQL = "SELECT CatalogID FROM BookCatalog ORDER BY CreatedDateTime DESC LIMIT 1;";
                           $bookCatalogIDResult = mysqli_query($databaseConn, $bookCatalogIDSQL);
                           $bookCatalogID = "";
                           while($bookCatalogIDRow = mysqli_fetch_array($bookCatalogIDResult)){
-                            $bookCatalogID = $bookCatalogIDRow["ID"];
+                            $bookCatalogID = $bookCatalogIDRow["CatalogID"];
                           }
                         ?>
 
-                      <input type="text" name="id" class="formInput" readonly value="<?php echo ($bookCatalogID + 1); ?> " style="background-color: #E4E4E4;">
+                      <input type="text" name="bookCatalogID" class="formInput" readonly value="<?php echo ($bookCatalogID + 1); ?> " style="background-color: #E4E4E4;">
                       <p class="formText">Name:</p>
                       <input type="message" name="name" placeholder="Enter Name" required class="formInput">
                       <p class="mandatoryAsterisk" style="top: 170px;">*</p>

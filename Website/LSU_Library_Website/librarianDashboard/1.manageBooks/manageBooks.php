@@ -84,7 +84,7 @@
           alert("Book has been successfully added.");
         </script> <?php
 
-      //  echo "<script> location.href='manageBooks.php'; </script>";
+        echo "<script> location.href='manageBooks.php'; </script>";
 
       }
 

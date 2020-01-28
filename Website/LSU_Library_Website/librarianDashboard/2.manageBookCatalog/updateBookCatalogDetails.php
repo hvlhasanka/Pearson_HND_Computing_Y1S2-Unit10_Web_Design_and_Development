@@ -1,7 +1,7 @@
 <?php
   include_once("../../LSULibraryDBConnection.php");
 
-  // ISBN value that was retrieved from the previous web page
+  // Book Catalog ID value that was retrieved from the previous web page
   $bookCatalogID = $_GET['id'];
 
   if(isset($_POST['updateUpdateButton'])){
@@ -15,7 +15,7 @@
     }
     else{
       // Updating record in BookCatalog Table
-      $bookCatalogSQL = "UPDATE BookCatalog SET Name = '$name' WHERE ID = '$bookCatalogID';";
+      $bookCatalogSQL = "UPDATE BookCatalog SET Name = '$name' WHERE CatalogID = '$bookCatalogID';";
 
       mysqli_query($databaseConn, $bookCatalogSQL);
 
@@ -114,7 +114,7 @@
                   <a class="nav-link" href="../1.manageBooks/manageBooks.php">Manage Books</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
+                  <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
@@ -139,18 +139,33 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 880px;
+                      height: 550px;
                       background-color: #F6F6F6;">
+
+            <!-- Return Button -->
+            <button type="button" name="return" style="color: #FFFFFF;
+                                                      background-color: #5EAFFF;
+                                                      border-color: #5EAFFF;
+                                                      padding: 5px;
+                                                      border-radius: 5px;
+                                                      width: 140px;
+                                                      position: absolute;
+                                                      top: 440px;
+                                                      left: 30%;" onClick="window.location.href = 'manageBookCatalog.php';">
+              <i class="fa fa-arrow-left" style="font-size: 20px;
+                                                margin-right: 10px;"></i>
+              Return
+            </button>
 
             <!-- Existing Books section -->
             <div style="width: 45%;
-                        height: 840px;
+                        height: 380px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 20px;">
+                        top: 100px;">
 
               <p style="font-size: 20px;
                         padding-left: 15%;;
@@ -208,7 +223,7 @@
                   <p class="formText">Name:</p>
                   <!-- Retrieving existing details of the existing book catalog from the database -->
                   <?php
-                    $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE ID = '$bookCatalogID';";
+                    $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE CatalogID = '$bookCatalogID';";
                     $bookCatalogNameResult = mysqli_query($databaseConn, $bookCatalogNameSQL);
                     while($bookCatalogNameRow = mysqli_fetch_array($bookCatalogNameResult)){
                   ?>
@@ -221,21 +236,6 @@
                 </form>
 
               </div>
-
-
-              <button type="button" name="return" style="color: #FFFFFF;
-                                                        background-color: #5EAFFF;
-                                                        border-color: #5EAFFF;
-                                                        padding: 5px;
-                                                        border-radius: 5px;
-                                                        width: 140px;
-                                                        position: absolute;
-                                                        top: 770px;
-                                                        left: 40px;" onClick="window.location.href = 'manageBookCatalog.php';">
-                <i class="fa fa-arrow-left" style="font-size: 20px;
-                                                  margin-right: 10px;"></i>
-                Return
-              </button>
 
             </div>
           </div>

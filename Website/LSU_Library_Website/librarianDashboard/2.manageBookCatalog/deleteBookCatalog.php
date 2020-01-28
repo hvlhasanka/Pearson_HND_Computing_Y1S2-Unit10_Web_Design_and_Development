@@ -3,15 +3,21 @@
 
     $bookCatalogID = $_GET['id'];
 
-    // Updating the book records as unasigned to any book catalogs
-    $bookCatalogIDChangeSQL = "UPDATE Book SET bcID = '' WHERE bcID = '$bookCatalogID'";
+    // Deleting record from LibrarianManageBookCatalog table
+    $manageBookCatalogSQL = "DELETE FROM BookCatalogHasBook WHERE bcCatalogID = '$bookCatalogID';";
 
-    mysqli_query($databaseConn, $bookCatalogIDChangeSQL);
+    mysqli_query($databaseConn, $manageBookCatalogSQL);
+
+    // Deleting record from BookCatalogHasBook table
+    $bookSQL = "DELETE FROM BookCatalogHasBook WHERE bcCatalogID = '$bookCatalogID';";
+
+    mysqli_query($databaseConn, $bookSQL);
 
     // Deleting record from BookCatalog table
-    $bookCatalogSQL = "DELETE FROM BookCatalog WHERE ID = '$bookCatalogID'";
+    $bookCatalogSQL = "DELETE FROM BookCatalog WHERE CatalogID = '$bookCatalogID';";
 
     mysqli_query($databaseConn, $bookCatalogSQL);
+
 
     ?>
       <script>

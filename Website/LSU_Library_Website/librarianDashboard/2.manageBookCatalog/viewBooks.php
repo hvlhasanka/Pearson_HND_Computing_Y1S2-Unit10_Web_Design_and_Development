@@ -4,6 +4,8 @@
   // ID retrieved from the previous web page
   $bookCatalogID = $_GET['id'];
 
+
+  // Adding book into book catalog process
   if(isset($_POST['addBookSubmit'])){
 
     $ISBN = $_POST['isbn'];
@@ -15,33 +17,38 @@
     }
     else{
       // Checking if this book was already added to this book catalog
-      $checkISBNSQL = "SELECT bISBN FROM BookCatalogHasBook WHERE bcID = '$bookCatalogID' AND bISBN = '$ISBN';";
+      $checkISBNSQL = "SELECT bISBN FROM BookCatalogHasBook WHERE bcCatalogID = '$bookCatalogID' AND bISBN = '$ISBN';";
       $checkISBNResult = mysqli_query($databaseConn, $checkISBNSQL);
-      if($checkISBNResult = 1){
+      $checkISBNCount = mysqli_num_rows($checkISBNResult);
+
+      if($checkISBNCount == 1){
         ?> <script>
           alert("Book already added into this book catalog");
         </script> <?php
 
-        echo "<script> location.href='viewBooks.php?id=</script> <?php echo $bookCatalogID; ?> <script>'; </script>";
+        header("location: viewBooks.php?id=$bookCatalogID");
       }
-      else if($checkISBNResult = 0){
+      else if($checkISBNCount == 0){
+
         // Adding book into a book catalog
         $addBookSQL = "INSERT INTO BookCatalogHasBook VALUES ('$bookCatalogID', '$ISBN');";
 
         mysqli_query($databaseConn, $addBookSQL);
 
-        // Retrieving the current no of books in the book catalog and incrementing it by one.
+
+        // Retrieving the current no of books in the book catalog.
         // Updating the NoOfBooks in book catalog
-        $noOfBooksSQL = "UPDATE BookCatalog SET NoOfBooks = (SELECT (COUNT(bISBN) + 1)
-                        FROM bookcataloghasbook WHERE bcID = '$bookCatalogID') WHERE ID = '$bookCatalogID';";
+        $noOfBooksSQL = "UPDATE BookCatalog SET NoOfBooks = (SELECT (COUNT(bISBN))
+                        FROM BookCatalogHasBook WHERE bcCatalogID = '$bookCatalogID') WHERE CatalogID = '$bookCatalogID';";
 
         mysqli_query($databaseConn, $noOfBooksSQL);
+
 
         ?> <script>
           alert("Book successfully added into book catalog.");
         </script> <?php
 
-        echo "<script> location.href='viewBooks.php?id=<?php echo $bookCatalogID; ?>'; </script>";
+        header("location: viewBooks.php?id=$bookCatalogID");
       }
 
     }
@@ -129,10 +136,10 @@
                   <a class="nav-link" href="../librarianDashboard.php">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../1.manageBooks/librarianDashboard.php">Manage Books</a>
+                  <a class="nav-link" href="../1.manageBooks/manageBooks.php">Manage Books</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
+                  <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
@@ -186,7 +193,7 @@
                         top: 100px;">
 
                 <?php
-                  $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE ID = '$bookCatalogID';";
+                  $bookCatalogNameSQL = "SELECT Name FROM BookCatalog WHERE CatalogID = '$bookCatalogID';";
                   $bookCatalogNameResult = mysqli_query($databaseConn, $bookCatalogNameSQL);
                   $bookCatalogName = "";
                   while($bookCatalogNameRow = mysqli_fetch_array($bookCatalogNameResult)){
@@ -209,10 +216,10 @@
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
                   $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, b.RegisteredDateTime FROM Book b
-                                    INNER JOIN BookAvailability ba ON ba.ID = b.baID
+                                    INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
                                     INNER JOIN BookCatalogHasBook bchb ON bchb.bISBN = b.ISBN
-                                    INNER JOIN BookCatalog bc ON bc.ID = bchb.bcID
-                                    WHERE bchb.bcID = '$bookCatalogID'
+                                    INNER JOIN BookCatalog bc ON bc.CatalogID = bchb.bcCatalogID
+                                    WHERE bchb.bcCatalogID = '$bookCatalogID'
                                     ORDER BY RegisteredDateTime DESC;";
 
                   $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
@@ -265,7 +272,7 @@
                       <td title="Availability"><?php echo $bookDetailsRow["Availability"]; ?></td>
                       <td title="Registered Date Time"><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
                       <td>
-						            <a href="removeBook.php?id=<?php echo $ISBN ?>"
+						            <a href="removeBook.php?id=<?php echo $bookCatalogID; ?>&isbn=<?php echo $ISBN ?>"
                           onClick="return confirm('This book will be removed from this catalog.\nAre you such you want to continue?')">
                           Remove Book
                         </a>
