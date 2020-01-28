@@ -3,9 +3,9 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['email']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
-    header("location: ../../logout.php");
-  }
+  //if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
+  //  header("location: ../../logout.php");
+  //}
 
   include_once("../../LSULibraryDBConnection.php");
 
@@ -19,7 +19,7 @@
     $bookCategoryType = $_POST['bookCategorySelect'];
     $bookAvailabilityType = $_POST['bookAvailabilitySelect'];
 
-    if (empty($ISBN) || empty($Name) || empty($author1)){
+    if (empty($ISBN) || empty($Name) || empty($author1) || $bookCategoryType == "NULL" || $bookAvailabilityType == "NULL"){
       if(empty($ISBN)){
         ?> <script>
           alert("ERROR: ISBN field is not filled.");
@@ -35,37 +35,64 @@
           alert("ERROR: First Author Name field is not filled.");
         </script> <?php
       }
+      if($bookCategoryType == "NULL"){
+        ?> <script>
+          alert("ERROR: Book category was not selected");
+        </script> <?php
+      }
+      if($bookAvailabilityType == "NULL"){
+        ?> <script>
+          alert("ERROR: Book availability was not selected");
+        </script> <?php
+      }
     }
     else{
+      // Checking if this book is already available in the database
+      $bookISBNSQL = "SELECT * FROM Book WHERE ISBN = '$ISBN'";
 
-      // Adding record into Book table
-      $bookSQL = "INSERT INTO Book (ISBN, Name, bkcID, baID) VALUES ('$ISBN', '$Name', '$bookCategoryType', '$bookAvailabilityType');";
+      $bookISBNResult = mysqli_query($databaseConn, $bookISBNSQL);
 
-      $bookResult = mysqli_query($databaseConn, $bookSQL);
+      $bookISBNCount = mysqli_num_rows($bookISBNResult);
 
-      if(empty($author2)){
-        // Adding (first author) record into BookAuthor table
-        $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
+      if($bookISBNCount == 0){
 
-        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+        // Adding record into Book table
+        $bookSQL = "INSERT INTO Book (ISBN, Name, bcCategoryID, baAvailabilityID) VALUES
+                    ('$ISBN', '$Name', '$bookCategoryType', '$bookAvailabilityType');";
+
+        $bookResult = mysqli_query($databaseConn, $bookSQL);
+
+        if(empty($author2)){
+          // Adding (first author) record into BookAuthor table
+          $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
+
+          $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+        }
+        else if(!empty($author2)){
+          // Adding (first author) record into BookAuthor table
+          $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
+
+          $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
+
+          // Adding (second author) record into BookAuthor table
+          $bookAuthor2SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author2');";
+
+          $bookAuthor2Result = mysqli_query($databaseConn, $bookAuthor2SQL);
+        }
+
+        ?> <script>
+          alert("Book has been successfully added.");
+        </script> <?php
+
+      //  echo "<script> location.href='manageBooks.php'; </script>";
+
       }
-      else if(!empty($author2)){
-        // Adding (first author) record into BookAuthor table
-        $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
 
-        $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
-
-        // Adding (second author) record into BookAuthor table
-        $bookAuthor2SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author2');";
-
-        $bookAuthor2Result = mysqli_query($databaseConn, $bookAuthor2SQL);
+      else{
+        ?> <script>
+          alert("Book is already added");
+        </script> <?php
       }
-
-      ?> <script>
-        alert("Book has been successfully added.");
-      </script> <?php
-
-      echo "<script> location.href='manageBooks.php'; </script>";
 
     }
   }
@@ -202,9 +229,9 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, ba.Availability, bkc.Category, b.RegisteredDateTime FROM Book b
-                                    INNER JOIN BookAvailability ba ON ba.ID = b.baID
-                                    INNER JOIN BookCategory bkc ON bkc.ID = b.bkcID
+                  $bookDetailsSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
+                                    INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
+                                    INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
                                     ORDER BY RegisteredDateTime DESC;";
 
                   $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
@@ -219,6 +246,7 @@
                       <th> Author Name </th>
                       <th> Category </th>
                       <th> Availability </th>
+                      <th> Reserved Date Time </th>
                       <th> Registered Date Time </th>
                       <th> Modifications </th>
                     </tr>
@@ -259,7 +287,10 @@
 
                       <td title="Availability"><?php echo $bookDetailsRow["Availability"]; ?></td>
 
+                      <td title="Reserved Date Time"><?php echo $bookDetailsRow["ReserveDateTime"]; ?></td>
+
                       <td title="Registered Date Time"><?php echo $bookDetailsRow["RegisteredDateTime"]; ?></td>
+
                       <td>
                           <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
 						            | <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
@@ -379,6 +410,7 @@
 
                       <p class="addBookFormText">Select Book Category Type:</p>
                       <select name="bookCategorySelect" class="addBookInput">
+                        <option value="NULL" selected>Select Category</option>
                         <!-- Retrieving the book category types from the database -->
                         <?php
                           $bookCategorySQL = "SELECT * FROM BookCategory";
@@ -387,13 +419,14 @@
 
                           while($bookCategoryRow = mysqli_fetch_array($bookCategoryResult)){
                         ?>
-                          <option value="<?php echo $bookCategoryRow["ID"]; ?>"><?php echo $bookCategoryRow["Category"]; ?></option>
+                          <option value="<?php echo $bookCategoryRow["CategoryID"]; ?>"><?php echo $bookCategoryRow["Category"]; ?></option>
                         <?php } ?>
                       </select>
                       <p class="mandatoryAsterisk" style="top: 595px;">*</p>
 
                       <p class="addBookFormText">Select Book Availability Type:</p>
                       <select name="bookAvailabilitySelect" class="addBookInput">
+                        <option value="NULL" selected>Select Availability</option>
                         <!-- Retrieving the book availability types from the database -->
                         <?php
                           $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
@@ -402,7 +435,7 @@
 
                           while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                         ?>
-                          <option value="<?php echo $bookAvailabilityRow["ID"]; ?>"><?php echo $bookAvailabilityRow["Availability"]; ?></option>
+                          <option value="<?php echo $bookAvailabilityRow["AvailabilityID"]; ?>"><?php echo $bookAvailabilityRow["Availability"]; ?></option>
                         <?php } ?>
                       </select>
                       <p class="mandatoryAsterisk" style="top: 706px;">*</p>

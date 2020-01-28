@@ -366,17 +366,17 @@ INSERT INTO BookAvailability(Availability) VALUES
 CREATE TABLE Book(
   ISBN VARCHAR(17) NOT NULL,
   Name VARCHAR(200) NOT NULL,
-  bkcCategoryID INT(8) NOT NULL,
+  bcCategoryID INT(8) NOT NULL,
   baAvailabilityID INT(8) NOT NULL,
   ReserveDateTime DATETIME,
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
-  FOREIGN KEY (bkcCategoryID) REFERENCES BookCategory (CategoryID),
+  FOREIGN KEY (bcCategoryID) REFERENCES BookCategory (CategoryID),
   FOREIGN KEY (baAvailabilityID) REFERENCES BookAvailability (AvailabilityID)
 )ENGINE = INNODB;
 
 -- Inserting records into Table 18 - Book
-INSERT INTO Book (ISBN, Name, bkcCategoryID, baAvailabilityID, RegisteredDateTime) VALUES
+INSERT INTO Book (ISBN, Name, bcCategoryID, baAvailabilityID, RegisteredDateTime) VALUES
 ('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
   75330003, 55240002, '2020-01-01 12:39:23.234');
 

@@ -8,13 +8,8 @@
 
     mysqli_query($databaseConn, $bookAuthorSQL);
 
-    /* Deleting record from ReservedBook table */
-    $reservedBookSQL = "DELETE FROM ReservedBook WHERE bISBN='$ISBN';";
-
-    mysqli_query($databaseConn, $reservedBookSQL);
-
       /* Retrieving BorrowDetails ID from the Borrow table */
-      $borrowDetailsIDSQL = "SELECT bdID FROM Borrow WHERE bISBN = '$ISBN';";
+      $borrowDetailsIDSQL = "SELECT bbBorrowID FROM Borrow WHERE bISBN = '$ISBN';";
 
       $borrowDetailsIDResult = mysqli_query($databaseConn, $borrowDetailsIDSQL);
 
@@ -45,6 +40,11 @@
 
     mysqli_query($databaseConn, $LMBSQL);
 
+    /* Deleting record from BookCatalogHasBook table */
+    $bookCatalogSQL = "DELETE FROM BookCatalogHasBook WHERE bISBN='$ISBN';";
+
+    mysqli_query($databaseConn, $bookCatalogSQL);
+
     /* Deleting record from Book table */
     $bookSQL = "DELETE FROM Book WHERE ISBN='$ISBN';";
 
@@ -56,7 +56,7 @@
       </script>
     <?php
 
-    echo "<script> location.href='librarianDashboard.php'; </script>";
+    echo "<script> location.href='manageBooks.php'; </script>";
 
     //header("Location: librarianDashboard.php");
 

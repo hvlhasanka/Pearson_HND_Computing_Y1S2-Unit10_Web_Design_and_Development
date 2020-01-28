@@ -78,7 +78,7 @@
                   <a class="nav-link" href="../librarianDashboard.php">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../1.manageBooks/librarianDashboard.php">Manage Books</a>
+                  <a class="nav-link" href="../1.manageBooks/manageBooks.php">Manage Books</a>
                 </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>

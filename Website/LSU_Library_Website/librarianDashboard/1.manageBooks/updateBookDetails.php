@@ -25,8 +25,8 @@
     }
     else{
       // Updating records in Book Table
-      $bookSQL = "UPDATE Book SET ISBN = '$ISBNNew', Name = '$name', baBAID = '$bookAvailabilityType'
-                  WHERE ISBN = '$ISBNPrevious';";
+      $bookSQL = "UPDATE Book SET Name = '$name', baAvailabilityID = '$bookAvailabilityType'
+                  WHERE ISBN = '$ISBN';";
       $bookResult = mysqli_query($databaseConn, $bookSQL);
 
       // Checking if the second author field is empty
@@ -53,7 +53,7 @@
         alert("Book details Successfully Updated.");
       </script> <?php
 
-      echo "<script> location.href='librarianDashboard.php'; </script>";
+      echo "<script> location.href='manageBooks.php'; </script>";
 
     }
   }
@@ -171,7 +171,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1060px;
+                      height: 1085px;
                       background-color: #F6F6F6;">
 
             <button type="button" name="return" style="color: #FFFFFF;
@@ -276,7 +276,7 @@
                           value="<?php echo $bookAuthorDetailsRow["Author"]; ?>">
 
                         <p class="updateBookFormText">Second Author Name:</p>
-                        <input type="text" name="author2" placeholder="Not Available" class="updateBookInput">
+                        <input type="text" name="author2" placeholder="Not Available" class="updateBookInput" readonly>
                         <?php
                       }
                     }
@@ -305,11 +305,11 @@
                     <?php
                       $selectedBookCategoryID = "";
                       $selectedBookCategory = "";
-                      $selectedBookCategorySQL = "SELECT bka.ID, bkc.Category FROM BookCategory bka
-                                                      INNER JOIN Book b ON b.bkcID = bkc.ID WHERE b.ISBN = '$ISBN';";
+                      $selectedBookCategorySQL = "SELECT bc.CategoryID, bc.Category FROM BookCategory bc
+                                                      INNER JOIN Book b ON b.bcCategoryID = bc.CategoryID WHERE b.ISBN = '$ISBN';";
                       $selectedBookCategoryResult = mysqli_query($databaseConn, $selectedBookCategorySQL);
                       while ($selectedBookCategoryRow = mysqli_fetch_array($selectedBookCategoryResult)) {
-                        $selectedBookCategoryID = $selectedBookCategoryRow["ID"];
+                        $selectedBookCategoryID = $selectedBookCategoryRow["CategoryID"];
                         $selectedBookCategory = $selectedBookCategoryRow["Category"];
                       }
                     ?>
@@ -319,10 +319,10 @@
                       $bookCategoryResult = mysqli_query($databaseConn, $bookCategorySQL);
                       while($bookCategoryRow = mysqli_fetch_array($bookCategoryResult)){
                     ?>
-                      <option value="<?php echo $bookCategoryRow["ID"]; ?>"
+                      <option value="<?php echo $bookCategoryRow["CategoryID"]; ?>"
                         <?php
                           // If the book category type is equal to the selected book category type, 'selected will be echoed'
-                          if($bookCategoryRow["ID"] == $selectedBookCategoryID && $bookCategoryRow["Category"] == $selectedBookCategory)
+                          if($bookCategoryRow["CategoryID"] == $selectedBookCategoryID && $bookCategoryRow["Category"] == $selectedBookCategory)
                           {
                             echo "selected";
                           }
@@ -338,11 +338,11 @@
                     <?php
                       $selectedBookAvailabilityID = "";
                       $selectedBookAvailability = "";
-                      $selectedBookAvailabilitySQL = "SELECT ba.ID, ba.Availability FROM BookAvailability ba
-                                                      INNER JOIN Book b ON b.baID = ba.ID WHERE b.ISBN = '$ISBN';";
+                      $selectedBookAvailabilitySQL = "SELECT ba.AvailabilityID, ba.Availability FROM BookAvailability ba
+                                                      INNER JOIN Book b ON b.baAvailabilityID = ba.AvailabilityID WHERE b.ISBN = '$ISBN';";
                       $selectedBookAvailabilityResult = mysqli_query($databaseConn, $selectedBookAvailabilitySQL);
                       while ($selectedBookAvailabilityRow = mysqli_fetch_array($selectedBookAvailabilityResult)) {
-                        $selectedBookAvailabilityID = $selectedBookAvailabilityRow["ID"];
+                        $selectedBookAvailabilityID = $selectedBookAvailabilityRow["AvailabilityID"];
                         $selectedBookAvailability = $selectedBookAvailabilityRow["Availability"];
                       }
                     ?>
@@ -352,10 +352,10 @@
                       $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
                       while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                     ?>
-                      <option value="<?php echo $bookAvailabilityRow["ID"]; ?>"
+                      <option value="<?php echo $bookAvailabilityRow["AvailabilityID"]; ?>"
                         <?php
                           // If the book availability type is equal to the selected book availability type, 'selected will be echoed'
-                          if($bookAvailabilityRow["ID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
+                          if($bookAvailabilityRow["AvailabilityID"] == $selectedBookAvailabilityID && $bookAvailabilityRow["Availability"] == $selectedBookAvailability)
                           {
                             echo "selected";
                           }
