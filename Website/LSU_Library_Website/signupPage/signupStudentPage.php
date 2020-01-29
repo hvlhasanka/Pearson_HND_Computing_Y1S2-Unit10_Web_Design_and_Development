@@ -169,7 +169,7 @@
       margin-bottom: 0px;
     }
 
-    .modal-body input[type=text], input[type=password], select{
+    .modal-body input[type=text], .modal-body input[type=password], .modal-body select{
       width: 400px;
       padding: 12px;
       padding-left: 60px;
@@ -182,12 +182,12 @@
       transition-duration: 0.4s;
     }
 
-    .modal-body input[type=text]:hover, input[type=password]:hover, select:hover{
+    .modal-body input[type=text]:hover, .modal-body input[type=password]:hover, .modal-body select:hover{
       border-color: #00B1D2FF;
       box-shadow: 2px 1px 2px #00B1D2FF;
     }
 
-    .modal-body input[type=submit], input[type=reset]{
+    .modal-body input[type=submit], .modal-body input[type=reset]{
       font-family: 'Roboto', sans-serif;
       font-size: 20px;
       margin-top: 10px;
@@ -200,7 +200,7 @@
       width: 200px;
     }
 
-    .modal-body input[type=submit]:hover, input[type=reset]:hover{
+    .modal-body input[type=submit]:hover, .modal-body input[type=reset]:hover{
       background-color: #00B1D2FF;
       color: white;
     }
@@ -298,7 +298,7 @@
 
                     <p class="formText">Membership Type </p>
                     <i class="fa fa-group"></i>
-                    <select name="membershipTypeLogin">
+                    <select name="memberTypeLogin">
                       <option value="NULL" selected>Select a Category</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
@@ -482,20 +482,23 @@
 
                   <p class="formText">Address</p>
                     <input type="text" name="laneAdress" placeholder="Street Address" required class="formInput"
-                    title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
+                    title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="right">
                     <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="city" placeholder="City" required class="formInput"
                     style="margin-left: 20px;"
-                    title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
+                    title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="right">
                     <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 603px;">*</p>
 
                     <br>
-                    <select name="provience">
+
+                    <select name="provienceSelect" class="formInput"
+                    title="Mandatory, Select the Provience"
+                    data-toggle="tooltip" data-placement="right">
                       <option value="NULL">Provience</option>
                       <option value="24140001">Central</option>
                       <option value="24140002">Eastern</option>
@@ -507,41 +510,90 @@
                       <option value="24140008">Uva</option>
                       <option value="24140009">Western</option>
                     </select>
-                    <input type="text" name="city" placeholder="Postal/Zip Code" required>
-                    <span id="asteriskImportant">*</span>
-                  <p>University Information</p>
-                    <input type="text" name="universityIndexNo" placeholder="University Index No" required>
-                    <span id="asteriskImportant">*</span>
-                    <br>
-                    <select name="faculty">
-                      <option value="">Faculty</option>
-                      <option value="">Faculty of Engineering</option>
-                      <option value="Faculty of Science">Faculty of Science</option>
-                      <option value="Faculty of Computing">Faculty of Computing</option>
-                      <option value="Faculty of Business">Faculty of Business</option>
+                    <p class="mandatoryAsterisk" style="top: 504px;
+                                                        left: 328px;">*</p>
+
+                    <input type="text" name="city" placeholder="Postal/Zip Code" required class="formInput"
+                    style="margin-left: 20px;"
+                    title="Mandatory, Only Numeric Characters"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 504px;
+                                                        left: 603px;">*</p>
+
+                  <p class="formText">University Information</p>
+                    <input type="text" name="universityIndexNo" placeholder="University Index No" required class="formInput"
+                    title="Mandatory, Enter only numeric characters"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 614px;
+                                                        left: 328px;">*</p>
+
+
+                    <select name="facultySelect" class="formInput"
+                    style="margin-left: 20px;"
+                    title="Mandatory, Select the Faculty"
+                    data-toggle="tooltip" data-placement="right">
+                      <option value="NULL">Faculty</option>
+                      <?php
+                        // Retrieving the faculties from the database, MemberFaculty table
+                        $facultySQL = "SELECT * FROM MemberFaculty;";
+                        $facultyResult = mysqli_query($databaseConn, $facultySQL);
+                        while($facultyRow = mysqli_fetch_array($facultyResult)){
+                      ?>
+                      <option value="<?php echo $facultyRow["FacultyID"];?>"><?php echo $facultyRow["Faculty"];} ?></option>
                     </select>
-                    <span id="asteriskImportant">*</span>
+                    <p class="mandatoryAsterisk" style="top: 614px;
+                                                        left: 603px;">*</p>
+
                     <br>
-                    <input type="text" name="degreeProgram" placeholder="Degree Program" required>
+
+                    <input type="text" name="degreeProgram" placeholder="Degree Program" required class="formInput"
+                    title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 685px;
+                                                        left: 328px;">*</p>
+
+                    <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" required class="formInput"
+                    style="margin-left: 20px;"
+                    title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 685px;
+                                                        left: 603px;">*</p>
+
                     <br>
-                    <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" required>
-                    <span id="asteriskImportant">*</span>
-                    <br>
-                    <select name="studentPosition">
-                      <option value="">Position</option>
-                      <option value="Undergraduate Student">Undergraduate Student</option>
-                      <option value="Postgraduate Student">Postgraduate Student</option>
-                      <option value="Alumni">Alumni</option>
+
+                    <select name="studentPosition" class="formInput"
+                    title="Mandatory,  Select the Position"
+                    data-toggle="tooltip" data-placement="right">
+                      <option value="NULL">Position</option>
+                      <option value="92130001">Undergraduate Student</option>
+                      <option value="92130002">Postgraduate Student</option>
+                      <option value="92130003">Alumni</option>
                     </select>
-                    <span id="asteriskImportant">*</span>
-                  <p>Login Credentails</p>
-                    <input type="text" name="username" placeholder="Username" required>
-                    <span id="asteriskImportant">*</span>
+                    <p class="mandatoryAsterisk" style="top: 750px;
+                                                        left: 328px;">*</p>
+
+                  <p class="formText">Login Credentails</p>
+                    <input type="text" name="username" placeholder="Username" required class="formInput"
+                    title="Mandatory, Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 750px;
+                                                        left: 328px;">*</p>
+
                     <br>
-                    <input type="password" name="password" placeholder="Enter Password" required>
-                    <span id="asteriskImportant">*</span>
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
-                    <span id="asteriskImportant">*</span>
+
+                    <input type="password" name="password" placeholder="Enter Password" required class="formInput"
+                    title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 750px;
+                                                        left: 328px;">*</p>
+
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required class="formInput"
+                    style="margin-left: 20px;"
+                    title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
+                    data-toggle="tooltip" data-placement="right">
+                    <p class="mandatoryAsterisk" style="top: 750px;
+                                                        left: 328px;">*</p>
+
                   <p>Terms and Conditions</p>
                   <p>Please read through the Terms and Constions and tick the below <br>box to continue the registration</p>
                   <input type="checkbox" name="tAndCAgreement">
