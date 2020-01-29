@@ -32,9 +32,9 @@
   if(isset($_POST['submit'])){
     $enteredUsername = $_POST['username'];
     $enteredPassword = $_POST['password'];
-    $selectedMembershipType = $_POST['membershipTypeLogin'];
+    $selectedMemberType = $_POST['memberTypeLogin'];
 
-    if(empty($enteredUsername) || empty($enteredPassword) || $selectedMembershipType == "NULL"){
+    if(empty($enteredUsername) || empty($enteredPassword) || $selectedMemberType == "NULL"){
       if(empty($enteredUsername)){
         ?> <script>
           alert("ERROR: Username field was not filled");
@@ -53,7 +53,7 @@
     }
     else{
 
-    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMembershipType';";
+    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMemberType';";
     	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
       $rowCount = mysqli_num_rows($systemLoginResult);
       $passwordDB = "";
@@ -76,24 +76,30 @@
         // Checking if the user entered password and hash value from the database is similar
         if(password_verify($enteredPassword, $passwordDB)){
 
+          // Adding the login date time into the database to LoginLogin Table
+          $loginSQL = "INSERT INTO LoginLogin (lLoginID) VALUES ('$lLoginIDDB');";
+
+          mysqli_query($databaseConn, $loginSQL);
+
+
           // Assigning the username from the database to this variable
           $usernameDB = $systemLoginRow["Username"];
 
           // Assigning session variables with the details of the current username
           session_start();
           $_SESSION['username'] = $usernameDB;
-          $_SESSION['membershipType'] = $selectedMembershipType;
+          $_SESSION['memberType'] = $selectedMemberType;
           $_SESSION['start'] = time();
           $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
 
           // For userType: Librarian
-          if($selectedMembershipType == 65350003){
+          if($selectedMemberType == 65350003){
             header("location: librarianDashboard/librarianDashboard.php");
           }
 
 
           // For userType: Student and Professor
-          if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
+          if($selectedMemberType == 65350001 || $selectedMemberType == 65350002){
 
             // Checking if the account status (member status) is active
             $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
@@ -365,9 +371,9 @@
                     <i class="fa fa-key"></i>
                     <input type="password" name="password" placeholder="Enter your PASSWORD" required>
 
-                    <p class="formText">Membership Type </p>
+                    <p class="formText">Member Type </p>
                     <i class="fa fa-group"></i>
-                    <select name="membershipTypeLogin">
+                    <select name="memberTypeLogin">
                       <option value="NULL" selected>Select a Category</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>

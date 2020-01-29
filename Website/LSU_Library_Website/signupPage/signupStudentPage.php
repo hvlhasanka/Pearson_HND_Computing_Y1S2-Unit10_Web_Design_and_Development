@@ -481,31 +481,31 @@
                     data-toggle="tooltip" data-placement="right">
 
                   <p class="formText">Address</p>
-                    <input type="text" name="laneAdress" placeholder="Lane Address" required class="formInput"
+                    <input type="text" name="laneAdress" placeholder="Street Address" required class="formInput"
                     title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                     data-toggle="tooltip" data-placement="right">
-                    <p class="mandatoryAsterisk" style="top: 328px;
+                    <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="city" placeholder="City" required class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                     data-toggle="tooltip" data-placement="right">
-                    <p class="mandatoryAsterisk" style="top: 328px;
-                                                        left: 328px;">*</p>
+                    <p class="mandatoryAsterisk" style="top: 438px;
+                                                        left: 603px;">*</p>
 
                     <br>
                     <select name="provience">
-                      <option value="">Provience</option>
-                      <option value="Central">Central</option>
-                      <option value="Eastern">Eastern</option>
-                      <option value="NorthCentral">North Central</option>
-                      <option value="Northern">Northern</option>
-                      <option value="North Western">North Western</option>
-                      <option value="Sabaragamuwa">Sabaragamuwa</option>
-                      <option value="Southern">Southern</option>
-                      <option value="Uva">Uva</option>
-                      <option value="Western">Western</option>
+                      <option value="NULL">Provience</option>
+                      <option value="24140001">Central</option>
+                      <option value="24140002">Eastern</option>
+                      <option value="24140003">North Central</option>
+                      <option value="24140004">Northern</option>
+                      <option value="24140005">North Western</option>
+                      <option value="24140006">Sabaragamuwa</option>
+                      <option value="24140007">Southern</option>
+                      <option value="24140008">Uva</option>
+                      <option value="24140009">Western</option>
                     </select>
                     <input type="text" name="city" placeholder="Postal/Zip Code" required>
                     <span id="asteriskImportant">*</span>
@@ -515,7 +515,7 @@
                     <br>
                     <select name="faculty">
                       <option value="">Faculty</option>
-                      <option value="Faculty of Engineering">Faculty of Engineering</option>
+                      <option value="">Faculty of Engineering</option>
                       <option value="Faculty of Science">Faculty of Science</option>
                       <option value="Faculty of Computing">Faculty of Computing</option>
                       <option value="Faculty of Business">Faculty of Business</option>
