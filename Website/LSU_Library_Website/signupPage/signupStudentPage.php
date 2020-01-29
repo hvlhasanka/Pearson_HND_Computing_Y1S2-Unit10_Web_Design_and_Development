@@ -412,7 +412,7 @@
                   position: absolute;
                 }
 
-                #addBookSubmitButton{
+                #submitButton{
                   padding: 5px;
                   border-radius: 5px;
                   margin-left: 50%;
@@ -423,7 +423,7 @@
                   border-color: #0081FF;
                 }
 
-                #addBookResetButton{
+                #resetButton{
                   padding: 5px;
                   border-radius: 5px;
                   background-color: #DEDEDE;
@@ -432,9 +432,6 @@
                   border-color: #DEDEDE;
                 }
 
-                #asteriskImportant{
-                  color: red;
-                }
               </style>
 
               <!-- Signup Form SECTION - Begin -->
@@ -444,19 +441,19 @@
                   <p class="formText">Full Name</p>
                       <input type="text" name="firstName" placeholder="First Name" required class="formInput"
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
-                      data-toggle="tooltip" data-placement="right">
+                      data-toggle="tooltip" data-placement="left">
                       <p class="mandatoryAsterisk" style="top: 40px;
                                                           left: 326px;">*</p>
 
                       <input type="text" name="middleName" placeholder="Middle Name"  class="formInput"
                       title="Optional, Only Uppercase Initials and Lowercase Alphabetic Characters"
-                      data-toggle="tooltip" data-placement="right"
+                      data-toggle="tooltip" data-placement="left"
                       style="margin-left: 20px;">
 
                     <br>
                       <input type="text" name="lastName" placeholder="Last Name" required class="formInput"
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
-                      data-toggle="tooltip" data-placement="right"
+                      data-toggle="tooltip" data-placement="left"
                       style="width: 527px;">
                       <p class="mandatoryAsterisk" style="top: 108px;
                                                           left: 605px;">*</p>
@@ -464,33 +461,33 @@
                   <p class="formText">Email Address</p>
                     <input type="email" name="email" placeholder="eg:- sample@provider.com" required class="formInput"
                     title="Mandatory, Enter valid email address"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 216px;
                                                         left: 328px;">*</p>
 
                   <p class="formText">Phone Number</p>
                     <input type="number" name="mobileNumber" placeholder="Mobile Number" required class="formInput"
                     title="Mandatory, Only 10 numeric characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 328px;
                                                         left: 328px;">*</p>
 
                     <input type="number" name="landNumber" placeholder="Telephone Number" class="formInput"
                     style="margin-left: 20px;"
                     title="Optional, Only 10 numeric characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
 
                   <p class="formText">Address</p>
                     <input type="text" name="laneAdress" placeholder="Street Address" required class="formInput"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="city" placeholder="City" required class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 603px;">*</p>
 
@@ -498,7 +495,7 @@
 
                     <select name="provienceSelect" class="formInput"
                     title="Mandatory, Select the Provience"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                       <option value="NULL">Provience</option>
                       <option value="24140001">Central</option>
                       <option value="24140002">Eastern</option>
@@ -516,14 +513,14 @@
                     <input type="text" name="city" placeholder="Postal/Zip Code" required class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Numeric Characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 504px;
                                                         left: 603px;">*</p>
 
                   <p class="formText">University Information</p>
                     <input type="text" name="universityIndexNo" placeholder="University Index No" required class="formInput"
                     title="Mandatory, Enter only numeric characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 614px;
                                                         left: 328px;">*</p>
 
@@ -531,7 +528,7 @@
                     <select name="facultySelect" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Select the Faculty"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                       <option value="NULL">Faculty</option>
                       <?php
                         // Retrieving the faculties from the database, MemberFaculty table
@@ -548,14 +545,14 @@
 
                     <input type="text" name="degreeProgram" placeholder="Degree Program" required class="formInput"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 685px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" required class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 685px;
                                                         left: 603px;">*</p>
 
@@ -563,7 +560,7 @@
 
                     <select name="studentPosition" class="formInput"
                     title="Mandatory,  Select the Position"
-                    data-toggle="tooltip" data-placement="right">
+                    data-toggle="tooltip" data-placement="left">
                       <option value="NULL">Position</option>
                       <option value="92130001">Undergraduate Student</option>
                       <option value="92130002">Postgraduate Student</option>
@@ -575,34 +572,63 @@
                   <p class="formText">Login Credentails</p>
                     <input type="text" name="username" placeholder="Username" required class="formInput"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
-                    data-toggle="tooltip" data-placement="right">
-                    <p class="mandatoryAsterisk" style="top: 750px;
+                    data-toggle="tooltip" data-placement="left">
+                    <p class="mandatoryAsterisk" style="top: 858px;
                                                         left: 328px;">*</p>
 
                     <br>
 
                     <input type="password" name="password" placeholder="Enter Password" required class="formInput"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                    data-toggle="tooltip" data-placement="right">
-                    <p class="mandatoryAsterisk" style="top: 750px;
+                    data-toggle="tooltip" data-placement="left">
+                    <p class="mandatoryAsterisk" style="top: 925px;
                                                         left: 328px;">*</p>
 
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" required class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                    data-toggle="tooltip" data-placement="right">
-                    <p class="mandatoryAsterisk" style="top: 750px;
+                    data-toggle="tooltip" data-placement="left">
+                    <p class="mandatoryAsterisk" style="top: 925px;
+                                                        left: 603px;">*</p>
+
+                    <br>
+
+                    <select name="statusSelect" class="formInput"
+                    title="Mandatory, Select the Status"
+                    data-toggle="tooltip" data-placement="left">
+                      <option value="NULL">Status</option>
+                      <?php
+                        // Retrieving the status from the database, MemberStatus table
+                        $statusSQL = "SELECT * FROM MemberMemberStatus;";
+                        $statusResult = mysqli_query($databaseConn, $statusSQL);
+                        while($statusRow = mysqli_fetch_array($statusResult)){
+                      ?>
+                      <option value="<?php echo $statusRow["MemberStatusID"];?>"><?php echo $statusRow["MemberStatus"];} ?></option>
+                    </select>
+                    <p class="mandatoryAsterisk" style="top: 992px;
                                                         left: 328px;">*</p>
+                    </select>
 
-                  <p>Terms and Conditions</p>
-                  <p>Please read through the Terms and Constions and tick the below <br>box to continue the registration</p>
-                  <input type="checkbox" name="tAndCAgreement">
-                    <p>I have read and I agree to the Terms and Conditions</p>
+
+                    <div class="formText">
+                      <p style="margin-top: 20px;
+                                text-decoration: underline;">Terms and Conditions</p>
+                      <p>Please read through the <a href="#">Terms and Conditions</a> and tick the below <br>box to continue the registration</p>
+                      <input type="checkbox" name="tAndCAgreement" title="Mandatory, Tick Checkbox if agree" required
+                        data-toggle="tooltip" data-placement="left" style="height: 20px;
+                                                                            width: 20px;">
+                      <p style="position: absolute;
+                                left: 140px;
+                                top: 1190px;"
+                                title="Mandatory, Tick Checkbox if agree"
+                                data-toggle="tooltip" data-placement="left">I have read and I agree to the Terms and Conditions</p>
+                    </div>
+
                   <br>
 
                   <br>
-                  <button type="submit" name="addBookSubmit" id="addBookSubmitButton">Submit</button>
-                  <button type="reset" name="addBookReset" id="addBookResetButton">Reset</button>
+                  <button type="submit" name="memberSubmit" id="submitButton">Submit</button>
+                  <button type="reset" name="memberReset" id="resetButton">Reset</button>
 
                 </form>
               </div>
