@@ -113,6 +113,169 @@
     }
   }
 
+  // Registering new student into the system process
+  if(isset($_POST['memberSubmit'])){
+
+    $enteredFirstName = $_POST['firstName'];
+    $enteredMiddleName = $_POST['middleName'];
+    $enteredLastName = $_POST['lastName'];
+    $enteredEmailAddress = $_POST['email'];
+    $enteredMobileNumber = $_POST['mobileNumber'];
+    $enteredTelephoneNumber = $_POST['telephoneNumber'];
+    $enteredStreetAddress = $_POST['streetAddress'];
+    $enteredCity = $_POST['city'];
+    $selectedProvience = $_POST['provienceSelect'];
+    $selectedProvience = $_POST['zipPostalCode'];
+    $enteredUniversityNo = $_POST['universityIndexNo'];
+    $selectedFaculty = $_POST['facultySelect'];
+    $enteredDegreeProgram = $_POST['degreeProgram'];
+    $enteredBatch = $_POST['batch'];
+    $selectedPosition = $_POST['studentPosition'];
+    $enteredUsernameS = $_POST['Username'];
+    $enteredPasswordS = $_POST['Password'];
+    $enteredConfirmPasswordS = $_POST['confirmPassword'];
+    $selectedStatus = $_POST['statusSelect'];
+
+    if(empty($enteredFirstName) || empty($enteredLastName) || $enteredPasswordS != $enteredConfirmPasswordS){
+
+      if($enteredPasswordS != $enteredConfirmPasswordS){
+        ?> <script>
+          alert("ERROR: Entered Passwords don't match");
+        </script> <?php
+      }
+
+      if(empty($enteredFirstName)){
+        ?> <script>
+          alert("ERROR: First Name was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredLastName)){
+        ?> <script>
+          alert("ERROR: Last Name was not filled");
+        </script> <?php
+      }
+
+
+
+    }
+    else{
+
+        // Converting enter passowrd value into a hash value to store in the database
+        $enteredPasswordHash = password_hash($enteredPasswordS, PASSWORD_DEFAULT);
+
+        // Inserting new record into Login table
+        $loginSQL = "INSERT INTO Login (Username, Password, lutUserTypeID) VALUES
+                    ('$enteredUsernameS', '$enteredPasswordHash', 65350001);";
+        mysqli_query($databaseConn, $loginSQL);
+
+        // Retrieving the LoginID of the newly added recprd from the Login table
+        $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$enteredUsernameS'
+                        AND Password = '$enteredPasswordHash';";
+        $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
+        $loginIDRow = mysqli_fetch_array($loginIDResult);
+        $loginIDDB = $loginIDRow["LoginID"];
+
+        // Insert new record into the User table
+        $userSQL = "INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress,
+          StreetAddress, upProvienceID, MobileNumber, TelephoneNumber, lLoginID)
+          VALUES ('$enteredFirstName', '$enteredMiddleName', '$enteredLastName', '$enteredEmailAddress',
+          '$enteredStreetAddress', '$selectedProvience', '$enteredMobileNumber', $enteredTelephoneNumber,
+          $oginIDDB);";
+        mysqli_query($databaseConn, $userSQL);
+
+        // Retrieving the UserID of the newly added record from the User table
+        $userIDDBSQL = "SELECT UserID FROM User WHERE LastName = '$enteredLastName'
+                      AND EmailAddress = '$enteredEmailAddress';";
+        $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
+        $userIDDBRow = mysqli_fetch_array($userIDDBResult);
+        $userIDDB = $userIDDBRow["UserID"];
+
+      // Checking if the entered city is already available in the database.
+      $cityDBSQL = "SELECT * FROM UserCity";
+      $cityDBResult = mysqli_query($databaseConn, $cityDBSQL);
+      while($cityDBRow = mysqli_fetch_array($cityDBResult)){
+        if($cityDBRow["City"] == $enteredCity){
+
+          // Updating User table record with city ID for the newly added record
+          $cityUpdateSQL = "UPDATE User SET ucCityID = '$cityDBRow["CityID"]' WHERE UserID = '$userIDDB';";
+          mysqli_query($databaseConn, $cityUpdateSQL);
+
+        }
+        else if($cityDBRow["City"] != $enteredCity){
+
+          // Inserting new city record into the UserCity table
+          $cityInsertSQL = "INSERT INTO UserCity VALUES ('$enteredCity');";
+          mysqli_query($databaseConn, $cityInsertSQL);
+
+          //Retrieving CityID from the UserCity tsble for the newly added record
+          $cityIDDBSQL = "SELECT CityID FROM UserCity WHERE City = '$enteredCity';";
+          $cityIDDBResult = mysqli_query($databaseConn, $cityIDDBSQL);
+          $cityIDDBRow = mysqli_fetch_array($cityIDDBResult);
+          $cityIDDB = $cityIDDBRow["CityID"];
+
+          // Updating User table record with city ID for the newly added record
+          $cityUpdateSQL = "UPDATE User SET ucCityID = '$cityIDDB' WHERE UserID = '$userIDDB';";
+          mysqli_query($databaseConn, $cityUpdateSQL);
+
+        }
+
+      }
+
+
+        // Insert new record into the UniversityMember table
+        $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityID, mmtMemberTypeID,
+                                mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES ('$userIDDB',
+                                '$enteredUniversityNo', '$selectedMemberType', '$selectedStatus',
+                                '$selectedFaculty', '$selectedPosition')";
+        mysqli_query($databaseConn, $universityMemberSQL);
+
+
+        // Insertin new record into the Student table
+        $studentSQL = "INSERT INTO Student (umUserID, umUniversityNo)
+                      VALUES ('$userIDDB', '$enteredUniversityNo')";
+        mysqli_query($databaseConn, $studentSQL);
+
+        // Checking if the entered batch is already available in the database.
+        $batchDBSQL = "SELECT * FROM StudentBatch";
+        $batchDBResult = mysqli_query($databaseConn, $batchDBSQL);
+        while($batchDBRow = mysqli_fetch_array($batchDBResult)){
+          if($batchDBRow["Batch"] == $enteredBatch){
+
+            // Updating Student table for the newly added records
+            $batchUpdateSQL = "UPDATE Student SET sbBatchID = '$batchDBRow["BatchID"]' WHERE
+                              umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
+
+          }
+          else if($cityDBRow["City"] != $enteredCity){
+
+          }
+
+        }
+
+
+        // Checking if the entered degree program is already available in the database.
+        $cityDBSQL = "SELECT * FROM UserCity";
+        $cityDBResult = mysqli_query($databaseConn, $cityDBSQL);
+        while($cityDBRow = mysqli_fetch_array($cityDBResult)){
+          if($cityDBRow["City"] == $enteredCity){
+
+
+          }
+          else if($cityDBRow["City"] != $enteredCity){
+
+
+          }
+
+        }
+
+
+
+    }
+
+
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -348,7 +511,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1600px;
+                      height: 1615px;
                       background-color: #F6F6F6;">
 
 
@@ -367,7 +530,7 @@
             </button>
 
             <div style="width: 55%;
-                        height: 1350px;
+                        height: 1450px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -436,22 +599,22 @@
 
               <!-- Signup Form SECTION - Begin -->
               <div id="signupForm">
-                <form action="manageBooks.php" method="POST">
+                <form action="signupStudentPage.php" method="POST" onSubmit="return confirm('Are all the entered details accurate?');">
 
                   <p class="formText">Full Name</p>
-                      <input type="text" name="firstName" placeholder="First Name" required class="formInput"
+                      <input type="text" name="firstName" placeholder="First Name" class="formInput"
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                       data-toggle="tooltip" data-placement="left">
                       <p class="mandatoryAsterisk" style="top: 40px;
                                                           left: 326px;">*</p>
 
-                      <input type="text" name="middleName" placeholder="Middle Name"  class="formInput"
+                      <input type="text" name="middleName" placeholder="Middle Name" class="formInput"
                       title="Optional, Only Uppercase Initials and Lowercase Alphabetic Characters"
                       data-toggle="tooltip" data-placement="left"
                       style="margin-left: 20px;">
 
                     <br>
-                      <input type="text" name="lastName" placeholder="Last Name" required class="formInput"
+                      <input type="text" name="lastName" placeholder="Last Name" class="formInput"
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                       data-toggle="tooltip" data-placement="left"
                       style="width: 527px;">
@@ -459,14 +622,14 @@
                                                           left: 605px;">*</p>
 
                   <p class="formText">Email Address</p>
-                    <input type="email" name="email" placeholder="eg:- sample@provider.com" required class="formInput"
+                    <input type="email" name="email" placeholder="eg:- sample@provider.com" class="formInput"
                     title="Mandatory, Enter valid email address"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 216px;
                                                         left: 328px;">*</p>
 
                   <p class="formText">Phone Number</p>
-                    <input type="number" name="mobileNumber" placeholder="Mobile Number" required class="formInput"
+                    <input type="number" name="mobileNumber" placeholder="Mobile Number" class="formInput"
                     title="Mandatory, Only 10 numeric characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 328px;
@@ -478,13 +641,13 @@
                     data-toggle="tooltip" data-placement="left">
 
                   <p class="formText">Address</p>
-                    <input type="text" name="laneAdress" placeholder="Street Address" required class="formInput"
+                    <input type="text" name="laneAdress" placeholder="Street Address" class="formInput"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 328px;">*</p>
 
-                    <input type="text" name="city" placeholder="City" required class="formInput"
+                    <input type="text" name="city" placeholder="City" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
@@ -510,7 +673,7 @@
                     <p class="mandatoryAsterisk" style="top: 504px;
                                                         left: 328px;">*</p>
 
-                    <input type="text" name="city" placeholder="Postal/Zip Code" required class="formInput"
+                    <input type="text" name="zipPostalCode" placeholder="Zip/Postal Code" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
@@ -518,7 +681,7 @@
                                                         left: 603px;">*</p>
 
                   <p class="formText">University Information</p>
-                    <input type="text" name="universityIndexNo" placeholder="University Index No" required class="formInput"
+                    <input type="text" name="universityIndexNo" placeholder="University Index No" class="formInput"
                     title="Mandatory, Enter only numeric characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 614px;
@@ -543,13 +706,13 @@
 
                     <br>
 
-                    <input type="text" name="degreeProgram" placeholder="Degree Program" required class="formInput"
+                    <input type="text" name="degreeProgram" placeholder="Degree Program" class="formInput"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 685px;
                                                         left: 328px;">*</p>
 
-                    <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" required class="formInput"
+                    <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
@@ -570,7 +733,7 @@
                                                         left: 328px;">*</p>
 
                   <p class="formText">Login Credentails</p>
-                    <input type="text" name="username" placeholder="Username" required class="formInput"
+                    <input type="text" name="Username" placeholder="Username" class="formInput"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 858px;
@@ -578,13 +741,13 @@
 
                     <br>
 
-                    <input type="password" name="password" placeholder="Enter Password" required class="formInput"
+                    <input type="password" name="Password" placeholder="Enter Password" class="formInput"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 925px;
                                                         left: 328px;">*</p>
 
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required class="formInput"
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
@@ -614,7 +777,7 @@
                       <p style="margin-top: 20px;
                                 text-decoration: underline;">Terms and Conditions</p>
                       <p>Please read through the <a href="#">Terms and Conditions</a> and tick the below <br>box to continue the registration</p>
-                      <input type="checkbox" name="tAndCAgreement" title="Mandatory, Tick Checkbox if agree" required
+                      <input type="checkbox" name="tAndCAgreement" title="Mandatory, Tick Checkbox if agree"
                         data-toggle="tooltip" data-placement="left" style="height: 20px;
                                                                             width: 20px;">
                       <p style="position: absolute;

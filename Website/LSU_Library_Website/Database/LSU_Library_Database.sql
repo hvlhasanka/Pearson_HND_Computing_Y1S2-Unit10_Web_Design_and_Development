@@ -209,13 +209,13 @@ INSERT INTO MemberMemberStatus (MemberStatus) VALUES
 -- Creating Table 10 - UniversityMember
 CREATE TABLE UniversityMember(
   uUserID INT(8) NOT NULL,
-  UniversityID INT(8) NOT NULL,
+  UniversityNo INT(8) NOT NULL,
   mmtMemberTypeID INT(8) NOT NULL,
   mmsMemberStatusID INT(8) NOT NULL,
   mfFacultyID INT(8) NOT NULL,
   mpPositionID INT(8) NOT NULL,
   EditDateTime DATETIME,
-  PRIMARY KEY (uUserID, UniversityID),
+  PRIMARY KEY (uUserID, UniversityNo),
   FOREIGN KEY (uUserID) REFERENCES User(UserID),
   FOREIGN KEY (mmtMemberTypeID) REFERENCES MemberMemberType(MemberTypeID),
   FOREIGN KEY (mmsMemberStatusID) REFERENCES MemberMemberStatus(MemberStatusID),
@@ -225,7 +225,7 @@ CREATE TABLE UniversityMember(
 
 -- Inserting records into Table 10 - UniversityMember
 INSERT INTO UniversityMember
-(uUserID, UniversityID, mmtMemberTypeID, mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES
+(uUserID, UniversityNo, mmtMemberTypeID, mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES
 (45150002, 10004392, 44120001, 93140001, 91120001, 92130003),
 (45150003, 10003242, 44120002, 93140001, 91120003, 92130005);
 
@@ -270,12 +270,12 @@ INSERT INTO StudentDegreeProgram (DegreeProgram) VALUES
 
 -- Creating Table 13 - Student
 CREATE TABLE Student(
-  mUserID INT(8) NOT NULL,
-  mUniversityID INT(8) NOT NULL,
+  umUserID INT(8) NOT NULL,
+  umUniversityNo INT(8) NOT NULL,
   sbBatchID INT(8) NOT NULL,
   sdpDegreeProgramID INT(8) NOT NULL,
-  PRIMARY KEY (mUserID, mUniversityID),
-  FOREIGN KEY (mUserID, mUniversityID) REFERENCES UniversityMember (uUserID, UniversityID),
+  PRIMARY KEY (umUserID, umUniversityNo),
+  FOREIGN KEY (umUserID, umUniversityNo) REFERENCES UniversityMember (uUserID, UniversityNo),
   FOREIGN KEY (sbBatchID) REFERENCES StudentBatch (BatchID),
   FOREIGN KEY (sdpDegreeProgramID) REFERENCES StudentDegreeProgram (DegreeProgramID)
 )ENGINE = INNODB;
@@ -307,11 +307,11 @@ INSERT INTO ProfessorSpecialization (Specialization) VALUES
 
 -- Creating Table 15 - Professor
 CREATE TABLE Professor(
-  mUserID INT(8) NOT NULL,
-  mUniversityID INT(8) NOT NULL,
+  umUserID INT(8) NOT NULL,
+  umUniversityNo INT(8) NOT NULL,
   psSpecializationID INT(8) NOT NULL,
-  PRIMARY KEY (mUserID, mUniversityID),
-  FOREIGN KEY (mUserID, mUniversityID) REFERENCES UniversityMember (uUserID, UniversityID),
+  PRIMARY KEY (umUserID, umUniversityNo),
+  FOREIGN KEY (umUserID, umUniversityNo) REFERENCES UniversityMember (uUserID, UniversityNo),
   FOREIGN KEY (psSpecializationID) REFERENCES ProfessorSpecialization (SpecializationID)
 )ENGINE = INNODB;
 
@@ -636,12 +636,12 @@ UPDATE BookCatalog SET NoOfBooks = 2 WHERE CatalogID = 22450001;
 
 -- Creating Table 32 - Borrow
 CREATE TABLE Borrow(
-  mUserID INT(8) NOT NULL,
-  mUniversityID INT(8) NOT NULL,
+  umUserID INT(8) NOT NULL,
+  umUniversityNo INT(8) NOT NULL,
   bISBN VARCHAR(17) NOT NULL,
   bbBorrowID INT NOT NULL,
-  PRIMARY KEY (mUserID, mUniversityID, bISBN, bbBorrowID),
-  FOREIGN KEY (mUserID, mUniversityID) REFERENCES UniversityMember (uUserID, UniversityID),
+  PRIMARY KEY (umUserID, umUniversityNo, bISBN, bbBorrowID),
+  FOREIGN KEY (umUserID, umUniversityNo) REFERENCES UniversityMember (uUserID, UniversityNo),
   FOREIGN KEY (bISBN) REFERENCES Book (ISBN),
   FOREIGN KEY (bbBorrowID) REFERENCES BookBorrow (BorrowID)
 )ENGINE = INNODB;
