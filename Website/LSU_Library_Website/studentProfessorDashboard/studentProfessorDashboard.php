@@ -66,6 +66,7 @@
                                                   color: #00B1D2FF;"></i> &nbsp
                     </a>
                   </td>
+
                   <td class="navItem" id="navItem2">
                     <a href="../logout.php">Logout</a>
                   </td>
@@ -79,7 +80,7 @@
 
         <!-- BODY SECTION - Begin -->
           <!-- NavBar - Begin -->
-            <div style="background-color: #3498DB;
+            <div style="background-color: #004182;
                         width: 100%;
                         height: 160px;">
               <p style="font-size: 30px;

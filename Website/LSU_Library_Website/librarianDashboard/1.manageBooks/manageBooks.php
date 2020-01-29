@@ -111,6 +111,9 @@
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
+    <!-- Retrieving font-awesome library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <script src="../../assets/bootstrap/js/jquery.min.js"></script>
     <script src="../../assets/bootstrap/js/popper.min.js"></script>
@@ -142,9 +145,18 @@
 
               <table id="navSection">
                 <tr>
-                  <td class="navItem" id="navItem1"> <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
-                    data-content="View Account Details" style="color: black;"> <?php echo $_SESSION['username']; ?></a> </td>
-                  <td class="navItem" id="navItem2"> <a href="../../logout.php">Logout</a> </td>
+                  <td class="navItem" id="navItem1">
+                    <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    data-content="View Account Details" style="color: black;">
+                      <?php echo $_SESSION['username']; ?> &nbsp
+                      <i class="fa fa-bars" style="font-size: 32px;
+                                                  color: #00B1D2FF;"></i> &nbsp
+                    </a>
+                  </td>
+
+                  <td class="navItem" id="navItem2">
+                    <a href="../logout.php">Logout</a>
+                  </td>
                 </tr>
               </table>
 

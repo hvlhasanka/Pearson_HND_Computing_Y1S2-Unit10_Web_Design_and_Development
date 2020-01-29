@@ -8,15 +8,15 @@
 
     if($selectMemberType == "65350001"){
       echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
-      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupStudentPage.html'; } </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupStudentPage.php'; } </script>";
     }
     if($selectMemberType == "65350002"){
       echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
-      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupProfessorPage.html'; } </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupProfessorPage.php'; } </script>";
     }
     else if($selectMemberType == "65350003"){
       echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
-      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupLibrarianPage.html'; } </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupLibrarianPage.php'; } </script>";
     }
     else{
       ?> <script>
@@ -70,73 +70,65 @@
       }
       else if($rowCount == 1){
 
-          // Retrieving the password hash value from the database
-          $passwordDB = $systemLoginRow["Password"];
+        // Retrieving the password hash value from the database
+        $passwordDB = $systemLoginRow["Password"];
 
-          // Checking if the user entered password and hash value from the database is similar
-          if(password_verify($enteredPassword, $passwordDB)){
+        // Checking if the user entered password and hash value from the database is similar
+        if(password_verify($enteredPassword, $passwordDB)){
 
-            // Assigning the username from the database to this variable
-            $usernameDB = $systemLoginRow["Username"];
+          // Assigning the username from the database to this variable
+          $usernameDB = $systemLoginRow["Username"];
 
-            // Assigning session variables with the details of the current username
-            session_start();
-            $_SESSION['username'] = $usernameDB;
-            $_SESSION['membershipType'] = $selectedMembershipType;
-            $_SESSION['start'] = time();
-            $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
+          // Assigning session variables with the details of the current username
+          session_start();
+          $_SESSION['username'] = $usernameDB;
+          $_SESSION['membershipType'] = $selectedMembershipType;
+          $_SESSION['start'] = time();
+          $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
 
-            // For userType: Librarian
-            if($selectedMembershipType == 65350003){
-              header("location: librarianDashboard/librarianDashboard.php");
-            }
-
-
-            // For userType: Student and Professor
-            if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
-
-              // Checking if the account status (member status) is active
-              $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
-                                  INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
-                                  INNER JOIN User u ON u.UserID = um.uUserID
-                                  WHERE u.lLoginID = '$lLoginIDDB';";
-              $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
-
-              $accountStatus = "";
-
-              while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
-                $accountStatus = $accountStatusRow["MemberStatus"];
-              }
-
-              if($accountStatus == "Active"){
-
-                header("location: studentProfessorDashboard/studentProfessorDashboard.php");
-
-              }
-              else{
-                ?> <script>
-                  alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
-                </script> <?php
-
-                echo "<script> location.href='logout.php'; </script>";
-              }
-
-            }
-
-
-          }
-
-          else{
-            ?> <script>
-              alert("Entered credentials are incorrect. Please recheck.");
-            </script> <?php
+          // For userType: Librarian
+          if($selectedMembershipType == 65350003){
+            header("location: librarianDashboard/librarianDashboard.php");
           }
 
 
+          // For userType: Student and Professor
+          if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
+
+            // Checking if the account status (member status) is active
+            $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
+                                INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
+                                INNER JOIN User u ON u.UserID = um.uUserID
+                                WHERE u.lLoginID = '$lLoginIDDB';";
+            $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
+
+            $accountStatus = "";
+
+            while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
+              $accountStatus = $accountStatusRow["MemberStatus"];
+            }
+
+            if($accountStatus == "Active"){
+
+              header("location: studentProfessorDashboard/studentProfessorDashboard.php");
+
+            }
+            else{
+              ?> <script>
+                alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
+              </script> <?php
+
+              echo "<script> location.href='logout.php'; </script>";
+            }
+          }
+        }
+        else{
+          ?> <script>
+            alert("Entered credentials are incorrect. Please recheck.");
+          </script> <?php
+        }
       }
-
     }
-
   }
 
 ?>
