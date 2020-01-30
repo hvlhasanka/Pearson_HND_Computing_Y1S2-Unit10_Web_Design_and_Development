@@ -86,8 +86,8 @@ CREATE TABLE User(
   ucCityID INT(8),
   uzpcZPCID INT(8),
   upProvienceID INT(8) NOT NULL,
-  MobileNumber CHAR(11) NOT NULL,
-  TelePhoneNumber CHAR(11) NOT NULL,
+  MobileNumber CHAR(10) NOT NULL,
+  TelePhoneNumber CHAR(10),
   RegistrationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   lLoginID INT NOT NULL, -- This will become a foreign key after Table 23 - Login is created
   PRIMARY KEY (UserID),
@@ -102,11 +102,11 @@ ALTER TABLE User AUTO_INCREMENT = 45150001;
 -- Inserting records into Table 4 - User
 INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress, StreetAddress, ucCityID, uzpcZPCID, upProvienceID,
   MobileNumber, TelePhoneNumber, RegistrationDateTime, lLoginID) VALUES
-  ('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 22120001, 23130001, 24140009, '015-8521592', '034-8521596',
+  ('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 22120001, 23130001, 24140009, '0158521592', '0348521596',
     '2020-01-01 09:23:34.131', NULL),  -- UserID: 45150001
-  ('Jake', 'Andrews', 'Anderson', 'jakeanderson12@gmail.com', '818 School Park',  22120001, 23130001, 24140009, '089-5874693','034-1569634',
+  ('Jake', 'Andrews', 'Anderson', 'jakeanderson12@gmail.com', '818 School Park',  22120001, 23130001, 24140009, '0895874693','0341569634',
     '2020-01-01 10:32:12.132', NULL),  -- UserID: 45150002
-  ('Peter', 'Andy', 'Jackson', 'JacksonAny42@gmail.com', 'A23 Palace Lane',  22120001, 23130001, 24140009, '023-5316489','042-5268313',
+  ('Peter', 'Andy', 'Jackson', 'JacksonAny42@gmail.com', 'A23 Palace Lane',  22120001, 23130001, 24140009, '0235316489','0425268313',
     '2020-01-01 11:23:13.342', NULL);  -- UserID: 45150003
 
 

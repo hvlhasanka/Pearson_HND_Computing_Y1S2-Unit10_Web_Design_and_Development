@@ -180,12 +180,10 @@
         $userSQL = "INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress,
           StreetAddress, upProvienceID, MobileNumber, TelephoneNumber, lLoginID)
           VALUES ('$enteredFirstName', '$enteredMiddleName', '$enteredLastName', '$enteredEmailAddress',
-          '$enteredStreetAddress', '$selectedProvience', '$enteredMobileNumber', $enteredTelephoneNumber,
+          '$enteredStreetAddress', '$selectedProvience', '$enteredMobileNumber', '$enteredTelephoneNumber',
           '$loginIDDB');";
-        $userSQL1 = mysqli_query($databaseConn, $userSQL);
-        ?> <script>
-          alert("ERROR: <?php echo $userSQL1; ?>");
-        </script> <?php
+        mysqli_query($databaseConn, $userSQL);
+
         // Retrieving the UserID of the newly added record from the User table
         $userIDDBSQL = "SELECT UserID FROM User WHERE LastName = '$enteredLastName'
                       AND EmailAddress = '$enteredEmailAddress';";
@@ -261,14 +259,19 @@
 
 
         // Insert new record into the UniversityMember table
-        $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityID, mmtMemberTypeID,
+        $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityNo, mmtMemberTypeID,
                                 mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES ('$userIDDB',
                                 '$enteredUniversityNo', 44120001, '$selectedStatus',
-                                '$selectedFaculty', '$selectedPosition')";
-        mysqli_query($databaseConn, $universityMemberSQL);
+                                '$selectedFaculty', '$selectedPosition');";
+        $test1 = mysqli_query($databaseConn, $universityMemberSQL);
+
+        ?> <script>
+          alert("ERROR: <?php echo $test1;?>");
+        </script> <?php
 
 
-        // Insertin new record into the Student table
+
+        // Inserting new record into the Student table
         $studentSQL = "INSERT INTO Student (umUserID, umUniversityNo)
                       VALUES ('$userIDDB', '$enteredUniversityNo')";
         mysqli_query($databaseConn, $studentSQL);
@@ -346,6 +349,11 @@
       }
 
 
+      ?> <script>
+        alert("Student Account has been successfully created. Login is now eligible.");
+      </script> <?php
+
+      echo "<script> location.href='index.php'; </script>";
 
     }
 
