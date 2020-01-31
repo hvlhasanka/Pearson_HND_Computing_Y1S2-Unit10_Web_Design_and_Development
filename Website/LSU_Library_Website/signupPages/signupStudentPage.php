@@ -353,7 +353,7 @@
         alert("Student Account has been successfully created. Login is now eligible.");
       </script> <?php
 
-      echo "<script> location.href='index.php'; </script>";
+      echo "<script> location.href='../index.php'; </script>";
 
     }
 
@@ -624,7 +624,7 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>Student Registration</b></p>
+                        text-align: center;"><b>Student Membership</b></p>
 
               <style>
                 #signupForm{

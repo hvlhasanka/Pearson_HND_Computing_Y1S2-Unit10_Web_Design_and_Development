@@ -4,19 +4,19 @@
   // SignUp process
   if(isset($_POST['signUp'])){
 
-    $selectMemberType = $_POST['memberTypeSignUp'];
+    $selectedMembershipType = $_POST['membershipTypeSignUp'];
 
-    if($selectMemberType == "65350001"){
+    if($selectedMembershipType == "65350001"){
       echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
-      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupStudentPage.php'; } </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPages/signupStudentPage.php'; } </script>";
     }
-    if($selectMemberType == "65350002"){
+    if($selectedMembershipType == "65350002"){
       echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
-      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupProfessorPage.php'; } </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPages/signupProfessorPage.php'; } </script>";
     }
-    else if($selectMemberType == "65350003"){
+    else if($selectedMembershipType == "65350003"){
       echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
-      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPage/signupLibrarianPage.php'; } </script>";
+      echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPages/signupLibrarianPage.php'; } </script>";
     }
     else{
       ?> <script>
@@ -142,7 +142,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> LSU Library - Home </title>
+    <title> LSU Library </title>
 
     <link rel="icon" type="image/png" sizes="1500x1500" href="assets/images/LSULibraryLogo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -422,11 +422,11 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                  <p class="formText">Select a Member Type</p>
+                  <p class="formText">Select a Membership Type</p>
                   <form method="POST" action="index.php">
                     <i class="fa fa-group"></i>
-                    <select name="memberTypeSignUp">
-                      <option value="NULL" selected>Member Type</option>
+                    <select name="membershipTypeSignUp">
+                      <option value="NULL" selected>Membership Type</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
                       <option value="65350003">Librarian</option>
