@@ -136,13 +136,11 @@
     $enteredConfirmPasswordS = $_POST['confirmPassword'];
     $selectedStatus = $_POST['statusSelect'];
 
-    if($enteredPasswordS != $enteredConfirmPasswordS){
-
-      if($enteredPasswordS != $enteredConfirmPasswordS){
-        ?> <script>
-          alert("ERROR: Entered Passwords don't match");
-        </script> <?php
-      }
+    if(empty($enteredFirstName) || empty($enteredLastName) || empty($enteredEmailAddress) || empty($enteredMobileNumber) ||
+      empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
+      empty($enteredUniversityNo) || $selectedFaculty == "NULL" || empty($enteredDegreeProgram) || empty($enteredBatch) ||
+      $selectedPosition == "NULL" || empty($enteredUsernameS) || empty($enteredPasswordS) || empty($enteredConfirmPasswordS) ||
+      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS){
 
       if(empty($enteredFirstName)){
         ?> <script>
@@ -156,7 +154,101 @@
         </script> <?php
       }
 
+      if(empty($enteredEmailAddress)){
+        ?> <script>
+          alert("ERROR: Email Address was not filled");
+        </script> <?php
+      }
 
+      if(empty($enteredMobileNumber)){
+        ?> <script>
+          alert("ERROR: Mobile Number was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredStreetAddress)){
+        ?> <script>
+          alert("ERROR: Street Address was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredCity)){
+        ?> <script>
+          alert("ERROR: City was not filled");
+        </script> <?php
+      }
+
+      if($selectedProvience == "NULL"){
+        ?> <script>
+          alert("ERROR: Provience was not selected");
+        </script> <?php
+      }
+
+      if(empty($enteredZipPostalCode)){
+        ?> <script>
+          alert("ERROR: Zip/Postal Code was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredUniversityNo)){
+        ?> <script>
+          alert("ERROR: University Index No was not filled");
+        </script> <?php
+      }
+
+      if($selectedFaculty == "NULL"){
+        ?> <script>
+          alert("ERROR: Faculty was not selected");
+        </script> <?php
+      }
+
+      if(empty($enteredDegreeProgram)){
+        ?> <script>
+          alert("ERROR: Degree Program was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredBatch)){
+        ?> <script>
+          alert("ERROR: Batch was not filled");
+        </script> <?php
+      }
+
+      if($selectedPosition == "NULL"){
+        ?> <script>
+          alert("ERROR: Position was not selected");
+        </script> <?php
+      }
+
+      if(empty($enteredUsernameS)){
+        ?> <script>
+          alert("ERROR: Username was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredPasswordS)){
+        ?> <script>
+          alert("ERROR: Password was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredConfirmPasswordS)){
+        ?> <script>
+          alert("ERROR: Confirm Password was not filled");
+        </script> <?php
+      }
+
+      if($selectedStatus == "NULL"){
+        ?> <script>
+          alert("ERROR: Status was not selected");
+        </script> <?php
+      }
+
+      if($enteredPasswordS != $enteredConfirmPasswordS){
+        ?> <script>
+          alert("ERROR: Entered Passwords don't match");
+        </script> <?php
+      }
 
     }
     else{
@@ -368,7 +460,7 @@
         alert("Student Account has been successfully created. Login is now eligible.");
       </script> <?php
 
-      echo "<script> location.href='../index.php'; </script>";
+      //echo "<script> location.href='../index.php'; </script>";
 
     }
 
@@ -380,7 +472,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> LSU Library - Dashboard </title>
+    <title> LSU Library - Registration </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -585,7 +677,7 @@
 
                 <!-- Modal Footer -->
                 <div class="modal-footer">
-                  <p>Don't have an account? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupFormModel">SignUp >></a></p>
+                  <p>Don't have an account? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupFormModel">SignUp></a></p>
                 </div>
 
               </div>
@@ -701,7 +793,7 @@
                 <form action="signupStudentPage.php" method="POST" onSubmit="return confirm('Are all the entered details accurate?');">
 
                   <p class="formText">Full Name</p>
-                      <input type="text" name="firstName" placeholder="First Name" class="formInput"
+                      <input type="text" name="firstName" placeholder="First Name" class="formInput" required
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                       data-toggle="tooltip" data-placement="left">
                       <p class="mandatoryAsterisk" style="top: 40px;
@@ -713,7 +805,7 @@
                       style="margin-left: 20px;">
 
                     <br>
-                      <input type="text" name="lastName" placeholder="Last Name" class="formInput"
+                      <input type="text" name="lastName" placeholder="Last Name" class="formInput" required
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                       data-toggle="tooltip" data-placement="left"
                       style="width: 527px;">
@@ -721,14 +813,14 @@
                                                           left: 605px;">*</p>
 
                   <p class="formText">Email Address</p>
-                    <input type="email" name="email" placeholder="eg:- sample@provider.com" class="formInput"
+                    <input type="email" name="email" placeholder="eg:- sample@provider.com" class="formInput" required
                     title="Mandatory, Enter valid email address"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 216px;
                                                         left: 328px;">*</p>
 
                   <p class="formText">Phone Number</p>
-                    <input type="number" name="mobileNumber" placeholder="Mobile Number" class="formInput"
+                    <input type="number" name="mobileNumber" placeholder="Mobile Number" class="formInput" required
                     title="Mandatory, Only 10 numeric characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 328px;
@@ -740,13 +832,13 @@
                     data-toggle="tooltip" data-placement="left">
 
                   <p class="formText">Address</p>
-                    <input type="text" name="streetAddress" placeholder="Street Address" class="formInput"
+                    <input type="text" name="streetAddress" placeholder="Street Address" class="formInput" required
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 438px;
                                                         left: 328px;">*</p>
 
-                    <input type="text" name="city" placeholder="City" class="formInput"
+                    <input type="text" name="city" placeholder="City" class="formInput" required
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
@@ -773,7 +865,7 @@
                                                         left: 328px;">*</p>
 
                     <input type="text" name="zipPostalCode" placeholder="Zip/Postal Code" class="formInput"
-                    style="margin-left: 20px;"
+                    style="margin-left: 20px;" required
                     title="Mandatory, Only Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 504px;
@@ -781,7 +873,7 @@
 
                   <p class="formText">University Information</p>
                     <input type="text" name="universityIndexNo" placeholder="University Index No" class="formInput"
-                    title="Mandatory, Enter only numeric characters"
+                    title="Mandatory, Enter only numeric characters" required
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 614px;
                                                         left: 328px;">*</p>
@@ -805,14 +897,14 @@
 
                     <br>
 
-                    <input type="text" name="degreeProgram" placeholder="Degree Program" class="formInput"
+                    <input type="text" name="degreeProgram" placeholder="Degree Program" class="formInput" required
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 685px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" class="formInput"
-                    style="margin-left: 20px;"
+                    style="margin-left: 20px;" required
                     title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 685px;
@@ -832,7 +924,7 @@
                                                         left: 328px;">*</p>
 
                   <p class="formText">Login Credentails</p>
-                    <input type="text" name="Username" placeholder="Username" class="formInput"
+                    <input type="text" name="Username" placeholder="Username" class="formInput" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 858px;
@@ -840,14 +932,14 @@
 
                     <br>
 
-                    <input type="password" name="Password" placeholder="Enter Password" class="formInput"
+                    <input type="password" name="Password" placeholder="Enter Password" class="formInput" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 925px;
                                                         left: 328px;">*</p>
 
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" class="formInput"
-                    style="margin-left: 20px;"
+                    style="margin-left: 20px;" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
                     <p class="mandatoryAsterisk" style="top: 925px;
@@ -876,7 +968,7 @@
                       <p style="margin-top: 20px;
                                 text-decoration: underline;">Terms and Conditions</p>
                       <p>Please read through the <a href="#">Terms and Conditions</a> and tick the below <br>box to continue the registration</p>
-                      <input type="checkbox" name="tAndCAgreement" title="Mandatory, Tick Checkbox if agree"
+                      <input type="checkbox" name="tAndCAgreement" title="Mandatory, Tick Checkbox if agree" required
                         data-toggle="tooltip" data-placement="left" style="height: 20px;
                                                                             width: 20px;">
                       <p style="position: absolute;

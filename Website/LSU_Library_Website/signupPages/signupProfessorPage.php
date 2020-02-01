@@ -135,13 +135,11 @@
     $enteredConfirmPasswordS = $_POST['confirmPassword'];
     $selectedStatus = $_POST['statusSelect'];
 
-    if($enteredPasswordS != $enteredConfirmPasswordS){
-
-      if($enteredPasswordS != $enteredConfirmPasswordS){
-        ?> <script>
-          alert("ERROR: Entered Passwords don't match");
-        </script> <?php
-      }
+    if(empty($enteredFirstName) || empty($enteredLastName) || empty($enteredEmailAddress) || empty($enteredMobileNumber) ||
+      empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
+      empty($enteredUniversityNo) || $selectedFaculty == "NULL" || empty($enteredSpecialization) || $selectedPosition == "NULL" ||
+      empty($enteredUsernameS) || empty($enteredPasswordS) || empty($enteredConfirmPasswordS) ||
+      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS){
 
       if(empty($enteredFirstName)){
         ?> <script>
@@ -155,7 +153,95 @@
         </script> <?php
       }
 
+      if(empty($enteredEmailAddress)){
+        ?> <script>
+          alert("ERROR: Email Address was not filled");
+        </script> <?php
+      }
 
+      if(empty($enteredMobileNumber)){
+        ?> <script>
+          alert("ERROR: Mobile Number was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredStreetAddress)){
+        ?> <script>
+          alert("ERROR: Street Address was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredCity)){
+        ?> <script>
+          alert("ERROR: City was not filled");
+        </script> <?php
+      }
+
+      if($selectedProvience == "NULL"){
+        ?> <script>
+          alert("ERROR: Provience was not selected");
+        </script> <?php
+      }
+
+      if(empty($enteredZipPostalCode)){
+        ?> <script>
+          alert("ERROR: Zip/Postal Code was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredUniversityNo)){
+        ?> <script>
+          alert("ERROR: University Index No was not filled");
+        </script> <?php
+      }
+
+      if($selectedFaculty == "NULL"){
+        ?> <script>
+          alert("ERROR: Faculty was not selected");
+        </script> <?php
+      }
+
+      if(empty($enteredSpecialization)){
+        ?> <script>
+          alert("ERROR: Specialization was not filled");
+        </script> <?php
+      }
+
+      if($selectedPosition == "NULL"){
+        ?> <script>
+          alert("ERROR: Position was not selected");
+        </script> <?php
+      }
+
+      if(empty($enteredUsernameS)){
+        ?> <script>
+          alert("ERROR: Username was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredPasswordS)){
+        ?> <script>
+          alert("ERROR: Password was not filled");
+        </script> <?php
+      }
+
+      if(empty($enteredConfirmPasswordS)){
+        ?> <script>
+          alert("ERROR: Confirm Password was not filled");
+        </script> <?php
+      }
+
+      if($selectedStatus == "NULL"){
+        ?> <script>
+          alert("ERROR: Status was not selected");
+        </script> <?php
+      }
+
+      if($enteredPasswordS != $enteredConfirmPasswordS){
+        ?> <script>
+          alert("ERROR: Entered Passwords don't match");
+        </script> <?php
+      }
 
     }
     else{
