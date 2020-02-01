@@ -133,7 +133,17 @@
     if(empty($enteredFirstName) || empty($enteredLastName) || empty($enteredEmailAddress) || empty($enteredMobileNumber) ||
       empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
       empty($enteredUsernameS) || empty($enteredPasswordS) || empty($enteredConfirmPasswordS) ||
-      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS){
+      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS ||
+
+      (strlen($enteredMobileNumber) != 10)
+
+      ){
+
+      if(strlen($enteredMobileNumber) != 10){
+        ?> <script>
+          alert("ERROR: Phone Number doesn't have 10 characters");
+        </script> <?php
+      }
 
       if(empty($enteredFirstName)){
         ?> <script>
