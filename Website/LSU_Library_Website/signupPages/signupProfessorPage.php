@@ -594,7 +594,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1615px;
+                      height: 1565px;
                       background-color: #F6F6F6;">
 
 
@@ -613,7 +613,7 @@
             </button>
 
             <div style="width: 55%;
-                        height: 1450px;
+                        height: 1400px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;

@@ -185,76 +185,87 @@
         mysqli_query($databaseConn, $userSQL);
 
         // Retrieving the UserID of the newly added record from the User table
-        $userIDDBSQL = "SELECT UserID FROM User WHERE LastName = '$enteredLastName'
-                      AND EmailAddress = '$enteredEmailAddress';";
+        $userIDDBSQL = "SELECT UserID FROM User WHERE lLoginID = '$loginIDDB';";
         $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
         $userIDDBRow = mysqli_fetch_array($userIDDBResult);
         $userIDDB = $userIDDBRow["UserID"];
 
-      // Checking if the entered city is already available in the database.
+
+
+      // Checking if the entered city is already available in the UserCity table.
+      $checkCity = "";
+      $existingCityID = "";
       $cityDBSQL = "SELECT * FROM UserCity";
       $cityDBResult = mysqli_query($databaseConn, $cityDBSQL);
       while($cityDBRow = mysqli_fetch_array($cityDBResult)){
         if($cityDBRow["City"] == $enteredCity){
-
           $existingCityID = $cityDBRow["CityID"];
-
-          // Updating User table record with city ID for the newly added record
-          $cityUpdateSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE UserID = '$userIDDB';";
-          mysqli_query($databaseConn, $cityUpdateSQL);
-
+          $checkCity = 1;
         }
         else if($cityDBRow["City"] != $enteredCity){
-
-          // Inserting new city record into the UserCity table
-          $cityInsertSQL = "INSERT INTO UserCity VALUES ('$enteredCity');";
-          mysqli_query($databaseConn, $cityInsertSQL);
-
-          //Retrieving CityID from the UserCity tsble for the newly added record
-          $cityIDDBSQL = "SELECT CityID FROM UserCity WHERE City = '$enteredCity';";
-          $cityIDDBResult = mysqli_query($databaseConn, $cityIDDBSQL);
-          $cityIDDBRow = mysqli_fetch_array($cityIDDBResult);
-          $cityIDDB = $cityIDDBRow["CityID"];
-
-          // Updating User table record with city ID for the newly added record
-          $cityUpdateSQL = "UPDATE User SET ucCityID = '$cityIDDB' WHERE UserID = '$userIDDB';";
-          mysqli_query($databaseConn, $cityUpdateSQL);
-
+          $checkCity = 0;
         }
-
       }
 
-      // Checking if the entered zipPostalCode is already available in the database.
+
+      // Checking if the city is already existing in the UserCity table
+      if($checkCity == 1){
+        // Updating User table record with city ID for the newly added record
+        $cityUpdateSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $cityUpdateSQL);
+      }
+      else if($checkCity == 0){
+        // Inserting new city record into the UserCity table
+        $cityInsertSQL = "INSERT INTO UserCity (City) VALUES ('$enteredCity');";
+        mysqli_query($databaseConn, $cityInsertSQL);
+
+        //Retrieving CityID from the UserCity tsble for the newly added record
+        $cityIDDBSQL = "SELECT CityID FROM UserCity WHERE City = '$enteredCity';";
+        $cityIDDBResult = mysqli_query($databaseConn, $cityIDDBSQL);
+        $cityIDDBRow = mysqli_fetch_array($cityIDDBResult);
+        $cityIDDB = $cityIDDBRow["CityID"];
+
+        // Updating User table record with city ID for the newly added record
+        $cityUpdateSQL = "UPDATE User SET ucCityID = '$cityIDDB' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $cityUpdateSQL);
+      }
+
+
+      // Checking if the entered zipPostalCode is already available in the UserZipPostalCode table.
+      $checkZip = "";
+      $existingZipID = "";
       $zipDBSQL = "SELECT * FROM UserZipPostalCode";
       $zipDBResult = mysqli_query($databaseConn, $zipDBSQL);
       while($zipDBRow = mysqli_fetch_array($zipDBResult)){
         if($zipDBRow["ZipPostalCode"] == $enteredZipPostalCode){
-
           $existingZipID = $cityDBRow["ZPCID"];
-
-          // Updating User table record with ZPCID for the newly added record
-          $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
-          mysqli_query($databaseConn, $zipUpdateSQL);
-
+          $checkZip = 1;
         }
         else if($zipDBRow["ZipPostalCode"] != $enteredZipPostalCode){
-
-          // Inserting new zipPostalCode record into the UserZipPostalCode table
-          $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
-          mysqli_query($databaseConn, $zipInsertSQL);
-
-          // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
-          $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
-          $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
-          $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
-          $zipIDDB = $zipIDDBRow["ZPCID"];
-
-          // Updating User table record with ZPCID for the newly added record
-          $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
-          mysqli_query($databaseConn, $zipUpdateSQL);
-
+          $checkCity = 0;
         }
+      }
 
+      // Checking if zip value is available in the UserZipPostalCode table
+      if($checkZip == 1){
+        // Updating User table record with ZPCID for the newly added record
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $zipUpdateSQL);
+      }
+      else if($checkZip == 0){
+        // Inserting new zipPostalCode record into the UserZipPostalCode table
+        $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
+        mysqli_query($databaseConn, $zipInsertSQL);
+
+        // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
+        $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
+        $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
+        $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
+        $zipIDDB = $zipIDDBRow["ZPCID"];
+
+        // Updating User table record with ZPCID for the newly added record
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $zipUpdateSQL);
       }
 
 
@@ -263,12 +274,7 @@
                                 mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES ('$userIDDB',
                                 '$enteredUniversityNo', 44120001, '$selectedStatus',
                                 '$selectedFaculty', '$selectedPosition');";
-        $test1 = mysqli_query($databaseConn, $universityMemberSQL);
-
-        ?> <script>
-          alert("ERROR: <?php echo $test1;?>");
-        </script> <?php
-
+        mysqli_query($databaseConn, $universityMemberSQL);
 
 
         // Inserting new record into the Student table
@@ -276,84 +282,96 @@
                       VALUES ('$userIDDB', '$enteredUniversityNo')";
         mysqli_query($databaseConn, $studentSQL);
 
-      // Checking if the entered batch is already available in the database.
+
+      // Checking if the entered batch is already available in the StudentBatch Table.
+      $checkBatch = "";
+      $existingBatchID = "";
       $batchDBSQL = "SELECT * FROM StudentBatch";
       $batchDBResult = mysqli_query($databaseConn, $batchDBSQL);
       while($batchDBRow = mysqli_fetch_array($batchDBResult)){
         if($batchDBRow["Batch"] == $enteredBatch){
-
           $existingBatchID = $batchDBRow["BatchID"];
-
-          // Updating Student table for the newly added records
-          $batchUpdateSQL = "UPDATE Student SET sbBatchID = '$existingBatchID' WHERE
-                            umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
-
+          $checkBatch = 1;
         }
         else if($batchDBRow["Batch"] != $enteredBatch){
-
-          // Inserting new record into the StudentBatch table
-          $studentBatchInsert = "INSERT INTO StudentBatch (Batch) VALUES ('$enteredBatch');";
-          mysqli_query($databaseConn, $studentBatchInsert);
-
-          // Retrieving the BatchID from the newly added record
-          $batchIDDBSQL = "SELECT BatchID FROM StudentBatch WHERE Batch = '$enteredBatch';";
-          $batchIDDBResult = mysqli_query($databaseConn, $batchIDDBSQL);
-          $batchIDDBRow = mysqli_fetch_array($batchIDDBResult);
-          $batchIDDB = $batchIDDBRow["BatchID"];
-
-          // Updating Student table record with the new batchID
-          $studentUpdateSQL = "UPDATE Student SET sbBatchID = '$batchIDDB' WHERE umUserID = '$userIDDB'
-                              AND umUniversityNo = '$enteredUniversityNo';";
-          mysqli_query($databaseConn, $studentUpdateSQL);
-
+          $checkBatch = 0;
         }
+      }
 
+      // Checking if the entered batch is already available in the StudentBatch Table.
+      if($checkBatch == 1){
+        // Updating Student table for the newly added records
+        $batchUpdateSQL = "UPDATE Student SET sbBatchID = '$existingBatchID' WHERE
+                          umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
+      }
+      else if($checkBatch == 0){
+        // Inserting new record into the StudentBatch table
+        $studentBatchInsert = "INSERT INTO StudentBatch (Batch) VALUES ('$enteredBatch');";
+        mysqli_query($databaseConn, $studentBatchInsert);
+
+        // Retrieving the BatchID from the newly added record
+        $batchIDDBSQL = "SELECT BatchID FROM StudentBatch WHERE Batch = '$enteredBatch';";
+        $batchIDDBResult = mysqli_query($databaseConn, $batchIDDBSQL);
+        $batchIDDBRow = mysqli_fetch_array($batchIDDBResult);
+        $batchIDDB = $batchIDDBRow["BatchID"];
+
+        // Updating Student table record with the new batchID
+        $studentUpdateSQL = "UPDATE Student SET sbBatchID = '$batchIDDB' WHERE umUserID = '$userIDDB'
+                            AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $studentUpdateSQL);
       }
 
 
-      // Checking if the entered degree program is already available in the database.
+
+      // Checking if the entered degree program is already available in the StudentDegreeProgram Table.
+      $checkProgram = "";
+      $existingProgramID = "";
       $programDBSQL = "SELECT * FROM StudentDegreeProgram";
       $programDBResult = mysqli_query($databaseConn, $programDBSQL);
       while($programDBRow = mysqli_fetch_array($programDBResult)){
         if($programDBRow["DegreeProgram"] == $enteredDegreeProgram){
-
           $existingProgramID = $programDBRow["DegreeProgram"];
-
-          // Updateing the Student record with the DegreeProgramID
-          $studentUpdateSQL = "UPDATE Student SET sdpDegreeProgramID = '$existingProgramID'
-                              WHERE umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
-          mysqli_query($databaseConn, $studentUpdateSQL);
-
+          $checkProgram = 1;
         }
         else if($programDBRow["DegreeProgram"] != $enteredDegreeProgram){
-
-          // Inserting new record into StudentDegreeProgram table
-          $degreeInsertSQL = "INSERT INTO StudentDegreeProgram (DegreeProgram)
-                              VALUES ('$enteredDegreeProgram')";
-          mysqli_query($databaseConn, $degreeInsertSQL);
-
-          // Retrieving DegreeProgramID of the newly added record from the StudentDegreeProgram table
-          $degreeProgramIDSQL = "SELECT DegreeProgramID FROM StudentDegreeProgram
-                        WHERE DegreeProgram = '$enteredDegreeProgram';";
-          $degreeProgramIDResult = mysqli_query($databaseConn, $degreeProgramIDSQL);
-          $degreeProgramIDRow = mysqli_fetch_array($degreeProgramIDResult);
-          $degreeProgramID = $degreeProgramIDRow["DegreeProgramID"];
-
-          // Updating Student table with the DegreeProgramID for the newly added record
-          $degreeUpdatedSQL = "UPDATE Student SET = '$degreeProgramID' WHERE umUserID = '$userIDDB'
-                              AND umUniversityNo = '$enteredUniversityNo';";
-          mysqli_query($databaseConn, $degreeUpdatedSQL);
-
+          $checkProgram = 0;
         }
-
       }
+
+      // Checking if the entered degree program is already in the StudentDegreeProgram Table.
+      if($checkProgram == 1){
+        // Updateing the Student record with the DegreeProgramID
+        $studentUpdateSQL = "UPDATE Student SET sdpDegreeProgramID = '$existingProgramID'
+                            WHERE umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $studentUpdateSQL);
+      }
+      else if($checkProgram == 0){
+        // Inserting new record into StudentDegreeProgram table
+        $degreeInsertSQL = "INSERT INTO StudentDegreeProgram (DegreeProgram)
+                            VALUES ('$enteredDegreeProgram')";
+        mysqli_query($databaseConn, $degreeInsertSQL);
+
+        // Retrieving DegreeProgramID of the newly added record from the StudentDegreeProgram table
+        $degreeProgramIDSQL = "SELECT DegreeProgramID FROM StudentDegreeProgram
+                      WHERE DegreeProgram = '$enteredDegreeProgram';";
+        $degreeProgramIDResult = mysqli_query($databaseConn, $degreeProgramIDSQL);
+        $degreeProgramIDRow = mysqli_fetch_array($degreeProgramIDResult);
+        $degreeProgramID = $degreeProgramIDRow["DegreeProgramID"];
+
+        // Updating Student table with the DegreeProgramID for the newly added record
+        $degreeUpdatedSQL = "UPDATE Student SET = '$degreeProgramID' WHERE umUserID = '$userIDDB'
+                            AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $degreeUpdatedSQL);
+      }
+
+
 
 
       ?> <script>
         alert("Student Account has been successfully created. Login is now eligible.");
       </script> <?php
 
-      echo "<script> location.href='../index.php'; </script>";
+    //  echo "<script> location.href='../index.php'; </script>";
 
     }
 
