@@ -126,15 +126,9 @@
     $enteredCity = $_POST['city'];
     $selectedProvience = $_POST['provienceSelect'];
     $enteredZipPostalCode = $_POST['zipPostalCode'];
-    $enteredUniversityNo = $_POST['universityIndexNo'];
-    $selectedFaculty = $_POST['facultySelect'];
-    $enteredDegreeProgram = $_POST['degreeProgram'];
-    $enteredBatch = $_POST['batch'];
-    $selectedPosition = $_POST['studentPosition'];
     $enteredUsernameS = $_POST['Username'];
     $enteredPasswordS = $_POST['Password'];
     $enteredConfirmPasswordS = $_POST['confirmPassword'];
-    $selectedStatus = $_POST['statusSelect'];
 
     if($enteredPasswordS != $enteredConfirmPasswordS){
 
@@ -160,35 +154,34 @@
 
     }
     else{
+      // Converting enter passowrd value into a hash value to store in the database
+      $enteredPasswordHash = password_hash($enteredPasswordS, PASSWORD_DEFAULT);
 
-        // Converting enter passowrd value into a hash value to store in the database
-        $enteredPasswordHash = password_hash($enteredPasswordS, PASSWORD_DEFAULT);
+      // Inserting new record into Login table
+      $loginSQL = "INSERT INTO Login (Username, Password, lutUserTypeID) VALUES
+                  ('$enteredUsernameS', '$enteredPasswordHash', 65350001);";
+      mysqli_query($databaseConn, $loginSQL);
 
-        // Inserting new record into Login table
-        $loginSQL = "INSERT INTO Login (Username, Password, lutUserTypeID) VALUES
-                    ('$enteredUsernameS', '$enteredPasswordHash', 65350001);";
-        mysqli_query($databaseConn, $loginSQL);
+      // Retrieving the LoginID of the newly added recprd from the Login table
+      $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$enteredUsernameS'
+                      AND Password = '$enteredPasswordHash';";
+      $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
+      $loginIDRow = mysqli_fetch_array($loginIDResult);
+      $loginIDDB = $loginIDRow["LoginID"];
 
-        // Retrieving the LoginID of the newly added recprd from the Login table
-        $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$enteredUsernameS'
-                        AND Password = '$enteredPasswordHash';";
-        $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
-        $loginIDRow = mysqli_fetch_array($loginIDResult);
-        $loginIDDB = $loginIDRow["LoginID"];
+      // Insert new record into the User table
+      $userSQL = "INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress,
+        StreetAddress, upProvienceID, MobileNumber, TelephoneNumber, lLoginID)
+        VALUES ('$enteredFirstName', '$enteredMiddleName', '$enteredLastName', '$enteredEmailAddress',
+        '$enteredStreetAddress', '$selectedProvience', '$enteredMobileNumber', '$enteredTelephoneNumber',
+        '$loginIDDB');";
+      mysqli_query($databaseConn, $userSQL);
 
-        // Insert new record into the User table
-        $userSQL = "INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress,
-          StreetAddress, upProvienceID, MobileNumber, TelephoneNumber, lLoginID)
-          VALUES ('$enteredFirstName', '$enteredMiddleName', '$enteredLastName', '$enteredEmailAddress',
-          '$enteredStreetAddress', '$selectedProvience', '$enteredMobileNumber', '$enteredTelephoneNumber',
-          '$loginIDDB');";
-        mysqli_query($databaseConn, $userSQL);
-
-        // Retrieving the UserID of the newly added record from the User table
-        $userIDDBSQL = "SELECT UserID FROM User WHERE lLoginID = '$loginIDDB';";
-        $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
-        $userIDDBRow = mysqli_fetch_array($userIDDBResult);
-        $userIDDB = $userIDDBRow["UserID"];
+      // Retrieving the UserID of the newly added record from the User table
+      $userIDDBSQL = "SELECT UserID FROM User WHERE lLoginID = '$loginIDDB';";
+      $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
+      $userIDDBRow = mysqli_fetch_array($userIDDBResult);
+      $userIDDB = $userIDDBRow["UserID"];
 
 
 
@@ -214,7 +207,7 @@
         $cityUpdateSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE UserID = '$userIDDB';";
         mysqli_query($databaseConn, $cityUpdateSQL);
       }
-      else if($checkCity == 0){
+        else if($checkCity == 0){
         // Inserting new city record into the UserCity table
         $cityInsertSQL = "INSERT INTO UserCity (City) VALUES ('$enteredCity');";
         mysqli_query($databaseConn, $cityInsertSQL);
@@ -248,127 +241,37 @@
 
       // Checking if zip value is available in the UserZipPostalCode table
       if($checkZip == 1){
-        // Updating User table record with ZPCID for the newly added record
-        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
-        mysqli_query($databaseConn, $zipUpdateSQL);
+      // Updating User table record with ZPCID for the newly added record
+      $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
+      mysqli_query($databaseConn, $zipUpdateSQL);
       }
       else if($checkZip == 0){
-        // Inserting new zipPostalCode record into the UserZipPostalCode table
-        $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
-        mysqli_query($databaseConn, $zipInsertSQL);
+      // Inserting new zipPostalCode record into the UserZipPostalCode table
+      $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
+      mysqli_query($databaseConn, $zipInsertSQL);
 
-        // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
-        $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
-        $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
-        $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
-        $zipIDDB = $zipIDDBRow["ZPCID"];
+      // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
+      $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
+      $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
+      $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
+      $zipIDDB = $zipIDDBRow["ZPCID"];
 
-        // Updating User table record with ZPCID for the newly added record
-        $t2 = $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
-        mysqli_query($databaseConn, $zipUpdateSQL);
+      // Updating User table record with ZPCID for the newly added record
+      $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
+      mysqli_query($databaseConn, $zipUpdateSQL);
       }
 
+      // Inserting new record into Librarian Table
+      $librarianSQL = "INSERT INTO Librarian VALUES ('$userIDDB');";
+      mysqli_query($databaseConn, $librarianSQL);
 
-        // Insert new record into the UniversityMember table
-        $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityNo, mmtMemberTypeID,
-                                mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES ('$userIDDB',
-                                '$enteredUniversityNo', 44120001, '$selectedStatus',
-                                '$selectedFaculty', '$selectedPosition');";
-        mysqli_query($databaseConn, $universityMemberSQL);
-
-        // Inserting new record into the Student table
-        $studentSQL = "INSERT INTO Student (umUserID, umUniversityNo)
-                      VALUES ('$userIDDB', '$enteredUniversityNo')";
-        mysqli_query($databaseConn, $studentSQL);
-
-
-      // Checking if the entered batch is already available in the StudentBatch Table.
-      $checkBatch = "";
-      $existingBatchID = "";
-      $batchDBSQL = "SELECT * FROM StudentBatch";
-      $batchDBResult = mysqli_query($databaseConn, $batchDBSQL);
-      while($batchDBRow = mysqli_fetch_array($batchDBResult)){
-        if($batchDBRow["Batch"] == $enteredBatch){
-          $existingBatchID = $batchDBRow["BatchID"];
-          $checkBatch = 1;
-        }
-        else if($batchDBRow["Batch"] != $enteredBatch){
-          $checkBatch = 0;
-        }
-      }
-
-      // Checking if the entered batch is already available in the StudentBatch Table.
-      if($checkBatch == 1){
-        // Updating Student table for the newly added records
-        $batchUpdateSQL = "UPDATE Student SET sbBatchID = '$existingBatchID' WHERE
-                          umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
-        mysqli_query($databaseConn, $batchUpdateSQL);
-      }
-      else if($checkBatch == 0){
-        // Inserting new record into the StudentBatch table
-        $studentBatchInsert = "INSERT INTO StudentBatch (Batch) VALUES ('$enteredBatch');";
-        mysqli_query($databaseConn, $studentBatchInsert);
-
-        // Retrieving the BatchID from the newly added record
-        $batchIDDBSQL = "SELECT BatchID FROM StudentBatch WHERE Batch = '$enteredBatch';";
-        $batchIDDBResult = mysqli_query($databaseConn, $batchIDDBSQL);
-        $batchIDDBRow = mysqli_fetch_array($batchIDDBResult);
-        $batchIDDB = $batchIDDBRow["BatchID"];
-
-        // Updating Student table record with the new batchID
-        $studentUpdateSQL = "UPDATE Student SET sbBatchID = '$batchIDDB' WHERE umUserID = '$userIDDB'
-                            AND umUniversityNo = '$enteredUniversityNo';";
-        mysqli_query($databaseConn, $studentUpdateSQL);
-      }
-
-
-
-      // Checking if the entered degree program is already available in the StudentDegreeProgram Table.
-      $checkProgram = "";
-      $existingProgramID = "";
-      $programDBSQL = "SELECT * FROM StudentDegreeProgram;";
-      $programDBResult = mysqli_query($databaseConn, $programDBSQL);
-      while($programDBRow = mysqli_fetch_array($programDBResult)){
-        if($programDBRow["DegreeProgram"] == $enteredDegreeProgram){
-          $existingProgramID = $programDBRow["DegreeProgramID"];
-          $checkProgram = 1;
-        }
-        else if($programDBRow["DegreeProgram"] != $enteredDegreeProgram){
-          $checkProgram = 0;
-        }
-      }
-
-      // Checking if the entered degree program is already in the StudentDegreeProgram Table.
-      if($checkProgram == 1){
-        // Updateing the Student record with the DegreeProgramID
-        $studentUpdateSQL = "UPDATE Student SET sdpDegreeProgramID = '$existingProgramID'
-                            WHERE umUserID = '$userIDDB' AND umUniversityNo = '$enteredUniversityNo';";
-        mysqli_query($databaseConn, $studentUpdateSQL);
-      }
-      else if($checkProgram == 0){
-        // Inserting new record into StudentDegreeProgram table
-        $degreeInsertSQL = "INSERT INTO StudentDegreeProgram (DegreeProgram)
-                            VALUES ('$enteredDegreeProgram');";
-        mysqli_query($databaseConn, $degreeInsertSQL);
-
-        // Retrieving DegreeProgramID of the newly added record from the StudentDegreeProgram table
-        $degreeProgramIDSQL = "SELECT DegreeProgramID FROM StudentDegreeProgram
-                      WHERE DegreeProgram = '$enteredDegreeProgram';";
-        $degreeProgramIDResult = mysqli_query($databaseConn, $degreeProgramIDSQL);
-        $degreeProgramIDRow = mysqli_fetch_array($degreeProgramIDResult);
-        $degreeProgramID = $degreeProgramIDRow["DegreeProgramID"];
-
-        // Updating Student table with the DegreeProgramID for the newly added record
-        $degreeUpdatedSQL = "UPDATE Student SET sdpDegreeProgramID = '$degreeProgramID' WHERE umUserID = '$userIDDB'
-                            AND umUniversityNo = '$enteredUniversityNo';";
-        mysqli_query($databaseConn, $degreeUpdatedSQL);
-      }
 
       ?> <script>
-        alert("Student Account has been successfully created. Login is now eligible.");
+      alert("Student Account has been successfully created. Login is now eligible.");
       </script> <?php
 
-      echo "<script> location.href='../index.php'; </script>";
+    //  echo "<script> location.href='../index.php'; </script>";
+
 
     }
 
@@ -380,7 +283,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> LSU Library - Dashboard </title>
+    <title> LSU Library - Registration </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -549,7 +452,7 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                  <form method="POST" action="signupStudentPage.php">
+                  <form method="POST" action="signupLibrarianPage.php">
                     <p class="formText">Username </p>
                     <i class="fa fa-user-circle-o"></i>
                     <input type="text" name="username" placeholder="Enter your USERNAME" required>
@@ -610,7 +513,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1615px;
+                      height: 1345px;
                       background-color: #F6F6F6;">
 
 
@@ -629,7 +532,7 @@
             </button>
 
             <div style="width: 55%;
-                        height: 1450px;
+                        height: 1150px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -639,7 +542,7 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>Student Membership</b></p>
+                        text-align: center;"><b>Librarian Membership</b></p>
 
               <style>
                 #signupForm{
@@ -698,7 +601,7 @@
 
               <!-- Signup Form SECTION - Begin -->
               <div id="signupForm">
-                <form action="signupStudentPage.php" method="POST" onSubmit="return confirm('Are all the entered details accurate?');">
+                <form action="signupLibrarianPage.php" method="POST" onSubmit="return confirm('Are all the entered details accurate?');">
 
                   <p class="formText">Full Name</p>
                       <input type="text" name="firstName" placeholder="First Name" class="formInput"
@@ -779,63 +682,12 @@
                     <p class="mandatoryAsterisk" style="top: 504px;
                                                         left: 603px;">*</p>
 
-                  <p class="formText">University Information</p>
-                    <input type="text" name="universityIndexNo" placeholder="University Index No" class="formInput"
-                    title="Mandatory, Enter only numeric characters"
-                    data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 614px;
-                                                        left: 328px;">*</p>
-
-
-                    <select name="facultySelect" class="formInput"
-                    style="margin-left: 20px;"
-                    title="Mandatory, Select the Faculty"
-                    data-toggle="tooltip" data-placement="left">
-                      <option value="NULL">Faculty</option>
-                      <?php
-                        // Retrieving the faculties from the database, MemberFaculty table
-                        $facultySQL = "SELECT * FROM MemberFaculty;";
-                        $facultyResult = mysqli_query($databaseConn, $facultySQL);
-                        while($facultyRow = mysqli_fetch_array($facultyResult)){
-                      ?>
-                      <option value="<?php echo $facultyRow["FacultyID"];?>"><?php echo $facultyRow["Faculty"];} ?></option>
-                    </select>
-                    <p class="mandatoryAsterisk" style="top: 614px;
-                                                        left: 603px;">*</p>
-
-                    <br>
-
-                    <input type="text" name="degreeProgram" placeholder="Degree Program" class="formInput"
-                    title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 685px;
-                                                        left: 328px;">*</p>
-
-                    <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" class="formInput"
-                    style="margin-left: 20px;"
-                    title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 685px;
-                                                        left: 603px;">*</p>
-
-                    <br>
-
-                    <select name="studentPosition" class="formInput"
-                    title="Mandatory,  Select the Position"
-                    data-toggle="tooltip" data-placement="left">
-                      <option value="NULL">Position</option>
-                      <option value="92130001">Undergraduate Student</option>
-                      <option value="92130002">Postgraduate Student</option>
-                      <option value="92130003">Alumni</option>
-                    </select>
-                    <p class="mandatoryAsterisk" style="top: 750px;
-                                                        left: 328px;">*</p>
 
                   <p class="formText">Login Credentails</p>
                     <input type="text" name="Username" placeholder="Username" class="formInput"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 858px;
+                    <p class="mandatoryAsterisk" style="top: 615px;
                                                         left: 328px;">*</p>
 
                     <br>
@@ -843,34 +695,17 @@
                     <input type="password" name="Password" placeholder="Enter Password" class="formInput"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 925px;
+                    <p class="mandatoryAsterisk" style="top: 683px;
                                                         left: 328px;">*</p>
 
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 925px;
+                    <p class="mandatoryAsterisk" style="top: 683px;
                                                         left: 603px;">*</p>
 
                     <br>
-
-                    <select name="statusSelect" class="formInput"
-                    title="Mandatory, Select the Status"
-                    data-toggle="tooltip" data-placement="left">
-                      <option value="NULL">Status</option>
-                      <?php
-                        // Retrieving the status from the database, MemberStatus table
-                        $statusSQL = "SELECT * FROM MemberMemberStatus;";
-                        $statusResult = mysqli_query($databaseConn, $statusSQL);
-                        while($statusRow = mysqli_fetch_array($statusResult)){
-                      ?>
-                      <option value="<?php echo $statusRow["MemberStatusID"];?>"><?php echo $statusRow["MemberStatus"];} ?></option>
-                    </select>
-                    <p class="mandatoryAsterisk" style="top: 992px;
-                                                        left: 328px;">*</p>
-                    </select>
-
 
                     <div class="formText">
                       <p style="margin-top: 20px;
@@ -881,7 +716,7 @@
                                                                             width: 20px;">
                       <p style="position: absolute;
                                 left: 140px;
-                                top: 1190px;"
+                                top: 883px;"
                                 title="Mandatory, Tick Checkbox if agree"
                                 data-toggle="tooltip" data-placement="left">I have read and I agree to the Terms and Conditions</p>
                     </div>

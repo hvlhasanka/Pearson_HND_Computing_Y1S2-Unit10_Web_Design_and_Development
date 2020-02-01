@@ -196,36 +196,36 @@
       $cityDBSQL = "SELECT * FROM UserCity";
       $cityDBResult = mysqli_query($databaseConn, $cityDBSQL);
       while($cityDBRow = mysqli_fetch_array($cityDBResult)){
-      if($cityDBRow["City"] == $enteredCity){
-        $existingCityID = $cityDBRow["CityID"];
-        $checkCity = 1;
-      }
-      else if($cityDBRow["City"] != $enteredCity){
-        $checkCity = 0;
-      }
+        if($cityDBRow["City"] == $enteredCity){
+          $existingCityID = $cityDBRow["CityID"];
+          $checkCity = 1;
+        }
+        else if($cityDBRow["City"] != $enteredCity){
+          $checkCity = 0;
+        }
       }
 
 
       // Checking if the city is already existing in the UserCity table
       if($checkCity == 1){
-      // Updating User table record with city ID for the newly added record
-      $cityUpdateSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE UserID = '$userIDDB';";
-      mysqli_query($databaseConn, $cityUpdateSQL);
+        // Updating User table record with city ID for the newly added record
+        $cityUpdateSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $cityUpdateSQL);
       }
       else if($checkCity == 0){
-      // Inserting new city record into the UserCity table
-      $cityInsertSQL = "INSERT INTO UserCity (City) VALUES ('$enteredCity');";
-      mysqli_query($databaseConn, $cityInsertSQL);
+        // Inserting new city record into the UserCity table
+        $cityInsertSQL = "INSERT INTO UserCity (City) VALUES ('$enteredCity');";
+        mysqli_query($databaseConn, $cityInsertSQL);
 
-      //Retrieving CityID from the UserCity tsble for the newly added record
-      $cityIDDBSQL = "SELECT CityID FROM UserCity WHERE City = '$enteredCity';";
-      $cityIDDBResult = mysqli_query($databaseConn, $cityIDDBSQL);
-      $cityIDDBRow = mysqli_fetch_array($cityIDDBResult);
-      $cityIDDB = $cityIDDBRow["CityID"];
+        //Retrieving CityID from the UserCity tsble for the newly added record
+        $cityIDDBSQL = "SELECT CityID FROM UserCity WHERE City = '$enteredCity';";
+        $cityIDDBResult = mysqli_query($databaseConn, $cityIDDBSQL);
+        $cityIDDBRow = mysqli_fetch_array($cityIDDBResult);
+        $cityIDDB = $cityIDDBRow["CityID"];
 
-      // Updating User table record with city ID for the newly added record
-      $cityUpdateSQL = "UPDATE User SET ucCityID = '$cityIDDB' WHERE UserID = '$userIDDB';";
-      mysqli_query($databaseConn, $cityUpdateSQL);
+        // Updating User table record with city ID for the newly added record
+        $cityUpdateSQL = "UPDATE User SET ucCityID = '$cityIDDB' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $cityUpdateSQL);
       }
 
 
@@ -246,24 +246,24 @@
 
       // Checking if zip value is available in the UserZipPostalCode table
       if($checkZip == 1){
-      // Updating User table record with ZPCID for the newly added record
-      $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
-      mysqli_query($databaseConn, $zipUpdateSQL);
+        // Updating User table record with ZPCID for the newly added record
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $zipUpdateSQL);
       }
       else if($checkZip == 0){
-      // Inserting new zipPostalCode record into the UserZipPostalCode table
-      $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
-      mysqli_query($databaseConn, $zipInsertSQL);
+        // Inserting new zipPostalCode record into the UserZipPostalCode table
+        $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
+        mysqli_query($databaseConn, $zipInsertSQL);
 
-      // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
-      $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
-      $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
-      $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
-      $zipIDDB = $zipIDDBRow["ZPCID"];
+        // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
+        $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
+        $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
+        $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
+        $zipIDDB = $zipIDDBRow["ZPCID"];
 
-      // Updating User table record with ZPCID for the newly added record
-      $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
-      mysqli_query($databaseConn, $zipUpdateSQL);
+        // Updating User table record with ZPCID for the newly added record
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $zipUpdateSQL);
       }
 
 
@@ -273,9 +273,6 @@
                               '$enteredUniversityNo', 44120002, '$selectedStatus',
                               '$selectedFaculty', '$selectedPosition');";
       mysqli_query($databaseConn, $universityMemberSQL);
-      ?> <script>
-        alert("<?php echo $selectedPosition;?>");
-      </script> <?php
 
 
       // Checking if the entered specialization is available in the ProfessorSpecialization table.
@@ -320,7 +317,7 @@
       alert("Student Account has been successfully created. Login is now eligible.");
       </script> <?php
 
-    //  echo "<script> location.href='../index.php'; </script>";
+      echo "<script> location.href='../index.php'; </script>";
 
 
     }
@@ -502,7 +499,7 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                  <form method="POST" action="index.php">
+                  <form method="POST" action="signupProfessorPage.php">
                     <p class="formText">Username </p>
                     <i class="fa fa-user-circle-o"></i>
                     <input type="text" name="username" placeholder="Enter your USERNAME" required>
