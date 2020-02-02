@@ -103,7 +103,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1380px;
+                      height: 1400px;
                       background-color: #F6F6F6;">
 
             <button type="button" name="return" style="color: #FFFFFF;
@@ -122,7 +122,7 @@
 
 
             <div style="width: 55%;
-                        height: 1100px;
+                        height: 1120px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -252,6 +252,10 @@
                     <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["DegreeProgram"]; ?> </p> <td>
                   </tr>
                   <tr>
+                    <td> <p class="containerSubTextStyle">Batch: </p> <td>
+                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["Batch"]; ?> </p> <td>
+                  </tr>
+                  <tr>
                     <td> <p class="containerSubTextStyle">Position: </p> <td>
                     <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["Position"]; ?> </p> <td>
                   </tr>
@@ -277,8 +281,8 @@
                                                                   border-radius: 5px;
                                                                   width: 360px;
                                                                   position: absolute;
-                                                                  top: 930px;
-                                                                  left: 120px;" onClick="window.location.href = 'changePassword.php';">
+                                                                  top: 940px;
+                                                                  left: 60px;" onClick="window.location.href = 'changePassword.php';">
                   <i class="fa fa-unlock" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
                   Change Password
@@ -294,7 +298,7 @@
                                                                 width: 300px;
                                                                 height: 50px;
                                                                 position: absolute;
-                                                                top: 1130px;
+                                                                top: 1150px;
                                                                 left: 690px;" onClick="window.location.href = 'updateDetails.php';">
                 <i class="fa fa-edit" style="font-size: 20px;
                                             margin-right: 10px;"></i>

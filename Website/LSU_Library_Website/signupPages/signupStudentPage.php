@@ -2,11 +2,6 @@
   // Starts the SESSION period
   session_start();
 
-//  // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-//  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
-//    header("location: ../../logout.php");
-//  }
-
   include_once("../LSULibraryDBConnection.php");
 
 
@@ -545,7 +540,7 @@
       padding: 12px;
       padding-left: 60px;
       font-size: 18px;
-      border-color:  #dfefff;
+      border: 1px solid #CCC;
       border-radius: 5px;
       margin-top: 2px;
       margin-left: 60px;
@@ -670,7 +665,7 @@
                     <p class="formText">Membership Type </p>
                     <i class="fa fa-group"></i>
                     <select name="membershipTypeLogin">
-                      <option value="NULL" selected>Select a Category</option>
+                      <option value="NULL" selected>Select a Membership</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
                       <option value="65350003">Librarian</option>

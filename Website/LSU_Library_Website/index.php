@@ -188,7 +188,7 @@
       padding: 12px;
       padding-left: 60px;
       font-size: 18px;
-      border-color:  #dfefff;
+      border: 1px solid #CCC;
       border-radius: 5px;
       margin-top: 2px;
       margin-left: 60px;
@@ -371,10 +371,10 @@
                     <i class="fa fa-key"></i>
                     <input type="password" name="password" placeholder="Enter your PASSWORD" required>
 
-                    <p class="formText">Member Type </p>
+                    <p class="formText">Membership Type </p>
                     <i class="fa fa-group"></i>
                     <select name="membershipTypeLogin">
-                      <option value="NULL" selected>Select a Category</option>
+                      <option value="NULL" selected>Select a Membership</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
                       <option value="65350003">Librarian</option>

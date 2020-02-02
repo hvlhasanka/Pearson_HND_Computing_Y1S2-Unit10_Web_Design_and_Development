@@ -381,7 +381,7 @@
                         margin-top: 0px;
                         margin-left: 95px;;
                         margin-bottom: 20px;
-                        border-color: #ccc;
+                        border: 1px solid #CCC;
                       }
 
                       .mandatoryAsterisk{

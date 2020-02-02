@@ -147,7 +147,7 @@
       $userSQL = "UPDATE User SET FirstName = '$enteredFirstName', MiddleName = '$enteredMiddleName',
                   LastName = '$enteredLastName', EmailAddress = '$enteredEmailAddress', MobileNumber = '$enteredMobileNumber',
                   TelephoneNumber = '$enteredTelephoneNumber', StreetAddress = '$enteredStreetAddress', upProvienceID = '$selectedProvience'
-                  WHERE UserID = '$userID';";
+                  WHERE lLoginID = '$loginID';";
       mysqli_query($databaseConn, $userSQL);
 
 
@@ -169,7 +169,7 @@
 
       if($checkCity == 1){
         // Updating User table with CityID
-        $existingCityIDSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE UserID = '$userID';";
+        $existingCityIDSQL = "UPDATE User SET ucCityID = '$existingCityID' WHERE lLoginID = '$loginID';";
         mysqli_query($databaseConn, $existingCityIDSQL);
       }
       else if($checkCity == 0){
@@ -184,7 +184,7 @@
         $newCityID = $retrieveCityIDRow["CityID"];
 
         // Updating User table with the CityID
-        $newCityIDSQL = "UPDATE User SET ucCityID = '$newCityID' WHERE UserID = '$userID';";
+        $newCityIDSQL = "UPDATE User SET ucCityID = '$newCityID' WHERE lLoginID = '$loginID';";
         mysqli_query($databaseConn, $newCityID);
       }
 
@@ -207,7 +207,7 @@
       // Checking if zip value is available in the UserZipPostalCode table
       if($checkZip == 1){
         // Updating User table record with ZPCID for the newly added record
-        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userID';";
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE lLoginID = '$loginID';";
         mysqli_query($databaseConn, $zipUpdateSQL);
       }
       else if($checkZip == 0){
@@ -222,15 +222,15 @@
         $zipIDDB = $zipIDDBRow["ZPCID"];
 
         // Updating User table record with ZPCID for the newly added record
-        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userID';";
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE lLoginID = '$loginID';";
         mysqli_query($databaseConn, $zipUpdateSQL);
       }
 
 
 
       // Updating UniversityMember table
-      $updateUniversityMemberSQL = "UPDATE UniversityMember SET mfFacultyID = '$selectedFaculty'
-                                    WHERE mUserID = '$userID' AND UniversityNo = '$enteredUniversityNo';";
+      $updateUniversityMemberSQL = "UPDATE UniversityMember SET mfFacultyID = '$selectedFaculty', mpPositionID = '$selectedPosition'
+                                    WHERE UniversityNo = '$enteredUniversityNo';";
       mysqli_query($databaseConn, $updateUniversityMemberSQL);
 
 
@@ -274,6 +274,60 @@
                             AND umUniversityNo = '$enteredUniversityNo';";
         mysqli_query($databaseConn, $studentUpdateSQL);
       }
+
+      // Checking if the entered degree program is already available in the StudentDegreeProgram Table.
+      $checkProgram = "";
+      $existingProgramID = "";
+      $programDBSQL = "SELECT * FROM StudentDegreeProgram;";
+      $programDBResult = mysqli_query($databaseConn, $programDBSQL);
+      while($programDBRow = mysqli_fetch_array($programDBResult)){
+        if($programDBRow["DegreeProgram"] == $enteredDegreeProgram){
+          $existingProgramID = $programDBRow["DegreeProgramID"];
+          $checkProgram = 1;
+          break;
+        }
+        else if($programDBRow["DegreeProgram"] != $enteredDegreeProgram){
+          $checkProgram = 0;
+        }
+      }
+
+      // Checking if the entered degree program is already in the StudentDegreeProgram Table.
+      if($checkProgram == 1){
+        // Updateing the Student record with the DegreeProgramID
+        $studentUpdateSQL = "UPDATE Student SET sdpDegreeProgramID = '$existingProgramID'
+                            WHERE umUserID = '$userID' AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $studentUpdateSQL);
+      }
+      else if($checkProgram == 0){
+        // Inserting new record into StudentDegreeProgram table
+        $degreeInsertSQL = "INSERT INTO StudentDegreeProgram (DegreeProgram)
+                            VALUES ('$enteredDegreeProgram');";
+        mysqli_query($databaseConn, $degreeInsertSQL);
+
+        // Retrieving DegreeProgramID of the newly added record from the StudentDegreeProgram table
+        $degreeProgramIDSQL = "SELECT DegreeProgramID FROM StudentDegreeProgram
+                      WHERE DegreeProgram = '$enteredDegreeProgram';";
+        $degreeProgramIDResult = mysqli_query($databaseConn, $degreeProgramIDSQL);
+        $degreeProgramIDRow = mysqli_fetch_array($degreeProgramIDResult);
+        $degreeProgramID = $degreeProgramIDRow["DegreeProgramID"];
+
+        // Updating Student table with the DegreeProgramID for the newly added record
+        $degreeUpdatedSQL = "UPDATE Student SET sdpDegreeProgramID = '$degreeProgramID' WHERE umUserID = '$userID'
+                            AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $degreeUpdatedSQL);
+      }
+
+      // Updating Login Table
+      $loginSQL = "UPDATE Login SET Username = '$enteredUsername' WHERE LoginID = '$loginID';";
+      mysqli_query($databaseConn, $loginSQL);
+
+      $_SESSION['username'] = "$enteredUsername";
+
+      ?> <script>
+        alert("Account Details successfully updated");
+      </script> <?php
+
+      echo "<script> location.href='accountDetails.php'; </script>";
 
     }
 
