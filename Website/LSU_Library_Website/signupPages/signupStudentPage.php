@@ -473,7 +473,7 @@
           alert("Student Account has been successfully created. Login is now eligible.");
         </script> <?php
 
-        //echo "<script> location.href='../index.php'; </script>";
+        echo "<script> location.href='../index.php'; </script>";
 
     }
 
@@ -769,7 +769,7 @@
                   margin-top: 0px;
                   margin-left: 95px;;
                   margin-bottom: 20px;
-                  border-color: #ccc;
+                  border: 1px solid #CCC;
                 }
 
                 .mandatoryAsterisk{
@@ -822,21 +822,21 @@
                       title="Mandatory, Only Uppercase Initials and Lowercase Alphabetic Characters"
                       data-toggle="tooltip" data-placement="left"
                       style="width: 527px;">
-                      <p class="mandatoryAsterisk" style="top: 108px;
+                      <p class="mandatoryAsterisk" style="top: 105px;
                                                           left: 605px;">*</p>
 
                   <p class="formText">Email Address</p>
                     <input type="email" name="email" placeholder="eg:- sample@provider.com" class="formInput" required
                     title="Mandatory, Enter valid email address"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 216px;
+                    <p class="mandatoryAsterisk" style="top: 214px;
                                                         left: 328px;">*</p>
 
                   <p class="formText">Phone Number</p>
                     <input type="number" name="mobileNumber" placeholder="Mobile Number" class="formInput" required
                     title="Mandatory, Only 10 numeric characters"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 328px;
+                    <p class="mandatoryAsterisk" style="top: 322px;
                                                         left: 328px;">*</p>
 
                     <input type="number" name="telephoneNumber" placeholder="Telephone Number" class="formInput"
@@ -848,14 +848,14 @@
                     <input type="text" name="streetAddress" placeholder="Street Address" class="formInput" required
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 438px;
+                    <p class="mandatoryAsterisk" style="top: 430px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="city" placeholder="City" class="formInput" required
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 438px;
+                    <p class="mandatoryAsterisk" style="top: 430px;
                                                         left: 603px;">*</p>
 
                     <br>
@@ -874,21 +874,21 @@
                       <option value="24140008">Uva</option>
                       <option value="24140009">Western</option>
                     </select>
-                    <p class="mandatoryAsterisk" style="top: 504px;
+                    <p class="mandatoryAsterisk" style="top: 495px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="zipPostalCode" placeholder="Zip/Postal Code" class="formInput"
                     style="margin-left: 20px;" required
-                    title="Mandatory, Only Numeric Characters"
+                    title="Mandatory, Only 5 Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 504px;
+                    <p class="mandatoryAsterisk" style="top: 495px;
                                                         left: 603px;">*</p>
 
                   <p class="formText">University Information</p>
                     <input type="text" name="universityIndexNo" placeholder="University Index No" class="formInput"
                     title="Mandatory, Enter only numeric characters" required
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 614px;
+                    <p class="mandatoryAsterisk" style="top: 604px;
                                                         left: 328px;">*</p>
 
 
@@ -905,7 +905,7 @@
                       ?>
                       <option value="<?php echo $facultyRow["FacultyID"];?>"><?php echo $facultyRow["Faculty"];} ?></option>
                     </select>
-                    <p class="mandatoryAsterisk" style="top: 614px;
+                    <p class="mandatoryAsterisk" style="top: 604px;
                                                         left: 603px;">*</p>
 
                     <br>
@@ -913,34 +913,34 @@
                     <input type="text" name="degreeProgram" placeholder="Degree Program" class="formInput" required
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 685px;
+                    <p class="mandatoryAsterisk" style="top: 670px;
                                                         left: 328px;">*</p>
 
                     <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" class="formInput"
                     style="margin-left: 20px;" required
                     title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 685px;
+                    <p class="mandatoryAsterisk" style="top: 670px;
                                                         left: 603px;">*</p>
 
                     <br>
 
                     <select name="studentPosition" class="formInput"
-                    title="Mandatory,  Select the Position"
+                    title="Mandatory, Select the Position"
                     data-toggle="tooltip" data-placement="left">
                       <option value="NULL">Position</option>
                       <option value="92130001">Undergraduate Student</option>
                       <option value="92130002">Postgraduate Student</option>
                       <option value="92130003">Alumni</option>
                     </select>
-                    <p class="mandatoryAsterisk" style="top: 750px;
+                    <p class="mandatoryAsterisk" style="top: 735px;
                                                         left: 328px;">*</p>
 
                   <p class="formText">Login Credentails</p>
                     <input type="text" name="Username" placeholder="Username" class="formInput" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 858px;
+                    <p class="mandatoryAsterisk" style="top: 840px;
                                                         left: 328px;">*</p>
 
                     <br>
@@ -948,14 +948,14 @@
                     <input type="password" name="Password" placeholder="Enter Password" class="formInput" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 925px;
+                    <p class="mandatoryAsterisk" style="top: 906px;
                                                         left: 328px;">*</p>
 
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" class="formInput"
                     style="margin-left: 20px;" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                     data-toggle="tooltip" data-placement="left">
-                    <p class="mandatoryAsterisk" style="top: 925px;
+                    <p class="mandatoryAsterisk" style="top: 906px;
                                                         left: 603px;">*</p>
 
                     <br>
@@ -972,7 +972,7 @@
                       ?>
                       <option value="<?php echo $statusRow["MemberStatusID"];?>"><?php echo $statusRow["MemberStatus"];} ?></option>
                     </select>
-                    <p class="mandatoryAsterisk" style="top: 992px;
+                    <p class="mandatoryAsterisk" style="top: 971px;
                                                         left: 328px;">*</p>
                     </select>
 
@@ -986,7 +986,7 @@
                                                                             width: 20px;">
                       <p style="position: absolute;
                                 left: 140px;
-                                top: 1190px;"
+                                top: 1170px;"
                                 title="Mandatory, Tick Checkbox if agree"
                                 data-toggle="tooltip" data-placement="left">I have read and I agree to the Terms and Conditions</p>
                     </div>

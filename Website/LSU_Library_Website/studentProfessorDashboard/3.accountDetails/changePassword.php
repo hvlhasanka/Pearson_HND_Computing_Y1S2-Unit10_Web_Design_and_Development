@@ -11,6 +11,7 @@
 
   include_once("../../LSULibraryDBConnection.php");
 
+  // Process of changing the password
   if(isset($_POST['cPasswordSubmit'])){
 
     $enteredCurrentPassword = $_POST['currentPassword'];
@@ -233,7 +234,7 @@
                   margin-top: -10px;
                   margin-left: 120px;;
                   margin-bottom: 20px;
-                  border-color: #ccc;
+                  border: 1px solid #CCC;
                 }
 
                 #updateSubmitButton{
@@ -284,7 +285,7 @@
                   <input type="password" name="confirmNewPassword" required class="updateFormInput"
                   title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
                   data-toggle="tooltip" data-placement="left">
-                  <p class="mandatoryAsterisk" style="top: 232px;
+                  <p class="mandatoryAsterisk" style="top: 228px;
                                                       left: 405px;">*</p>
 
                   <button type="submit" name="cPasswordSubmit" id="updateSubmitButton">Update Password</button>

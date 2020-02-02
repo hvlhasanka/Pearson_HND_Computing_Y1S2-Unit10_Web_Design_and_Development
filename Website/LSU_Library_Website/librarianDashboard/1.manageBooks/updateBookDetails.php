@@ -242,7 +242,7 @@
                   margin-top: 0px;
                   margin-left: 95px;;
                   margin-bottom: 20px;
-                  border-color: #ccc;
+                  border: 1px solid #CCC;
                 }
 
                 #updateBookUpdateButton{
@@ -375,7 +375,7 @@
                     ?>
                     <!-- Retrieving the book availability types from the database -->
                     <?php
-                      $bookAvailabilitySQL = "SELECT * FROM BookAvailability";
+                      $bookAvailabilitySQL = "SELECT * FROM BookAvailability;";
                       $bookAvailabilityResult = mysqli_query($databaseConn, $bookAvailabilitySQL);
                       while($bookAvailabilityRow = mysqli_fetch_array($bookAvailabilityResult)){
                     ?>
