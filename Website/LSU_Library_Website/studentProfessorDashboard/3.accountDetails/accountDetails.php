@@ -7,7 +7,7 @@
 //    header("location: ../../logout.php");
 //  }
 
-  include_once("../LSULibraryDBConnection.php");
+  include_once("../../LSULibraryDBConnection.php");
 
 ?>
 
@@ -18,18 +18,18 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/png" sizes="1500x1500" href="../assets/images/LSULibraryLogo.png">
+    <link rel="icon" type="image/png" sizes="1500x1500" href="../../assets/images/LSULibraryLogo.png">
 
     <!-- Retrieving default layout style sheet -->
-    <link rel="stylesheet" href="../assets/css/defaultLayout.css">
+    <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
     <!-- Retrieving font-awesome library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <script src="../assets/bootstrap/js/jquery.min.js"></script>
-    <script src="../assets/bootstrap/js/popper.min.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
+    <script src="../../assets/bootstrap/js/jquery.min.js"></script>
+    <script src="../../assets/bootstrap/js/popper.min.js"></script>
+    <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
 
     <!-- jQuery to enable the popover implementation -->
     <script>
@@ -46,29 +46,29 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <img src="../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
                 <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
                 <p id="mainTitleSub">Lowa State University</p>
 
-                <img src="../assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+                <img src="../../assets/Images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
               </div>
 
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="3.accountDetails/accountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="accountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $_SESSION['username']; ?> &nbsp
-                      <i class="fa fa-bars" style="font-size: 32px;
+                      <i class="fa fa-user" style="font-size: 32px;
                                                   color: #00B1D2FF;"></i> &nbsp
                     </a>
                   </td>
 
                   <td class="navItem" id="navItem2">
-                    <a href="../logout.php">Logout</a>
+                    <a href="../../logout.php">Logout</a>
                   </td>
                 </tr>
               </table>
@@ -113,7 +113,7 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>HOME</b></p>
+                        text-align: center;"><b>Account Details</b></p>
 
               <style>
                 #container{
@@ -181,13 +181,13 @@
 
             <div id="footerLogoSection">
 
-              <img src="../assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+              <img src="../../assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
 
               <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
               <p id="mainTitleSub">Lowa State University</p>
 
-              <img src="../assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
+              <img src="../../assets/images/LSUUniversityLogo.png" alt="LSU Logo" id="lsuLogoIcon">
 
             </div>
 

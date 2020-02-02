@@ -70,7 +70,7 @@
 
           // For userType: Librarian
           if($selectedMembershipType == 65350003){
-            header("location: librarianDashboard/librarianDashboard.php");
+            header("location: ../librarianDashboard/librarianDashboard.php");
           }
 
 
@@ -92,7 +92,7 @@
 
             if($accountStatus == "Active"){
 
-              header("location: studentProfessorDashboard/studentProfessorDashboard.php");
+              header("location: ../studentProfessorDashboard/studentProfessorDashboard.php");
 
             }
             else{
@@ -100,7 +100,7 @@
                 alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
               </script> <?php
 
-              echo "<script> location.href='logout.php'; </script>";
+              echo "<script> location.href='../logout.php'; </script>";
             }
           }
         }
@@ -534,7 +534,7 @@
 
                     <p class="formText">Membership Type </p>
                     <i class="fa fa-group"></i>
-                    <select name="memberTypeLogin">
+                    <select name="membershipTypeLogin">
                       <option value="NULL" selected>Select a Category</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>
