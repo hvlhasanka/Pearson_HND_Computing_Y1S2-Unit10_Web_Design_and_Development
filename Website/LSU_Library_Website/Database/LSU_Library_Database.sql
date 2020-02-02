@@ -53,7 +53,7 @@ INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES
 -- Creating Table 3 - UserProvience
 CREATE TABLE UserProvience(
   ProvienceID INT(8) AUTO_INCREMENT,
-  Provience VARCHAR(12),
+  Provience VARCHAR(15),
   PRIMARY KEY (ProvienceID)
 )ENGINE = INNODB;
 

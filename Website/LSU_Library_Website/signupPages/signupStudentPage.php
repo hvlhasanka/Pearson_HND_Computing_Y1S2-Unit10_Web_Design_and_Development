@@ -306,6 +306,7 @@
           if($cityDBRow["City"] == $enteredCity){
             $existingCityID = $cityDBRow["CityID"];
             $checkCity = 1;
+            break;
           }
           else if($cityDBRow["City"] != $enteredCity){
             $checkCity = 0;
@@ -345,6 +346,7 @@
           if($zipDBRow["ZipPostalCode"] == $enteredZipPostalCode){
             $existingZipID = $zipDBRow["ZPCID"];
             $checkZip = 1;
+            break;
           }
           else if($zipDBRow["ZipPostalCode"] != $enteredZipPostalCode){
             $checkCity = 0;
@@ -369,7 +371,7 @@
           $zipIDDB = $zipIDDBRow["ZPCID"];
 
           // Updating User table record with ZPCID for the newly added record
-          $t2 = $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
+          $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
           mysqli_query($databaseConn, $zipUpdateSQL);
         }
 
@@ -396,6 +398,7 @@
           if($batchDBRow["Batch"] == $enteredBatch){
             $existingBatchID = $batchDBRow["BatchID"];
             $checkBatch = 1;
+            break;
           }
           else if($batchDBRow["Batch"] != $enteredBatch){
             $checkBatch = 0;
@@ -437,6 +440,7 @@
           if($programDBRow["DegreeProgram"] == $enteredDegreeProgram){
             $existingProgramID = $programDBRow["DegreeProgramID"];
             $checkProgram = 1;
+            break;
           }
           else if($programDBRow["DegreeProgram"] != $enteredDegreeProgram){
             $checkProgram = 0;

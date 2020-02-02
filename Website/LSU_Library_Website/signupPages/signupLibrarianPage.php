@@ -265,6 +265,7 @@
         if($cityDBRow["City"] == $enteredCity){
           $existingCityID = $cityDBRow["CityID"];
           $checkCity = 1;
+          break;
         }
         else if($cityDBRow["City"] != $enteredCity){
           $checkCity = 0;
@@ -304,6 +305,7 @@
         if($zipDBRow["ZipPostalCode"] == $enteredZipPostalCode){
           $existingZipID = $zipDBRow["ZPCID"];
           $checkZip = 1;
+          break;
         }
         else if($zipDBRow["ZipPostalCode"] != $enteredZipPostalCode){
           $checkCity = 0;
@@ -312,24 +314,24 @@
 
       // Checking if zip value is available in the UserZipPostalCode table
       if($checkZip == 1){
-      // Updating User table record with ZPCID for the newly added record
-      $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
-      mysqli_query($databaseConn, $zipUpdateSQL);
+        // Updating User table record with ZPCID for the newly added record
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$existingZipID' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $zipUpdateSQL);
       }
       else if($checkZip == 0){
-      // Inserting new zipPostalCode record into the UserZipPostalCode table
-      $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
-      mysqli_query($databaseConn, $zipInsertSQL);
+        // Inserting new zipPostalCode record into the UserZipPostalCode table
+        $zipInsertSQL = "INSERT INTO UserZipPostalCode (ZipPostalCode) VALUES ('$enteredZipPostalCode');";
+        mysqli_query($databaseConn, $zipInsertSQL);
 
-      // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
-      $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
-      $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
-      $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
-      $zipIDDB = $zipIDDBRow["ZPCID"];
+        // Retrieving ZPCIDID from the UserZipPostalCode table for the newly added record
+        $zipIDDBSQL = "SELECT ZPCID FROM UserZipPostalCode WHERE ZipPostalCode = '$enteredZipPostalCode';";
+        $zipIDDBResult = mysqli_query($databaseConn, $zipIDDBSQL);
+        $zipIDDBRow = mysqli_fetch_array($zipIDDBResult);
+        $zipIDDB = $zipIDDBRow["ZPCID"];
 
-      // Updating User table record with ZPCID for the newly added record
-      $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
-      mysqli_query($databaseConn, $zipUpdateSQL);
+        // Updating User table record with ZPCID for the newly added record
+        $zipUpdateSQL = "UPDATE User SET uzpcZPCID = '$zipIDDB' WHERE UserID = '$userIDDB';";
+        mysqli_query($databaseConn, $zipUpdateSQL);
       }
 
       // Inserting new record into Librarian Table
@@ -341,12 +343,9 @@
       alert("Student Account has been successfully created. Login is now eligible.");
       </script> <?php
 
-    //  echo "<script> location.href='../index.php'; </script>";
-
+      echo "<script> location.href='../index.php'; </script>";
 
     }
-
-
   }
 
 ?>

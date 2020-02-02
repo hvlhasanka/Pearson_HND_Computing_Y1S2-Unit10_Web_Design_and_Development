@@ -285,6 +285,7 @@
         if($cityDBRow["City"] == $enteredCity){
           $existingCityID = $cityDBRow["CityID"];
           $checkCity = 1;
+          break;
         }
         else if($cityDBRow["City"] != $enteredCity){
           $checkCity = 0;
@@ -324,6 +325,7 @@
         if($zipDBRow["ZipPostalCode"] == $enteredZipPostalCode){
           $existingZipID = $zipDBRow["ZPCID"];
           $checkZip = 1;
+          break;
         }
         else if($zipDBRow["ZipPostalCode"] != $enteredZipPostalCode){
           $checkCity = 0;
@@ -370,6 +372,7 @@
         if($specializationDBRow["Specialization"] == $enteredSpecialization){
           $existingSpecializationID = $specializationDBRow["SpecializationID"];
           $checkSpecialization = 1;
+          break;
         }
         else if($specializationDBRow["Specialization"] != $enteredSpecialization){
           $checkSpecialization = 0;
@@ -405,10 +408,7 @@
 
       echo "<script> location.href='../index.php'; </script>";
 
-
     }
-
-
   }
 
 ?>
