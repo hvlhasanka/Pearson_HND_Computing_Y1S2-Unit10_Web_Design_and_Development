@@ -266,7 +266,7 @@
     }
     else{
 
-          // Converting enter passowrd value into a hash value to store in the database
+          // Converting entered password value into a hash value to store in the database
           $enteredPasswordHash = password_hash($enteredPasswordS, PASSWORD_DEFAULT);
 
           // Inserting new record into Login table

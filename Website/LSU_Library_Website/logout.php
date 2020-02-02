@@ -5,20 +5,16 @@
 
   $enteredUsername = $_SESSION['username'];
 
-  $selectedMemberType = $_SESSION['memberType'];
+  $selectedMembershipType = $_SESSION['membershipType'];
 
   // Retrieving the lLoginID from the Login table
-  $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMemberType';";
+  $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMembershipType';";
 
   $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
 
   $loginIDResult = mysqli_fetch_array($loginIDResult);
 
   $lLoginIDDB = $loginIDResult["LoginID"];
-
-  ?> <script>
-    alert("Account is currently <?php echo $loginIDResult; ?>");
-  </script> <?php
 
 
   // Unassigning value in session variable

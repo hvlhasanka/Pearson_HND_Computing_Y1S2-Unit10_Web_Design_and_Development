@@ -32,9 +32,9 @@
   if(isset($_POST['submit'])){
     $enteredUsername = $_POST['username'];
     $enteredPassword = $_POST['password'];
-    $selectedMemberType = $_POST['memberTypeLogin'];
+    $selectedMembershipType = $_POST['membershipTypeLogin'];
 
-    if(empty($enteredUsername) || empty($enteredPassword) || $selectedMemberType == "NULL"){
+    if(empty($enteredUsername) || empty($enteredPassword) || $selectedMembershipType == "NULL"){
       if(empty($enteredUsername)){
         ?> <script>
           alert("ERROR: Username field was not filled");
@@ -53,7 +53,7 @@
     }
     else{
 
-    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMemberType';";
+    	$systemLoginSQL = "SELECT * FROM Login WHERE Username = '$enteredUsername' AND lutUserTypeID = '$selectedMembershipType';";
     	$systemLoginResult = mysqli_query($databaseConn, $systemLoginSQL);
       $rowCount = mysqli_num_rows($systemLoginResult);
       $passwordDB = "";
@@ -88,18 +88,18 @@
           // Assigning session variables with the details of the current username
           session_start();
           $_SESSION['username'] = $usernameDB;
-          $_SESSION['memberType'] = $selectedMemberType;
+          $_SESSION['membershipType'] = $selectedMembershipType;
           $_SESSION['start'] = time();
           $_SESSION['expire'] = ($_SESSION['start'] + (240 * 60)); // Current SESSION will be active for four hours only.
 
           // For userType: Librarian
-          if($selectedMemberType == 65350003){
+          if($selectedMembershipType == 65350003){
             header("location: librarianDashboard/librarianDashboard.php");
           }
 
 
           // For userType: Student and Professor
-          if($selectedMemberType == 65350001 || $selectedMemberType == 65350002){
+          if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
 
             // Checking if the account status (member status) is active
             $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
@@ -373,7 +373,7 @@
 
                     <p class="formText">Member Type </p>
                     <i class="fa fa-group"></i>
-                    <select name="memberTypeLogin">
+                    <select name="membershipTypeLogin">
                       <option value="NULL" selected>Select a Category</option>
                       <option value="65350001">Student</option>
                       <option value="65350002">Professor</option>

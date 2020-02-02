@@ -2,9 +2,9 @@
   include_once("../../LSULibraryDBConnection.php");
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-//  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
-//    header("location: ../../logout.php");
-//  }
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
+    header("location: ../../logout.php");
+  }
 
 
   // ID retrieved from the previous web page
@@ -119,7 +119,7 @@
                   </td>
 
                   <td class="navItem" id="navItem2">
-                    <a href="../logout.php">Logout</a>
+                    <a href="../../logout.php">Logout</a>
                   </td>
                 </tr>
               </table>

@@ -87,7 +87,7 @@ CREATE TABLE User(
   uzpcZPCID INT(8),
   upProvienceID INT(8) NOT NULL,
   MobileNumber CHAR(10) NOT NULL,
-  TelePhoneNumber CHAR(10),
+  TelephoneNumber CHAR(10),
   RegistrationDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   lLoginID INT NOT NULL, -- This will become a foreign key after Table 23 - Login is created
   PRIMARY KEY (UserID),

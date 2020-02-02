@@ -4,9 +4,9 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  //if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
-  //  header("location: ../../logout.php");
-  //}
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
+    header("location: ../../logout.php");
+  }
 
   // ISBN value that was retrieved from the previous web page
   $ISBN = $_GET['isbn'];
@@ -106,7 +106,9 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                <a href="../librarianDashboard.php">
+                  <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                </a>
 
                 <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 
@@ -128,7 +130,7 @@
                   </td>
 
                   <td class="navItem" id="navItem2">
-                    <a href="../logout.php">Logout</a>
+                    <a href="../../logout.php">Logout</a>
                   </td>
                 </tr>
               </table>
