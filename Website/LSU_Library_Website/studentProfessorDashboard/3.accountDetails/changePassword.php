@@ -88,6 +88,9 @@
 
     <link rel="icon" type="image/png" sizes="1500x1500" href="../../assets/images/LSULibraryLogo.png">
 
+    <!-- Retrieving signPage script  -->
+    <script type="text/javascript" src="../../assets/javascript/signupPage.js"></script>
+
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
@@ -99,16 +102,23 @@
     <script src="../../assets/bootstrap/js/popper.min.js"></script>
     <script src="../../assets/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- jQuery to enable the popover implementation -->
+
     <script>
+      // jQuery to enable the bootstrap popover implementation
       $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
       });
+
+      // jQuery to enable the bootstrap tooltip implementation
+      $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+      });
+
     </script>
 
 
   </head>
-  <body>
+  <body onload="displayFillAllMandatoryFieldsMessage();">
     <!-- MAIN SECTION - Begin -->
         <!-- HEADER SECTION - Begin -->
         <div style="height: 140px; width: 100%;">
@@ -221,7 +231,7 @@
                   border-radius: 7px;
                   width: 300px;
                   margin-top: -10px;
-                  margin-left: 95px;;
+                  margin-left: 120px;;
                   margin-bottom: 20px;
                   border-color: #ccc;
                 }
@@ -230,7 +240,7 @@
                   padding: 5px;
                   border-radius: 5px;
                   margin-top: 80px;
-                  margin-left: 35%;
+                  margin-left: 38%;
                   margin-right: 10px;
                   background-color: #0081FF;
                   color: #FFFFFF;
@@ -242,6 +252,13 @@
                   transform: translateX(-91%);
                 }
 
+                .mandatoryAsterisk{
+                  color: red;
+                  font-size: 20px;
+                  font-weight: bold;
+                  position: absolute;
+                }
+
               </style>
 
               <!-- Main Container -->
@@ -250,13 +267,25 @@
                 <form action="changePassword.php" method="POST">
 
                   <p class="updateFormText">Current Password: </p>
-                  <input type="password" name="currentPassword" required class="updateFormInput">
+                  <input type="password" name="currentPassword" required class="updateFormInput"
+                  title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
+                  data-toggle="tooltip" data-placement="left">
+                  <p class="mandatoryAsterisk" style="top: 30px;
+                                                      left: 405px;">*</p>
 
                   <p class="updateFormText">New Password: </p>
-                  <input type="password" name="newPassword" required class="updateFormInput">
+                  <input type="password" name="newPassword" required class="updateFormInput"
+                  title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
+                  data-toggle="tooltip" data-placement="left">
+                  <p class="mandatoryAsterisk" style="top: 130px;
+                                                      left: 405px;">*</p>
 
                   <p class="updateFormText">Confirm New Password: </p>
-                  <input type="password" name="confirmNewPassword" required class="updateFormInput">
+                  <input type="password" name="confirmNewPassword" required class="updateFormInput"
+                  title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
+                  data-toggle="tooltip" data-placement="left">
+                  <p class="mandatoryAsterisk" style="top: 232px;
+                                                      left: 405px;">*</p>
 
                   <button type="submit" name="cPasswordSubmit" id="updateSubmitButton">Update Password</button>
 

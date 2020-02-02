@@ -491,11 +491,11 @@
 
     <link rel="icon" type="image/png" sizes="1500x1500" href="../assets/images/LSULibraryLogo.png">
 
-    <!-- Retrieving default layout style sheet -->
-    <link rel="stylesheet" href="../assets/css/defaultLayout.css">
-
     <!-- Retrieving signPage script  -->
     <script type="text/javascript" src="../assets/javascript/signupPage.js"></script>
+
+    <!-- Retrieving default layout style sheet -->
+    <link rel="stylesheet" href="../assets/css/defaultLayout.css">
 
     <!-- Retrieving font-awesome library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -612,7 +612,7 @@
     </style>
 
   </head>
-  <body  onload="displayFillAllMandatoryFieldsMessage();">
+  <body onload="displayFillAllMandatoryFieldsMessage();">
     <!-- MAIN SECTION - Begin -->
         <!-- HEADER SECTION - Begin -->
         <div style="height: 140px; width: 100%;">
