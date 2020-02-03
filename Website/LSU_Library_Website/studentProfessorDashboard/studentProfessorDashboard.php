@@ -2,8 +2,8 @@
   // Starts the SESSION period
   session_start();
 
-  // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350001") {
+  // Checks if the SEESION variables are already assigned and if the membershipType is studet (65350001) or professor (65350002)
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] == "65350003") {
     header("location: ../../logout.php");
   }
 
@@ -59,7 +59,16 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="3.accountDetails/accountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="
+                    <?php
+                      if($_SESSION['membershipType'] == '65350001'){
+                        echo "3.accountDetails/studentAccountDetails.php";
+                      }
+                      else if($_SESSION['membershipType'] == '65350002'){
+                        echo "3.accountDetails/professorAccountDetails.php";
+                      }
+                    ?>
+                    " data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $_SESSION['username']; ?> &nbsp
                       <i class="fa fa-bars" style="font-size: 32px;
@@ -86,7 +95,14 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Member Dashboard</p>
+                        padding-top: 10px;"><?php
+                                              if($_SESSION['membershipType'] == '65350001'){
+                                                echo "Student";
+                                              }
+                                              else if($_SESSION['membershipType'] == '65350002'){
+                                                echo "Professor";
+                                              }
+                                            ?> Dashboard</p>
               <!-- Spinner -->
               <div style="position: absolute;
                           left: 50%;
@@ -99,7 +115,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 660px;
+                      height: 940px;
                       background-color: #F6F6F6;">
 
             <div style="width: 55%;

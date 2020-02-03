@@ -3,7 +3,7 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350001") {
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
     header("location: ../../logout.php");
   }
 
@@ -48,7 +48,7 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <a href="../studentProfessorDashboard.php">
+                <a href="../librarianDashboard.php">
                   <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
                 </a>
 
@@ -63,7 +63,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="accountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $userUsername ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
@@ -90,7 +90,8 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Member Dashboard</p>
+                        padding-top: 10px;">Librarian Dashboard</p>
+
               <!-- Spinner -->
               <div style="position: absolute;
                           left: 50%;
@@ -103,7 +104,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1400px;
+                      height: 1120px;
                       background-color: #F6F6F6;">
 
             <button type="button" name="return" style="color: #FFFFFF;
@@ -114,7 +115,7 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 340px;
-                                                      left: 470px;" onClick="window.location.href = '../studentProfessorDashboard.php';">
+                                                      left: 470px;" onClick="window.location.href = '../librarianDashboard.php';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -122,7 +123,7 @@
 
 
             <div style="width: 55%;
-                        height: 1120px;
+                        height: 830px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -171,14 +172,6 @@
                                       INNER JOIN UserCity uc ON uc.CityID = u.ucCityID
                                       INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
                                       INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
-                                      INNER JOIN UniversityMember um ON um.uUserID = u.UserID
-                                      INNER JOIN MemberMemberType mmt ON mmt.MemberTypeID = um.mmtMemberTypeID
-                                      INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
-                                      INNER JOIN Student s ON s.umUserID = um.uUserID AND s.umUniversityNo = um.UniversityNo
-                                      INNER JOIN StudentDegreeProgram sdp ON sdp.DegreeProgramID = s.sdpDegreeProgramID
-                                      INNER JOIN StudentBatch sb ON sb.BatchID = s.sbBatchID
-                                      INNER JOIN MemberPosition mp ON mp.PositionID = um.mpPositionID
-                                      INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
                                       WHERE l.Username = '$userUsername';";
                   $retrieveUserResult = mysqli_query($databaseConn, $retrieveUserSQL);
                   $retrieveUserRow = mysqli_fetch_array($retrieveUserResult);
@@ -189,7 +182,7 @@
 
                   <tr>
                     <td> <p class="containerSubTextStyle">Membership Type: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["MemberType"]; ?> </p> <td>
+                    <td> <p class="containerUserDataTextStyle">Professor </p> <td>
                   </tr>
 
                   <tr>
@@ -237,39 +230,11 @@
                   </tr>
 
                   <tr>
-                    <td> <p class="containerMainTextStyle">University Details</p> <td>
-                  </tr>
-                  <tr>
-                    <td> <p class="containerSubTextStyle">University Index No: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["UniversityNo"]; ?> </p> <td>
-                  </tr>
-                  <tr>
-                    <td> <p class="containerSubTextStyle">Faculty: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["Faculty"]; ?> </p> <td>
-                  </tr>
-                  <tr>
-                    <td> <p class="containerSubTextStyle">Degree Program: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["DegreeProgram"]; ?> </p> <td>
-                  </tr>
-                  <tr>
-                    <td> <p class="containerSubTextStyle">Batch: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["Batch"]; ?> </p> <td>
-                  </tr>
-                  <tr>
-                    <td> <p class="containerSubTextStyle">Position: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["Position"]; ?> </p> <td>
-                  </tr>
-
-                  <tr>
                     <td> <p class="containerMainTextStyle">Login Details</p> <td>
                   </tr>
                   <tr>
                     <td> <p class="containerSubTextStyle">Username: </p> <td>
                     <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["Username"]; ?> </p> <td>
-                  </tr>
-                  <tr>
-                    <td> <p class="containerSubTextStyle">Status: </p> <td>
-                    <td> <p class="containerUserDataTextStyle"> <?php echo $retrieveUserRow["MemberStatus"]; ?> </p> <td>
                   </tr>
 
                 </table>
@@ -281,8 +246,8 @@
                                                                   border-radius: 5px;
                                                                   width: 360px;
                                                                   position: absolute;
-                                                                  top: 940px;
-                                                                  left: 60px;" onClick="window.location.href = 'changePassword.php';">
+                                                                  top: 640px;
+                                                                  left: 70px;" onClick="window.location.href = 'librarianChangePassword.php';">
                   <i class="fa fa-unlock" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
                   Change Password
@@ -298,8 +263,8 @@
                                                                 width: 300px;
                                                                 height: 50px;
                                                                 position: absolute;
-                                                                top: 1150px;
-                                                                left: 690px;" onClick="window.location.href = 'updateDetails.php';">
+                                                                top: 860px;
+                                                                left: 690px;" onClick="window.location.href = 'librarianUpdateDetails.php';">
                 <i class="fa fa-edit" style="font-size: 20px;
                                             margin-right: 10px;"></i>
                 Update Details

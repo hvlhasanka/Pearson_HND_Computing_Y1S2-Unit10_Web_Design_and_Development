@@ -392,7 +392,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="accountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="studentAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $userUsername ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
@@ -419,7 +419,8 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Member Dashboard</p>
+                        padding-top: 10px;">Student Dashboard</p>
+
               <!-- Spinner -->
               <div style="position: absolute;
                           left: 50%;
@@ -443,7 +444,7 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 340px;
-                                                      left: 470px;" onClick="window.location.href = 'accountDetails.php';">
+                                                      left: 470px;" onClick="window.location.href = 'studentAccountDetails.php';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -545,7 +546,7 @@
               <!-- Main Container -->
               <div id="container">
 
-                <form action="updateDetails.php" method="POST">
+                <form action="studentUpdateDetails.php" method="POST">
 
                   <table>
 

@@ -58,7 +58,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="5.accountDetails/librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $_SESSION['username']; ?> &nbsp
                       <i class="fa fa-bars" style="font-size: 32px;
@@ -98,7 +98,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 850px;
+                      height: 920px;
                       background-color: #F6F6F6;">
 
             <div style="width: 55%;

@@ -2,8 +2,8 @@
   // Starts the SESSION period
   session_start();
 
-  // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350001") {
+  // Checks if the SEESION variables are already assigned and if the membershipType is Student (65350001) or Professor (65350002)
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] == "65350003") {
     header("location: ../../logout.php");
   }
 
@@ -65,7 +65,13 @@
           alert("Password successfully updated.");
         </script> <?php
 
-        echo "<script> location.href='accountDetails.php'; </script>";
+
+        if($_SESSION['membershipType'] == '65350001'){
+          echo "<script> location.href='studentAccountDetails.php'; </script>";
+        }
+        else if($_SESSION['membershipType'] == '65350002'){
+          echo "<script> location.href='professorAccountDetails.php'; </script>";
+        }
 
       }
       else{
@@ -140,7 +146,16 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="accountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="
+                    <?php
+                      if($_SESSION['membershipType'] == '65350001'){
+                        echo "studentAccountDetails.php";
+                      }
+                      else if($_SESSION['membershipType'] == '65350002'){
+                        echo "professorAccountDetails.php";
+                      }
+                    ?>
+                    " data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $userUsername ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
@@ -167,7 +182,15 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Member Dashboard</p>
+                        padding-top: 10px;"><?php
+                                              if($_SESSION['membershipType'] == '65350001'){
+                                                echo "Student";
+                                              }
+                                              else if($_SESSION['membershipType'] == '65350002'){
+                                                echo "Professor";
+                                              }
+                                            ?> Dashboard</p>
+
               <!-- Spinner -->
               <div style="position: absolute;
                           left: 50%;
@@ -191,7 +214,14 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 340px;
-                                                      left: 470px;" onClick="window.location.href = 'accountDetails.php';">
+                                                      left: 470px;" onClick="window.location.href = '<?php
+                                                        if($_SESSION['membershipType'] == '65350001'){
+                                                          echo "studentAccountDetails.php";
+                                                        }
+                                                        else if($_SESSION['membershipType'] == '65350002'){
+                                                          echo "professorAccountDetails.php";
+                                                        }
+                                                      ?>';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -265,7 +295,7 @@
               <!-- Main Container -->
               <div id="container">
 
-                <form action="changePassword.php" method="POST">
+                <form action="studentProfessorChangePassword.php" method="POST">
 
                   <p class="updateFormText">Current Password: </p>
                   <input type="password" name="currentPassword" required class="updateFormInput"
