@@ -4,7 +4,7 @@
 
   // Checks if the SEESION variables are already assigned and if the membershipType is studet (65350001) or professor (65350002)
   if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] == "65350003") {
-    header("location: ../../logout.php");
+    header("location: ../logout.php");
   }
 
   include_once("../LSULibraryDBConnection.php");
@@ -147,7 +147,7 @@
               <div id="container">
 
                 <!-- Find Book Cell -->
-                <a href="1.findBook/findBook.php">
+                <a href="1.searchBook/searchBook.php">
                   <div style="width: 240px;
                               height: 430px;
                               background-color: #29aba4;
@@ -161,7 +161,7 @@
                               color: #FFFFFF;
                               margin-left: 20px;
                               position: absolute;
-                              top: 180px;">Find Book </p>
+                              top: 180px;">Search Book </p>
                   </div>
                 </a>
                 <!-- Return Book Cell -->

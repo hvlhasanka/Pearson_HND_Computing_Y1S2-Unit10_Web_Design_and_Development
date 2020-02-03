@@ -390,7 +390,7 @@
                     <input type="reset" name="reset" value="Clear">
 
                     <p class="formText" id="forgotPasswordText">
-                      <a href="#">Forgot your password?</a>
+                      <a href="" onClick="return alert('Contact a librarian for help');">Forgot your password?</a>
                     </p>
 
                   </form>
@@ -398,7 +398,7 @@
 
                 <!-- Modal Footer -->
                 <div class="modal-footer">
-                  <p>Don't have an account? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signupFormModel">SignUp >></a></p>
+                  <p>Don't have an account? <a href="" data-dismiss="modal" data-toggle="modal" data-target="#signupFormModel">SignUp >></a></p>
                 </div>
 
               </div>
