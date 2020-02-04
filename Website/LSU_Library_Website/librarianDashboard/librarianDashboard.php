@@ -162,7 +162,7 @@
                 </a>
 
                 <!-- Manage Borrow and Return Details Cell -->
-                <a href="#">
+                <a href="3.manageBookBorrowAndReturnDetails/manageBookBorrowAndReturnDetails.php">
                   <div style="width: 240px;
                               height: 430px;
                               background-color: #2d248a;
@@ -176,7 +176,7 @@
                               color: #FFFFFF;
                               margin-left: 20px;
                               position: absolute;
-                              top: 110px;">Manage <br> Borrow and <br> Returning Details</p>
+                              top: 110px;">Manage Book <br> Borrow and <br> Return Details</p>
                   </div>
                 </a>
 

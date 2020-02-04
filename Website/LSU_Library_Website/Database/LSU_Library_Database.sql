@@ -126,18 +126,18 @@ INSERT INTO Librarian VALUES
 
 
 
--- Creating Table 6 - MemberMemberType
-CREATE TABLE MemberMemberType(
-  MemberTypeID INT AUTO_INCREMENT,
-  MemberType VARCHAR(9),
-  PRIMARY KEY (MemberTypeID)
+-- Creating Table 6 - MemberMembershipType
+CREATE TABLE MemberMembershipType(
+  MembershipTypeID INT AUTO_INCREMENT,
+  MembershipType VARCHAR(9),
+  PRIMARY KEY (MembershipTypeID)
 )ENGINE = INNODB;
 
--- Alterting table to change the starting point of the ID in Table 6 - MemberMemberType
-ALTER TABLE MemberMemberType AUTO_INCREMENT = 44120001;
+-- Alterting table to change the starting point of the ID in Table 6 - MemberMembershipType
+ALTER TABLE MemberMembershipType AUTO_INCREMENT = 44120001;
 
--- Inserting records into Table 6 - MemberMemberType
-INSERT INTO MemberMemberType (MemberType) VALUES
+-- Inserting records into Table 6 - MemberMembershipType
+INSERT INTO MemberMembershipType (MembershipType) VALUES
 ('Student'),        -- MemberTypeID: 44120001
 ('Professor');      -- MemberTypeID: 44120002
 
@@ -210,14 +210,14 @@ INSERT INTO MemberMemberStatus (MemberStatus) VALUES
 CREATE TABLE UniversityMember(
   uUserID INT(8) NOT NULL,
   UniversityNo INT(8) NOT NULL,
-  mmtMemberTypeID INT(8) NOT NULL,
+  mmtMembershipTypeID INT(8) NOT NULL,
   mmsMemberStatusID INT(8) NOT NULL,
   mfFacultyID INT(8) NOT NULL,
   mpPositionID INT(8) NOT NULL,
   EditDateTime DATETIME,
   PRIMARY KEY (uUserID, UniversityNo),
   FOREIGN KEY (uUserID) REFERENCES User(UserID),
-  FOREIGN KEY (mmtMemberTypeID) REFERENCES MemberMemberType(MemberTypeID),
+  FOREIGN KEY (mmtMembershipTypeID) REFERENCES MemberMembershipType(MembershipTypeID),
   FOREIGN KEY (mmsMemberStatusID) REFERENCES MemberMemberStatus(MemberStatusID),
   FOREIGN KEY (mfFacultyID) REFERENCES MemberFaculty(FacultyID),
   FOREIGN KEY (mpPositionID) REFERENCES MemberPosition(PositionID)
@@ -225,7 +225,7 @@ CREATE TABLE UniversityMember(
 
 -- Inserting records into Table 10 - UniversityMember
 INSERT INTO UniversityMember
-(uUserID, UniversityNo, mmtMemberTypeID, mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES
+(uUserID, UniversityNo, mmtMembershipTypeID, mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES
 (45150002, 10004392, 44120001, 93140001, 91120001, 92130003),
 (45150003, 10003242, 44120002, 93140001, 91120003, 92130005);
 

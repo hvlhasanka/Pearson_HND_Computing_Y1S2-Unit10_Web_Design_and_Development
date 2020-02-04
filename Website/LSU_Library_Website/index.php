@@ -20,7 +20,7 @@
       // Updating Book table due to expiration of book reserve time period - 24 hours
       $updateReservseSQL = "UPDATE Book SET baAvailabilityID = 55240001, ReserveDateTime = NULL, uUserID_ReservedBy = NULL
                             WHERE ISBN = '$bookISBN';";
-      $t2 = mysqli_query($databaseConn, $updateReservseSQL);
+      mysqli_query($databaseConn, $updateReservseSQL);
     }
   }
 
