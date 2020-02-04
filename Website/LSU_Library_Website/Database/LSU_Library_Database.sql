@@ -369,21 +369,23 @@ CREATE TABLE Book(
   bcCategoryID INT(8) NOT NULL,
   baAvailabilityID INT(8) NOT NULL,
   ReserveDateTime DATETIME,
+  uUserID_ReservedBy INT(8),
   RegisteredDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (ISBN),
   FOREIGN KEY (bcCategoryID) REFERENCES BookCategory (CategoryID),
-  FOREIGN KEY (baAvailabilityID) REFERENCES BookAvailability (AvailabilityID)
+  FOREIGN KEY (baAvailabilityID) REFERENCES BookAvailability (AvailabilityID),
+  FOREIGN KEY (uUserID_ReservedBy) REFERENCES User (UserID)
 )ENGINE = INNODB;
 
 -- Inserting records into Table 18 - Book
 INSERT INTO Book (ISBN, Name, bcCategoryID, baAvailabilityID, RegisteredDateTime) VALUES
 ('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
-  75330003, 55240002, '2020-01-01 12:39:23.234');
+  75330003, 55240001, '2020-01-01 12:39:23.234');
 
 -- Inserting records into Table 18 - Book
 INSERT INTO Book VALUES
 ('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
-  75330003, 55240001, '2020-01-02 14:23:12.233', '2020-01-01 12:34:06.693');
+  75330003, 55240004, '2020-01-02 14:23:12.233', 45150002, '2020-01-01 12:34:06.693');
 
 
 

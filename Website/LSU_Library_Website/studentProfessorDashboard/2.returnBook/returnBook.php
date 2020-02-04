@@ -2,40 +2,58 @@
   // Starts the SESSION period
   session_start();
 
+  $userUsername = $_SESSION['username'];
+
   // Checks if the SEESION variables are already assigned and if the membershipType is studet (65350001) or professor (65350002)
   if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] == "65350003") {
     header("location: ../../logout.php");
   }
 
-  $userUsername = $_SESSION['username'];
-
   include_once("../../LSULibraryDBConnection.php");
 
+  $bookISBN = "";
+  $bookName = "";
+  $bookAuthor = "";
+  $bookCategory = "";
 
+  if(isset($_POST['searchSubmit'])){
+    $bookISBN = $_POST['bookISBN'];
+    $bookName = $_POST['bookName'];
+    $bookAuthor = $_POST['bookAuthor'];
+    $bookCategory = $_POST['bookCategory'];
 
-  // Retrieving the UserID of the currently logged in account
-  $userIDDBSQL = "SELECT UserID FROM User u
-                  INNER JOIN Login l ON l.LoginID = u.lLoginID
-                  WHERE l.Username = '$userUsername';";
-  $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
-  $userIDDBRow = mysqli_fetch_array($userIDDBResult);
-  $userID = $userIDDBRow["UserID"];
+    if(empty($bookISBN) && empty($bookName) && empty($bookAuthor) && $bookCategory == "NULL"){
+      ?> <script>
+        alert("ERROR: Please fill at least one field");
+      </script> <?php
+
+      echo "<script> location.href='searchBook.php'; </script>";
+    }
+  }
 
   // Process of reserving a book
   if(isset($_GET['reserveisbn'])){
 
     $ISBN = $_GET['reserveisbn'];
 
+    // Retrieving the UserID of the currently logged in account
+    $userIDDBSQL = "SELECT UserID FROM User u
+                    INNER JOIN Login l ON l.LoginID = u.lLoginID
+                    WHERE l.Username = '$userUsername';";
+    $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
+    $userIDDBRow = mysqli_fetch_array($userIDDBResult);
+    $userID = $userIDDBRow["UserID"];
+
     // Retrieving the current datetime
     date_default_timezone_set('Asia/Colombo');
-    $currentDate = date('Y-m-d h:i:s', time());
+    $currentDate = date('m/d/Y h:i:s', time());
 
     $reserveSQL = "UPDATE Book SET baAvailabilityID = 55240004, ReserveDateTime = '$currentDate',
                   uUserID_ReservedBy = '$userID' WHERE ISBN = '$ISBN';";
     mysqli_query($databaseConn, $reserveSQL);
 
     ?> <script>
-      alert("Book has been reserved for 24 hours.\nEligible to borrow within next 24 hours");
+      alert("Book has been reserved for 24 hours");
     </script> <?php
 
     echo "<script> location.href='searchBook.php'; </script>";
@@ -71,15 +89,16 @@
     mysqli_query($databaseConn, $borrowSQL);
 
     // Updating Book Table
-    $borrowBook = "UPDATE Book SET baAvailabilityID = 55240005, ReserveDateTime = NULL, uUserID_ReservedBy = NULL WHERE ISBN = '$ISBN';";
+    $borrowBook = "UPDATE Book SET baAvailabilityID = 55240005 WHERE ISBN = '$ISBN';";
     mysqli_query($databaseConn, $borrowBook);
 
     ?> <script>
-      alert("Book has been set to borrow");
+      alert("Book has been reserved for 24 hours");
     </script> <?php
 
     echo "<script> location.href='searchBook.php'; </script>";
   }
+
 
 ?>
 
@@ -216,26 +235,40 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 940px;
+                      height: 1050px;
                       background-color: #F6F6F6;">
 
-            <div style="width: 70%;
-                        height: 510px;
+            <button type="button" name="return" style="color: #FFFFFF;
+                                                      background-color: #5EAFFF;
+                                                      border: 1px solid #5EAFFF;
+                                                      padding: 5px;
+                                                      border-radius: 5px;
+                                                      width: 140px;
+                                                      position: absolute;
+                                                      top: 400px;
+                                                      left: 330px;" onClick="window.location.href = 'searchBook.php';">
+              <i class="fa fa-arrow-left" style="font-size: 20px;
+                                                margin-right: 10px;"></i>
+              Return
+            </button>
+
+            <div style="width: 80%;
+                        height: 770px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 20px;">
+                        top: 95px;">
 
               <style>
                 #container{
                   height: 1000px;
-                  width: 80%;
+                  width: 94%;
                   position: absolute;
                   top: 125px;
-                  left: 30%;
-                  transition: translateX(-70%);
+                  left: 3%;
+                  transition: translateX(-97%);
                 }
 
                 .formText{
@@ -246,7 +279,7 @@
                   padding: 10px;
                   border-radius: 5px;
                   border: 1px solid #CCC;
-                  width: 340px;
+                  width: 250px;
                 }
 
                 #searchBookSubmit{
@@ -258,7 +291,7 @@
                   height: 50px;
                   border: 1px solid #0081FF;
                   font-size: 20px;
-                  margin-left: 78px;
+                  margin-left: 25px;
                   margin-top: 20px;
                 }
 
@@ -283,90 +316,62 @@
 
                 <p style="font-size: 24px;
                           position: absolute;
-                          top: -80px;
-                          left: -10px;"><b>Search for a book</b></p>
+                          top: -100px;
+                          left: -10px;"><b>Search Book</b></p>
 
-                <form method="POST" action="viewBook.php">
-
-                  <p class="formText">Book ISBN:
-                    <input type="text" name="bookISBN" placeholder="ISBN" class="formInput" style="margin-left: 58px;">
-                  </p>
-
-                  <p class="formText">Book Name:
-                    <input type="text" name="bookName" placeholder="Name" class="formInput" style="margin-left: 48px;">
-                  </p>
-
-                  <p class="formText">Book Author:
-                    <input type="text" name="bookAuthor" placeholder="Author" class="formInput" style="margin-left: 40px;">
-                  </p>
-
-                  <p class="formText">Book Category:
-                    <select class="formInput" name="bookCategory" style="margin-left: 22px;">
-                      <option value="NULL">Category</option>
-                      <?php
-                        $categorySQL = "SELECT * FROM BookCategory;";
-                        $categoryResult = mysqli_query($databaseConn, $categorySQL);
-                        while($categoryRow = mysqli_fetch_array($categoryResult)){
-                          ?><option value="<?php echo $categoryRow['CategoryID']; ?>"><?php echo $categoryRow['Category']; ?></option>
-                        <?php } ?>
-                    </select>
-                  </p>
-
-                  <button type="submit" name="searchSubmit" id="searchBookSubmit">Search Book</button>
+                <?php
 
 
-                </form>
-              </div>
+                  $bookSQL = "";
 
-
-              <div style="width: 70%;
-                          height: 120px;
-                          background-color: #FFFFFF;
-                          border-radius: 10px;
-                          position: relative;
-                          left: 50%;
-                          transform: translateX(-50%);
-                          top: 560px;">
-
-                <p style="font-size: 24px;
-                          position: absolute;
-                          top: 40px;
-                          left: 90px;"><b>View all Available and Reserved Books</b></p>
-
-                <button type="button" name="viewAllBooks" id="viewBook" data-toggle="modal" data-target="#viewBooks">Click Here</button>
-
-
-              </div>
-
-
-          </div>
-
-
-          <!-- View All Books Modal -->
-          <div class="modal fade" id="viewBooks">
-            <div class="modal-dialog modal-dialog-scrollable" style="max-width: 95%;">
-              <div class="modal-content">
-
-                <!-- Modal - Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">All Available and Reserved Books</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal - Body -->
-                <div class="modal-body">
-
-                  <?php
-                    // Retrieving details of all available books
+                  if(!empty($bookISBN)){
+                    // Retrieving details of book with entered ISBN
                     $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
                                 INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
                                 INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
-                                WHERE ba.Availability = 'Available' OR ba.Availability = 'Reserved' ORDER BY RegisteredDateTime DESC;";
+                                WHERE b.ISBN = '$bookISBN';";
+                  }
+                  else if(!empty($bookName)){
+                    // Retrieving details of book with entered Name
+                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
+                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
+                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
+                                WHERE b.Name = '$bookName';";
+                  }
+                  else if(!empty($bookAuthor)){
+                    // Retrieving details of book with entered Author
+                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
+                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
+                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
+                                INNER JOIN BookAuthor a ON a.bISBN = b.ISBN
+                                WHERE a.Author = '$bookAuthor';";
+                  }
+                  else if($bookCategory != "NULL"){
+                    // Retrieving details of book with selected Category
+                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
+                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
+                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
+                                WHERE bc.CategoryID = '$bookCategory';";
+                  }
+                  else if(!empty($bookISBN) && !empty($bookName) && !empty($bookAuthor) && $bookCategory != "NULL"){
+                    // Retrieving details of book for all mentioned details
+                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
+                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
+                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
+                                INNER JOIN BookAuthor a ON a.bISBN = b.ISBN
+                                WHERE b.ISBN = '$bookISBN' AND b.Name = '$bookName' AND a.Author = '$bookAuthor' AND bc.CategoryID = '$bookCategory';";
+                  }
 
-                    $bookResult = mysqli_query($databaseConn, $bookSQL);
-                  ?>
+                  $bookResult = mysqli_query($databaseConn, $bookSQL);
+                ?>
 
+                <p style="font-size: 20px;
+                          position: absolute;
+                          top: -60px;
+                          left: -10px;"><?php echo mysqli_num_rows($bookResult); ?> result(s) found</p>
 
+                <div style="overflow-y: scroll;
+                            height: 600px;">
                   <table class="table table-hover fixed_header" style="border-radius: 10px;">
                     <thead>
                       <tr>
@@ -423,26 +428,22 @@
                             ?>
                             <a href="viewBook.php?reserveisbn=<?php echo $ISBN ?>" onClick="return confirm('Are you sure you want to reserve this book? \n(Reserved Time Period 24 hours)')">Reserve</a>
                           | <a href="viewBook.php?borrowisbn=<?php echo $ISBN ?>" onClick="return confirm('Are you sure you want to borrow this book?')">Borrow</a>
-                            <?php }
-                              else if($bookRow["Availability"] == "Reserved" && $bookRow["uUserID_ReservedBy"] == $userID){
-                            ?>
-                              <a href="viewBook.php?borrowisbn=<?php echo $ISBN ?>" onClick="return confirm('Are you sure you want to borrow this book?')">Borrow</a>
                             <?php } ?>
                         </td>
                       </tr>
                         <?php } ?>
                     </tbody>
                   </table>
-
-
                 </div>
 
+
+
               </div>
+
+
+
+
             </div>
-          </div>
-
-
-
 
         </div>
 
