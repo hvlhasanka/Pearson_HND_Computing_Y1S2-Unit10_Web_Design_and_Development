@@ -12,93 +12,130 @@
   include_once("../../LSULibraryDBConnection.php");
 
 
-  $bookISBN = "";
-  $bookName = "";
-  $bookAuthor = "";
-  $bookCategory = "";
+  // Retrieving loginID for this logged in user
+  $loginIDDBSQL = "SELECT LoginID FROM Login WHERE Username  = '$userUsername';";
+  $loginIDDBResult = mysqli_query($databaseConn, $loginIDDBSQL);
+  $loginIDDBRow = mysqli_fetch_array($loginIDDBResult);
+  $loginIDDB = $loginIDDBRow["LoginID"];
 
-  if(isset($_POST['searchSubmit'])){
-    $bookISBN = $_POST['bookISBN'];
-    $bookName = $_POST['bookName'];
-    $bookAuthor = $_POST['bookAuthor'];
-    $bookCategory = $_POST['bookCategory'];
+  // Checking if the account status (member status) is active
+  $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
+                      INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
+                      INNER JOIN User u ON u.UserID = um.uUserID
+                      WHERE u.lLoginID = '$loginIDDB';";
+  $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
 
-    if(empty($bookISBN) && empty($bookName) && empty($bookAuthor) && $bookCategory == "NULL"){
+  $accountStatus = "";
+
+  while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
+    $accountStatus = $accountStatusRow["MemberStatus"];
+  }
+
+  // Checking if this logged in user is an authorized user (active) to check book availability, anf reserve a book
+  if($accountStatus == "Active"){
+
+
+
+    $bookISBN = "";
+    $bookName = "";
+    $bookAuthor = "";
+    $bookCategory = "";
+
+    if(isset($_POST['searchSubmit'])){
+      $bookISBN = $_POST['bookISBN'];
+      $bookName = $_POST['bookName'];
+      $bookAuthor = $_POST['bookAuthor'];
+      $bookCategory = $_POST['bookCategory'];
+
+      if(empty($bookISBN) && empty($bookName) && empty($bookAuthor) && $bookCategory == "NULL"){
+        ?> <script>
+          alert("ERROR: Please fill at least one field");
+        </script> <?php
+
+        echo "<script> location.href='searchBook.php'; </script>";
+      }
+    }
+
+    // Retrieving the UserID of the currently logged in account
+    $userIDDBSQL = "SELECT UserID FROM User u
+                    INNER JOIN Login l ON l.LoginID = u.lLoginID
+                    WHERE l.Username = '$userUsername';";
+    $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
+    $userIDDBRow = mysqli_fetch_array($userIDDBResult);
+    $userID = $userIDDBRow["UserID"];
+
+    // Process of reserving a book
+    if(isset($_GET['reserveisbn'])){
+
+      $ISBN = $_GET['reserveisbn'];
+
+      // Retrieving the current datetime
+      date_default_timezone_set('Asia/Colombo');
+      $currentDate = date('Y-m-d h:i:s', time());
+
+      $reserveSQL = "UPDATE Book SET baAvailabilityID = 55240004, ReserveDateTime = '$currentDate',
+                    uUserID_ReservedBy = '$userID' WHERE ISBN = '$ISBN';";
+      mysqli_query($databaseConn, $reserveSQL);
+
       ?> <script>
-        alert("ERROR: Please fill at least one field");
+        alert("Book has been reserved for 24 hours.\nEligible to borrow within next 24 hours");
       </script> <?php
 
       echo "<script> location.href='searchBook.php'; </script>";
     }
+
+    // Process of borrowing a book
+    if(isset($_GET['borrowisbn'])){
+
+      $ISBN = $_GET['borrowisbn'];
+
+      // Adding new record into BookBorrow Table
+      $bookBorrowSQL = "INSERT INTO BookBorrow (ReturnDateTime) VALUES ('NULL');";
+      mysqli_query($databaseConn, $bookBorrowSQL);
+
+      // Retrieving the BorrowID of the newly added record
+      $borrowIDSQL = "SELECT BorrowID FROM BookBorrow ORDER BY BorrowDateTime DESC LIMIT 1;";
+      $borrowIDResult = mysqli_query($databaseConn, $borrowIDSQL);
+      $borrowIDRow = mysqli_fetch_array($borrowIDResult);
+      $borrowID = $borrowIDRow['BorrowID'];
+
+      // Retrieving the UserID and UniversityNo from UniversityMember table
+      $memberSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
+                    INNER JOIN User u ON u.UserID = um.uUserID
+                    INNER JOIN Login l ON l.LoginID = u.lLoginID
+                    WHERE l.Username = '$userUsername';";
+      $memberResult = mysqli_query($databaseConn, $memberSQL);
+      $memberRow = mysqli_fetch_array($memberResult);
+      $userID = $memberRow['uUserID'];
+      $universityNo = $memberRow['UniversityNo'];
+
+      // Inserting record into Borrow Table
+      $borrowSQL = "INSERT INTO Borrow VALUES ('$userID', '$universityNo', '$ISBN', '$borrowID')";
+      mysqli_query($databaseConn, $borrowSQL);
+
+      // Updating Book Table
+      $borrowBook = "UPDATE Book SET baAvailabilityID = 55240005, ReserveDateTime = NULL, uUserID_ReservedBy = NULL WHERE ISBN = '$ISBN';";
+      mysqli_query($databaseConn, $borrowBook);
+
+      ?> <script>
+        alert("Book has been set to borrow. Borrow duration is 2 Weeks. After 2 weeks a fine will be charged daily.");
+      </script> <?php
+
+      echo "<script> location.href='searchBook.php'; </script>";
+    }
+
+
   }
-
-  // Retrieving the UserID of the currently logged in account
-  $userIDDBSQL = "SELECT UserID FROM User u
-                  INNER JOIN Login l ON l.LoginID = u.lLoginID
-                  WHERE l.Username = '$userUsername';";
-  $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
-  $userIDDBRow = mysqli_fetch_array($userIDDBResult);
-  $userID = $userIDDBRow["UserID"];
-
-  // Process of reserving a book
-  if(isset($_GET['reserveisbn'])){
-
-    $ISBN = $_GET['reserveisbn'];
-
-    // Retrieving the current datetime
-    date_default_timezone_set('Asia/Colombo');
-    $currentDate = date('Y-m-d h:i:s', time());
-
-    $reserveSQL = "UPDATE Book SET baAvailabilityID = 55240004, ReserveDateTime = '$currentDate',
-                  uUserID_ReservedBy = '$userID' WHERE ISBN = '$ISBN';";
-    mysqli_query($databaseConn, $reserveSQL);
-
+  else{
     ?> <script>
-      alert("Book has been reserved for 24 hours.\nEligible to borrow within next 24 hours");
+      alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this and access these features.");
     </script> <?php
 
     echo "<script> location.href='searchBook.php'; </script>";
   }
 
-  // Process of borrowing a book
-  if(isset($_GET['borrowisbn'])){
 
-    $ISBN = $_GET['borrowisbn'];
 
-    // Adding new record into BookBorrow Table
-    $bookBorrowSQL = "INSERT INTO BookBorrow (ReturnDateTime) VALUES ('NULL');";
-    mysqli_query($databaseConn, $bookBorrowSQL);
-
-    // Retrieving the BorrowID of the newly added record
-    $borrowIDSQL = "SELECT BorrowID FROM BookBorrow ORDER BY BorrowDateTime DESC LIMIT 1;";
-    $borrowIDResult = mysqli_query($databaseConn, $borrowIDSQL);
-    $borrowIDRow = mysqli_fetch_array($borrowIDResult);
-    $borrowID = $borrowIDRow['BorrowID'];
-
-    // Retrieving the UserID and UniversityNo from UniversityMember table
-    $memberSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
-                  INNER JOIN User u ON u.UserID = um.uUserID
-                  INNER JOIN Login l ON l.LoginID = u.lLoginID
-                  WHERE l.Username = '$userUsername';";
-    $memberResult = mysqli_query($databaseConn, $memberSQL);
-    $memberRow = mysqli_fetch_array($memberResult);
-    $userID = $memberRow['uUserID'];
-    $universityNo = $memberRow['UniversityNo'];
-
-    // Inserting record into Borrow Table
-    $borrowSQL = "INSERT INTO Borrow VALUES ('$userID', '$universityNo', '$ISBN', '$borrowID')";
-    mysqli_query($databaseConn, $borrowSQL);
-
-    // Updating Book Table
-    $borrowBook = "UPDATE Book SET baAvailabilityID = 55240005, ReserveDateTime = NULL, uUserID_ReservedBy = NULL WHERE ISBN = '$ISBN';";
-    mysqli_query($databaseConn, $borrowBook);
-
-    ?> <script>
-      alert("Book has been set to borrow");
-    </script> <?php
-
-    echo "<script> location.href='searchBook.php'; </script>";
-  }
 
 
 ?>

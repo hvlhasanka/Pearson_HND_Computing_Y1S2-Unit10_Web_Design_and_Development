@@ -11,93 +11,65 @@
 
   include_once("../../LSULibraryDBConnection.php");
 
-  $bookISBN = "";
-  $bookName = "";
-  $bookAuthor = "";
-  $bookCategory = "";
+  if(isset($_POST['returnSubmit'])){
 
-  if(isset($_POST['searchSubmit'])){
     $bookISBN = $_POST['bookISBN'];
-    $bookName = $_POST['bookName'];
-    $bookAuthor = $_POST['bookAuthor'];
-    $bookCategory = $_POST['bookCategory'];
 
-    if(empty($bookISBN) && empty($bookName) && empty($bookAuthor) && $bookCategory == "NULL"){
+    if(empty($bookISBN)){
       ?> <script>
-        alert("ERROR: Please fill at least one field");
+        alert("ERROR: Book ISBN field was not filled");
       </script> <?php
+    }
+    else{
 
-      echo "<script> location.href='searchBook.php'; </script>";
+      // Updating Book Table
+      $bookSQL = "UPDATE Book SET baAvailabilityID = 55240001 WHERE ISBN = '$bookISBN';";
+      mysqli_query($databaseConn, $bookSQL);
+
+      // Retrieving the UserID of the currently logged in account
+      $userIDDBSQL = "SELECT UserID FROM User u
+                      INNER JOIN Login l ON l.LoginID = u.lLoginID
+                      WHERE l.Username = '$userUsername';";
+      $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
+      $userIDDBRow = mysqli_fetch_array($userIDDBResult);
+      $userID = $userIDDBRow["UserID"];
+
+      // Retrieving the BorrowID from the Borrow Table
+      $borrowIDSQL = "SELECT bbBorrowID FROM Borrow WHERE umUserID = '$userID' AND bISBN = '$bookISBN';";
+      $borrowIDResult = mysqli_query($databaseConn, $borrowIDSQL);
+      $borrowIDRow = mysqli_fetch_array($borrowIDResult);
+      $borrowID = $borrowIDRow["bbBorrowID"];
+
+      // Retrieving the current datetime
+      date_default_timezone_set('Asia/Colombo');
+      $returnDateTime = date('Y-m-d h:i:s', time());
+
+      // Retrieving book borrowed datetime from the BookBorrow Table
+      $borrowDateTimeSQL = "SELECT BorrowDateTime FROM BookBorrow WHERE $borrowID = '$borrowID';";
+      $borrowDateTimeResult = mysqli_query($databaseConn, $borrowDateTimeSQL);
+      $borrowDateTimeRow = mysqli_fetch_array($borrowDateTimeResult);
+      $borrowDateTime = $borrowDateTimeRow["BorrowDateTime"];
+
+      $assignedReturnDateDuration = strtotime("+14 day", strtotime($borrowDateTime));
+
+      $assignedReturnDate = date("Y-m-d", $assignedReturnDateDuration);
+
+      if($returnDateTime > $assignedReturnDate){
+        ?> <script>
+          alert("Provide book to librarian.\nUnder consideration of the librarian fine may get charged.\nContact librarian for more details.\nThank You");
+        </script> <?php
+      }
+      else if($returnDateTime <= $assignedReturnDate){
+        ?> <script>
+          alert("Provide book to librarian. Thank You");
+        </script> <?php
+      }
+
     }
   }
 
-  // Process of reserving a book
-  if(isset($_GET['reserveisbn'])){
 
-    $ISBN = $_GET['reserveisbn'];
 
-    // Retrieving the UserID of the currently logged in account
-    $userIDDBSQL = "SELECT UserID FROM User u
-                    INNER JOIN Login l ON l.LoginID = u.lLoginID
-                    WHERE l.Username = '$userUsername';";
-    $userIDDBResult = mysqli_query($databaseConn, $userIDDBSQL);
-    $userIDDBRow = mysqli_fetch_array($userIDDBResult);
-    $userID = $userIDDBRow["UserID"];
-
-    // Retrieving the current datetime
-    date_default_timezone_set('Asia/Colombo');
-    $currentDate = date('m/d/Y h:i:s', time());
-
-    $reserveSQL = "UPDATE Book SET baAvailabilityID = 55240004, ReserveDateTime = '$currentDate',
-                  uUserID_ReservedBy = '$userID' WHERE ISBN = '$ISBN';";
-    mysqli_query($databaseConn, $reserveSQL);
-
-    ?> <script>
-      alert("Book has been reserved for 24 hours");
-    </script> <?php
-
-    echo "<script> location.href='searchBook.php'; </script>";
-  }
-
-  // Process of borrowing a book
-  if(isset($_GET['borrowisbn'])){
-
-    $ISBN = $_GET['borrowisbn'];
-
-    // Adding new record into BookBorrow Table
-    $bookBorrowSQL = "INSERT INTO BookBorrow (ReturnDateTime) VALUES ('NULL');";
-    mysqli_query($databaseConn, $bookBorrowSQL);
-
-    // Retrieving the BorrowID of the newly added record
-    $borrowIDSQL = "SELECT BorrowID FROM BookBorrow ORDER BY BorrowDateTime DESC LIMIT 1;";
-    $borrowIDResult = mysqli_query($databaseConn, $borrowIDSQL);
-    $borrowIDRow = mysqli_fetch_array($borrowIDResult);
-    $borrowID = $borrowIDRow['BorrowID'];
-
-    // Retrieving the UserID and UniversityNo from UniversityMember table
-    $memberSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
-                  INNER JOIN User u ON u.UserID = um.uUserID
-                  INNER JOIN Login l ON l.LoginID = u.lLoginID
-                  WHERE l.Username = '$userUsername';";
-    $memberResult = mysqli_query($databaseConn, $memberSQL);
-    $memberRow = mysqli_fetch_array($memberResult);
-    $userID = $memberRow['uUserID'];
-    $universityNo = $memberRow['UniversityNo'];
-
-    // Inserting record into Borrow Table
-    $borrowSQL = "INSERT INTO Borrow VALUES ('$userID', '$universityNo', '$ISBN', '$borrowID')";
-    mysqli_query($databaseConn, $borrowSQL);
-
-    // Updating Book Table
-    $borrowBook = "UPDATE Book SET baAvailabilityID = 55240005 WHERE ISBN = '$ISBN';";
-    mysqli_query($databaseConn, $borrowBook);
-
-    ?> <script>
-      alert("Book has been reserved for 24 hours");
-    </script> <?php
-
-    echo "<script> location.href='searchBook.php'; </script>";
-  }
 
 
 ?>
@@ -215,11 +187,11 @@
                 <li class="nav-item">
                   <a class="nav-link" href="../studentProfessorDashboard.php">Home</a>
                 </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="searchBook.php">Search Book</a>
-                </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../2.returnBook/returnBook.php">Return Book</a>
+                  <a class="nav-link" href="../1.searchBook/searchBook.php">Search Book</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="returnBook.php">Return Book</a>
                 </li>
               </ul>
             </nav>
@@ -238,28 +210,14 @@
                       height: 1050px;
                       background-color: #F6F6F6;">
 
-            <button type="button" name="return" style="color: #FFFFFF;
-                                                      background-color: #5EAFFF;
-                                                      border: 1px solid #5EAFFF;
-                                                      padding: 5px;
-                                                      border-radius: 5px;
-                                                      width: 140px;
-                                                      position: absolute;
-                                                      top: 400px;
-                                                      left: 330px;" onClick="window.location.href = 'searchBook.php';">
-              <i class="fa fa-arrow-left" style="font-size: 20px;
-                                                margin-right: 10px;"></i>
-              Return
-            </button>
-
-            <div style="width: 80%;
-                        height: 770px;
+            <div style="width: 50%;
+                        height: 300px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
                         left: 50%;
                         transform: translateX(-50%);
-                        top: 95px;">
+                        top: 30px;">
 
               <style>
                 #container{
@@ -267,8 +225,8 @@
                   width: 94%;
                   position: absolute;
                   top: 125px;
-                  left: 3%;
-                  transition: translateX(-97%);
+                  left: 30%;
+                  transition: translateX(-70%);
                 }
 
                 .formText{
@@ -282,7 +240,7 @@
                   width: 250px;
                 }
 
-                #searchBookSubmit{
+                #returnBookSubmit{
                   padding: 5px;
                   border-radius: 5px;
                   background-color: #0081FF;
@@ -317,126 +275,17 @@
                 <p style="font-size: 24px;
                           position: absolute;
                           top: -100px;
-                          left: -10px;"><b>Search Book</b></p>
+                          left: -10px;"><b>Return Borrowed Book</b></p>
 
-                <?php
+                <form method="POST" action="returnBook.php">
 
+                  <p class="formText">Book ISBN:
+                    <input type="text" name="bookISBN" placeholder="ISBN" class="formInput" style="margin-left: 58px;" required>
+                  </p>
 
-                  $bookSQL = "";
+                  <button type="submit" name="returnSubmit" id="returnBookSubmit">Return Book</button>
 
-                  if(!empty($bookISBN)){
-                    // Retrieving details of book with entered ISBN
-                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
-                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
-                                WHERE b.ISBN = '$bookISBN';";
-                  }
-                  else if(!empty($bookName)){
-                    // Retrieving details of book with entered Name
-                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
-                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
-                                WHERE b.Name = '$bookName';";
-                  }
-                  else if(!empty($bookAuthor)){
-                    // Retrieving details of book with entered Author
-                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
-                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
-                                INNER JOIN BookAuthor a ON a.bISBN = b.ISBN
-                                WHERE a.Author = '$bookAuthor';";
-                  }
-                  else if($bookCategory != "NULL"){
-                    // Retrieving details of book with selected Category
-                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
-                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
-                                WHERE bc.CategoryID = '$bookCategory';";
-                  }
-                  else if(!empty($bookISBN) && !empty($bookName) && !empty($bookAuthor) && $bookCategory != "NULL"){
-                    // Retrieving details of book for all mentioned details
-                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
-                                INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
-                                INNER JOIN BookAuthor a ON a.bISBN = b.ISBN
-                                WHERE b.ISBN = '$bookISBN' AND b.Name = '$bookName' AND a.Author = '$bookAuthor' AND bc.CategoryID = '$bookCategory';";
-                  }
-
-                  $bookResult = mysqli_query($databaseConn, $bookSQL);
-                ?>
-
-                <p style="font-size: 20px;
-                          position: absolute;
-                          top: -60px;
-                          left: -10px;"><?php echo mysqli_num_rows($bookResult); ?> result(s) found</p>
-
-                <div style="overflow-y: scroll;
-                            height: 600px;">
-                  <table class="table table-hover fixed_header" style="border-radius: 10px;">
-                    <thead>
-                      <tr>
-                        <th> ISBN </th>
-                        <th> Name </th>
-                        <th> Author Name </th>
-                        <th> Category </th>
-                        <th> Availability </th>
-                        <th> Reserved Date Time </th>
-                        <th> Action </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                          while($bookRow = mysqli_fetch_array($bookResult)){
-                            $ISBN = $bookRow["ISBN"];
-                        ?>
-                      <tr>
-                        <td title="ISBN"><?php echo $ISBN ?></td>
-                        <td title="Book Name"><?php echo $bookRow["Name"]; ?></td>
-
-                          <?php
-                            // Retrieving the author names of the book
-                            $bookAuthorSQL = "SELECT Author FROM BookAuthor WHERE bISBN = '$ISBN';";
-                            $bookAuthorResult = mysqli_query($databaseConn, $bookAuthorSQL);
-                            $bookAuthorRowCount = mysqli_num_rows($bookAuthorResult);
-                            // Implemention if there is only one author name
-                            if($bookAuthorRowCount == 1){
-                              while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
-                                ?><td  title="Book Author"><?php echo $bookAuthorRow["Author"]; ?></td><?php
-                              }
-                            }
-                            // Implemention if there are two author names
-                            else if($bookAuthorRowCount == 2){
-                              $bookAuthor = [];
-
-                              while($bookAuthorRow = mysqli_fetch_array($bookAuthorResult)){
-                                $bookAuthor[] = $bookAuthorRow["Author"];
-                              }
-
-                              ?><td  title="Book Author"><?php echo $bookAuthor[0]." & ".$bookAuthor[1]; ?></td><?php
-                            }
-                          ?>
-
-                        <td title="Category"><?php echo $bookRow["Category"]; ?></td>
-
-                        <td title="Availability"><?php echo $bookRow["Availability"]; ?></td>
-
-                        <td title="Reserved Date Time"><?php echo $bookRow["ReserveDateTime"]; ?></td>
-
-                        <td>
-                            <?php
-                              if($bookRow["Availability"] == "Available"){
-                            ?>
-                            <a href="viewBook.php?reserveisbn=<?php echo $ISBN ?>" onClick="return confirm('Are you sure you want to reserve this book? \n(Reserved Time Period 24 hours)')">Reserve</a>
-                          | <a href="viewBook.php?borrowisbn=<?php echo $ISBN ?>" onClick="return confirm('Are you sure you want to borrow this book?')">Borrow</a>
-                            <?php } ?>
-                        </td>
-                      </tr>
-                        <?php } ?>
-                    </tbody>
-                  </table>
-                </div>
-
-
+                </form>
 
               </div>
 

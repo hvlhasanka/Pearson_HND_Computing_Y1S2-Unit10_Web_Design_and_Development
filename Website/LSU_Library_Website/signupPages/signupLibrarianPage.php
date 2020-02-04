@@ -68,35 +68,9 @@
             header("location: ../librarianDashboard/librarianDashboard.php");
           }
 
-
           // For userType: Student and Professor
           if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
-
-            // Checking if the account status (member status) is active
-            $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
-                                INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
-                                INNER JOIN User u ON u.UserID = um.uUserID
-                                WHERE u.lLoginID = '$lLoginIDDB';";
-            $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
-
-            $accountStatus = "";
-
-            while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
-              $accountStatus = $accountStatusRow["MemberStatus"];
-            }
-
-            if($accountStatus == "Active"){
-
-              header("location: ../studentProfessorDashboard/studentProfessorDashboard.php");
-
-            }
-            else{
-              ?> <script>
-                alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
-              </script> <?php
-
-              echo "<script> location.href='../logout.php'; </script>";
-            }
+            header("location: ../studentProfessorDashboard/studentProfessorDashboard.php");
           }
         }
         else{
@@ -413,7 +387,7 @@
     }
 
     .modal-body input[type=text]:hover, .modal-body input[type=password]:hover, .modal-body select:hover{
-      border-color: #00B1D2FF;
+      border: 1px solid #00B1D2FF;
       box-shadow: 2px 1px 2px #00B1D2FF;
     }
 
@@ -426,7 +400,7 @@
       border-radius: 7px;
       transition-duration: 0.4s;
       background-color: white;
-      border-color: #00B1D2FF;
+      border: 1px solid #00B1D2FF;
       width: 200px;
     }
 
@@ -584,7 +558,7 @@
 
             <button type="button" name="return" style="color: #FFFFFF;
                                                       background-color: #5EAFFF;
-                                                      border-color: #5EAFFF;
+                                                      border: 1px solid #5EAFFF;
                                                       padding: 5px;
                                                       border-radius: 5px;
                                                       width: 140px;
@@ -650,7 +624,7 @@
                   background-color: #0081FF;
                   color: #FFFFFF;
                   width: 100px;
-                  border-color: #0081FF;
+                  border: 1px solid #0081FF;
                 }
 
                 #resetButton{
@@ -659,7 +633,7 @@
                   background-color: #DEDEDE;
                   color: #000000;
                   width: 100px;
-                  border-color: #DEDEDE;
+                  border: 1px solid #DEDEDE;
                 }
 
               </style>

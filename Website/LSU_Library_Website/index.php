@@ -1,6 +1,29 @@
 <?php
   include_once("LSULibraryDBConnection.php");
 
+  // Retrieving the current datetime
+  date_default_timezone_set('Asia/Colombo');
+  $currentDateTime = date('Y-m-d h:i:s', time());
+
+  // Checking if the reserved books have reached their time duration of 24 hours
+  $retrieveReservedDateTimeSQL = "SELECT ISBN, ReserveDateTime FROM Book;";
+  $retrieveReservedDateTimeResult = mysqli_query($databaseConn, $retrieveReservedDateTimeSQL);
+  while($retrieveReservedDateTimeRow = mysqli_fetch_array($retrieveReservedDateTimeResult)){
+    $bookISBN = $retrieveReservedDateTimeRow["ISBN"];
+    $borrowDateTime = $retrieveReservedDateTimeRow["ReserveDateTime"];
+
+    $assignedReturnTimeDuration = strtotime("+24 hour", strtotime($borrowDateTime));
+
+    $assignedReturnDate = date("Y-m-d h:i:s", $assignedReturnTimeDuration);
+
+    if($currentDateTime > $assignedReturnDate){
+      // Updating Book table due to expiration of book reserve time period - 24 hours
+      $updateReservseSQL = "UPDATE Book SET baAvailabilityID = 55240001, ReserveDateTime = NULL, uUserID_ReservedBy = NULL
+                            WHERE ISBN = '$bookISBN';";
+      $t2 = mysqli_query($databaseConn, $updateReservseSQL);
+    }
+  }
+
   // SignUp process
   if(isset($_POST['signUp'])){
 
@@ -100,32 +123,7 @@
 
           // For userType: Student and Professor
           if($selectedMembershipType == 65350001 || $selectedMembershipType == 65350002){
-
-            // Checking if the account status (member status) is active
-            $accountStatusSQL = "SELECT mms.MemberStatus FROM MemberMemberStatus mms
-                                INNER JOIN UniversityMember um ON um.mmsMemberStatusID = mms.MemberStatusID
-                                INNER JOIN User u ON u.UserID = um.uUserID
-                                WHERE u.lLoginID = '$lLoginIDDB';";
-            $accountStatusResult = mysqli_query($databaseConn, $accountStatusSQL);
-
-            $accountStatus = "";
-
-            while($accountStatusRow = mysqli_fetch_array($accountStatusResult)){
-              $accountStatus = $accountStatusRow["MemberStatus"];
-            }
-
-            if($accountStatus == "Active"){
-
-              header("location: studentProfessorDashboard/studentProfessorDashboard.php");
-
-            }
-            else{
-              ?> <script>
-                alert("Account is currently <?php echo $accountStatus; ?>, please contact librarian to resolve this.");
-              </script> <?php
-
-              echo "<script> location.href='logout.php'; </script>";
-            }
+            header("location: studentProfessorDashboard/studentProfessorDashboard.php");
           }
         }
         else{
@@ -197,7 +195,7 @@
     }
 
     .modal-body input[type=text]:hover, input[type=password]:hover, select:hover{
-      border-color: #00B1D2FF;
+      border: 1px solid #00B1D2FF;
       box-shadow: 2px 1px 2px #00B1D2FF;
     }
 
@@ -210,7 +208,7 @@
       border-radius: 7px;
       transition-duration: 0.4s;
       background-color: white;
-      border-color: #00B1D2FF;
+      border: 1px solid #00B1D2FF;
       width: 200px;
     }
 
