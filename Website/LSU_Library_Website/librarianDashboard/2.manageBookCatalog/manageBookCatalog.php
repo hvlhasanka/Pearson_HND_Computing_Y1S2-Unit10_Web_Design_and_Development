@@ -290,7 +290,7 @@
                         margin-top: 0px;
                         margin-left: 95px;;
                         margin-bottom: 20px;
-                        border-color: #ccc;
+                        border: 1px solid #ccc;
                       }
 
                       .mandatoryAsterisk{
@@ -309,7 +309,7 @@
                         background-color: #0081FF;
                         color: #FFFFFF;
                         width: 100px;
-                        border-color: #0081FF;
+                        border: 1px solid #0081FF;
                       }
 
                       #formResetButton{
@@ -318,7 +318,7 @@
                         background-color: #DEDEDE;
                         color: #000000;
                         width: 100px;
-                        border-color: #DEDEDE;
+                        border: 1px solid #DEDEDE;
                       }
                     </style>
 

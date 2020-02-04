@@ -9,92 +9,33 @@
 
   include_once("../../LSULibraryDBConnection.php");
 
-  // Add New Book Process
-  if(isset($_POST['addBookSubmit'])){
+  // Process of removing a book borrow
+  if(isset($_GET['removeisbn']) && isset($_GET['borrowID'])){
 
-    $ISBN = $_POST['isbn'];
-    $Name = $_POST['name'];
-    $author1 = $_POST['author1'];
-    $author2 = $_POST['author2'];
-    $bookCategoryType = $_POST['bookCategorySelect'];
-    $bookAvailabilityType = $_POST['bookAvailabilitySelect'];
+    $ISBN = $_GET['removeisbn'];
+    $borrowID = $_GET['borrowid'];
+    $username = $_GET['username'];
 
-    if (empty($ISBN) || empty($Name) || empty($author1) || $bookCategoryType == "NULL" || $bookAvailabilityType == "NULL"){
-      if(empty($ISBN)){
-        ?> <script>
-          alert("ERROR: ISBN field is not filled.");
-        </script> <?php
-      }
-      if(empty($Name)){
-        ?> <script>
-          alert("ERROR: Book Name field is not filled.");
-        </script> <?php
-      }
-      if(empty($author1)){
-        ?> <script>
-          alert("ERROR: First Author Name field is not filled.");
-        </script> <?php
-      }
-      if($bookCategoryType == "NULL"){
-        ?> <script>
-          alert("ERROR: Book category was not selected");
-        </script> <?php
-      }
-      if($bookAvailabilityType == "NULL"){
-        ?> <script>
-          alert("ERROR: Book availability was not selected");
-        </script> <?php
-      }
-    }
-    else{
-      // Checking if this book is already available in the database
-      $bookISBNSQL = "SELECT * FROM Book WHERE ISBN = '$ISBN'";
+    // Retrieving UserID and UniversityNo of the member
+    $userDetailsSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
+                      INNER JOIN User u ON u.UserID = um.uUserID
+                      INNER JOIN Login l ON l.LoginID = u.lLoginID
+                      WHERE l.Username = '$username';";
+    $userDetailsResult = mysqli_query($databaseConn, $userDetailsSQL);
+    $userDetailsRow = mysqli_fetch_array($userDetailsResult);
+    $userID = $userDetailsRow['uUserID'];
+    $universityNo = $userDetailsRow['UniversityNo'];
 
-      $bookISBNResult = mysqli_query($databaseConn, $bookISBNSQL);
 
-      $bookISBNCount = mysqli_num_rows($bookISBNResult);
+    // Removing record from Borrow table
+    $borrowSQL = "DELETE FROM Borrow WHERE umUserID = '$userID' AND
+                  umUniversityNo = '$universityNo' AND bISBN = '$ISBN' AND bbBorrowID = '$borrowID';";
+    mysqli_query($databaseConn, $borrowSQL);
 
-      if($bookISBNCount == 0){
+    // Removing record from BookBorrow Table
+    $bookBorrowSQL = "DELETE FROM BookBorrow WHERE BorrowID = '$borrowID';";
+    mysqli_query($databaseConn, $bookBorrowSQL);
 
-        // Adding record into Book table
-        $bookSQL = "INSERT INTO Book (ISBN, Name, bcCategoryID, baAvailabilityID) VALUES
-                    ('$ISBN', '$Name', '$bookCategoryType', '$bookAvailabilityType');";
-
-        $bookResult = mysqli_query($databaseConn, $bookSQL);
-
-        if(empty($author2)){
-          // Adding (first author) record into BookAuthor table
-          $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
-
-          $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
-        }
-        else if(!empty($author2)){
-          // Adding (first author) record into BookAuthor table
-          $bookAuthor1SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author1');";
-
-          $bookAuthor1Result = mysqli_query($databaseConn, $bookAuthor1SQL);
-
-          // Adding (second author) record into BookAuthor table
-          $bookAuthor2SQL = "INSERT INTO BookAuthor VALUES ('$ISBN', '$author2');";
-
-          $bookAuthor2Result = mysqli_query($databaseConn, $bookAuthor2SQL);
-        }
-
-        ?> <script>
-          alert("Book has been successfully added.");
-        </script> <?php
-
-        echo "<script> location.href='manageBooks.php'; </script>";
-
-      }
-
-      else{
-        ?> <script>
-          alert("Book is already added");
-        </script> <?php
-      }
-
-    }
   }
 
 ?>
@@ -201,13 +142,10 @@
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="manageBookBorrowAndReturnDetails.php">Manage Borrow and Returning Details</a>
+                  <a class="nav-link" href="manageBookBorrowAndReturnDetails.php">Manage Book Borrow and Returning Details</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Manage Member Details</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Calculate Late Fine</a>
                 </li>
               </ul>
             </nav>
@@ -216,7 +154,7 @@
               nav li{
                 margin-left:30px;
                 margin-right:30px;
-                width: 160px;
+                width: 185px;
               }
             </style>
           <!-- NavBar - End -->
@@ -250,7 +188,7 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
+                  $bookDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
                                     INNER JOIN User u ON u.lLoginID = l.LoginID
                                     INNER JOIN UniversityMember um ON um.uUserID = u.UserID
                                     INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
@@ -310,9 +248,9 @@
 
 
                       <td>
-                          <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
-						            | <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
-                          onClick="return confirm('This book and along with connections to this book will be removed.\nAre you such you want to continue?')">
+                          <a href="updateBorrowDetails.php?borrowisbn=<?php echo $ISBN ?>"> Edit </a>
+                          | <a href="manageBookBorrowAndReturnDetails.php?removeisbn=<?php echo $ISBN ?>&borrowid=<?php $bookDetailsRow['BorrowID'] ?>&username=<?php echo $bookDetailsRow["Username"]; ?>"
+                          onClick="return confirm('Book borrow will be removed.\nAre you such you want to continue?')">
                           Remove
                         </a>
                       </td>
@@ -412,11 +350,7 @@
                       <td title="Borrow Duration"><?php echo $borrowDuration; ?></td>
 
                       <td>
-                          <a href="updateBookDetails.php?isbn=<?php echo $ISBN ?>"> Edit </a>
-						            | <a href="deleteBook.php?isbn=<?php echo $ISBN ?>"
-                          onClick="return confirm('This book and along with connections to this book will be removed.\nAre you such you want to continue?')">
-                          Remove
-                        </a>
+                          <a href="updateReturnDetails.php?returnisbn<?php echo $ISBN ?>"> Edit </a>
                       </td>
 
                       <td>

@@ -400,7 +400,7 @@
                         background-color: #0081FF;
                         color: #FFFFFF;
                         width: 100px;
-                        border-color: #0081FF;
+                        border: 1px solid #0081FF;
                       }
 
                       #addBookResetButton{
@@ -409,7 +409,7 @@
                         background-color: #DEDEDE;
                         color: #000000;
                         width: 100px;
-                        border-color: #DEDEDE;
+                        border: 1px solid #DEDEDE;
                       }
                     </style>
 

@@ -193,7 +193,7 @@
             <!-- Return Button -->
             <button type="button" name="return" style="color: #FFFFFF;
                                                       background-color: #5EAFFF;
-                                                      border-color: #5EAFFF;
+                                                      border: 1px solid #5EAFFF;
                                                       padding: 5px;
                                                       border-radius: 5px;
                                                       width: 140px;
@@ -362,7 +362,7 @@
                         margin-top: 0px;
                         margin-left: 95px;;
                         margin-bottom: 20px;
-                        border-color: #ccc;
+                        border: 1px solid #ccc;
                       }
 
                       .mandatoryAsterisk{
@@ -381,7 +381,7 @@
                         background-color: #0081FF;
                         color: #FFFFFF;
                         width: 100px;
-                        border-color: #0081FF;
+                        border: 1px solid #0081FF;
                       }
 
                       #addBookResetButton{
@@ -390,7 +390,7 @@
                         background-color: #DEDEDE;
                         color: #000000;
                         width: 100px;
-                        border-color: #DEDEDE;
+                        border: 1px solid #DEDEDE;
                       }
                     </style>
 
