@@ -178,7 +178,7 @@
                                       INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
                                       INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
                                       INNER JOIN UniversityMember um ON um.uUserID = u.UserID
-                                      INNER JOIN MemberMemberType mmt ON mmt.MemberTypeID = um.mmtMemberTypeID
+                                      INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
                                       INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
                                       INNER JOIN Student s ON s.umUserID = um.uUserID AND s.umUniversityNo = um.UniversityNo
                                       INNER JOIN StudentDegreeProgram sdp ON sdp.DegreeProgramID = s.sdpDegreeProgramID

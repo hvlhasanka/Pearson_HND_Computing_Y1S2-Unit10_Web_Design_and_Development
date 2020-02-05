@@ -489,7 +489,7 @@
                                       INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
                                       INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
                                       INNER JOIN UniversityMember um ON um.uUserID = u.UserID
-                                      INNER JOIN MemberMemberType mmt ON mmt.MemberTypeID = um.mmtMemberTypeID
+                                      INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
                                       INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
                                       INNER JOIN MemberPosition mp ON mp.PositionID = um.mpPositionID
                                       INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID

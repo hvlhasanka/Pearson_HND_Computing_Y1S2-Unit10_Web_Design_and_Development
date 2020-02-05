@@ -14,38 +14,102 @@
   include_once("../../checkBookReserveTimePeriod.php");
 
 
-  // Process of removing a book borrow
-  if(isset($_GET['removeisbn']) && isset($_GET['borrowid']) && isset($_GET['username'])){
+  // Process of deleting a student account
+  if(isset($_GET['removestudentUserID'])){
 
-    $ISBN = $_GET['removeisbn'];
-    $borrowID = $_GET['borrowid'];
-    $username = $_GET['username'];
+    $studentUserID = $_GET['removestudentUserID'];
 
-    // Retrieving UserID and UniversityNo of the member
-    $userDetailsSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
-                      INNER JOIN User u ON u.UserID = um.uUserID
-                      INNER JOIN Login l ON l.LoginID = u.lLoginID
-                      WHERE l.Username = '$username';";
-    $userDetailsResult = mysqli_query($databaseConn, $userDetailsSQL);
-    $userDetailsRow = mysqli_fetch_array($userDetailsResult);
-    $userID = $userDetailsRow['uUserID'];
-    $universityNo = $userDetailsRow['UniversityNo'];
+    // Retrieving UniversityNo from UniversityNo Table
+    $universityNoSQL = "SELECT UniversityNo FROM UniversityMember WHERE uUserID = '$studentUserID';";
+    $universityNoResult = mysqli_query($databaseConn, $universityNoSQL);
+    $universityNoRow = mysqli_fetch_array($universityNoResult);
+    $studentUniversityNo = $universityNoRow['UniversityNo'];
 
+    // Deleting record from the Student table
+    $studentDeleteSQL = "DELETE FROM Student WHERE umUserID = '$studentUserID' AND umUniversityNo = '$studentUniversityNo';";
+    mysqli_query($databaseConn, $studentDeleteSQL);
 
-    // Removing record from Borrow table
-    $borrowSQL = "DELETE FROM Borrow WHERE umUserID = '$userID' AND
-                  umUniversityNo = '$universityNo' AND bISBN = '$ISBN' AND bbBorrowID = '$borrowID';";
+    // Deleteng records from Borrow table
+    $borrowSQL = "DELETE FROM Borrow WHERE umUserID = '$studentUserID' AND umUniversityNo = '$studentUniversityNo';";
     mysqli_query($databaseConn, $borrowSQL);
 
-    // Removing record from BookBorrow Table
-    $bookBorrowSQL = "DELETE FROM BookBorrow WHERE BorrowID = '$borrowID';";
-    mysqli_query($databaseConn, $bookBorrowSQL);
+    // Deleting record from University Member table
+    $universityMemberSQL = "DELETE FROM UniversityMember WHERE uUserID = '$studentUserID' AND UniversityNo = '$studentUniversityNo';";
+    mysqli_query($databaseConn, $universityMemberSQL);
 
-    // Updating Book Table, availability to available
-    $bookAvailabilitySQL = "UPDATE Book SET baAvailabilityID = 55240001 WHERE ISBN = '$ISBN';";
-    mysqli_query($databaseConn, $bookAvailabilitySQL);
+    // Deleting records from UserManageLogin table
+    $userManageLoginSQL = "DELETE FROM UserManageLogin WHERE uUserID = '$studentUserID';";
+    mysqli_query($databaseConn, $userManageLoginSQL);
 
+    // Retrieving lLoginID from User table
+    $loginIDSQL = "SELECT lLoginID FROM User WHERE UserID  = '$studentUserID';";
+    $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
+    $loginIDRow = mysqli_fetch_array($loginIDResult);
+    $loginID = $loginIDRow['lLoginID'];
+
+    // Deleting record from User table
+    $userSQL = "DELETE FROM User WHERE UserID = '$studentUserID';";
+    mysqli_query($databaseConn, $userSQL);
+
+    // Deleting record from Login table
+    $loginSQL = "DELETE FROM Login WHERE LoginID = '$loginID';";
+    mysqli_query($databaseConn, $loginSQL);
+
+    ?> <script>
+      alert("Student account has been successfully deleted.");
+    </script> <?php
+
+    echo "<script> location.href='manageMemberDetails.php'; </script>";
   }
+
+  // Process of deleting a professor account
+  if(isset($_GET['removeprofessorUserID'])){
+
+    $professorUserID = $_GET['removeprofessorUserID'];
+
+    // Retrieving UniversityNo from UniversityNo Table
+    $universityNoSQL = "SELECT UniversityNo FROM UniversityMember WHERE uUserID = '$professorUserID';";
+    $universityNoResult = mysqli_query($databaseConn, $universityNoSQL);
+    $universityNoRow = mysqli_fetch_array($universityNoResult);
+    $professorUniversityNo = $universityNoRow['UniversityNo'];
+
+    // Deleting record from the Professor table
+    $professorSQL = "DELETE FROM Professor WHERE umUserID = '$professorUserID' AND umUniversityNo = '$professorUniversityNo';";
+    mysqli_query($databaseConn, $professorSQL);
+
+    // Deleteng records from Borrow table
+    $borrowSQL = "DELETE FROM Borrow WHERE umUserID = '$professorUserID' AND umUniversityNo = '$professorUniversityNo';";
+    mysqli_query($databaseConn, $borrowSQL);
+
+    // Deleting record from University Member table
+    $universityMemberSQL = "DELETE FROM UniversityMember WHERE uUserID = '$professorUserID' AND UniversityNo = '$professorUniversityNo';";
+    mysqli_query($databaseConn, $universityMemberSQL);
+
+    // Deleting records from UserManageLogin table
+    $userManageLoginSQL = "DELETE FROM UserManageLogin WHERE uUserID = '$professorUserID';";
+    mysqli_query($databaseConn, $userManageLoginSQL);
+
+    // Retrieving lLoginID from User table
+    $loginIDSQL = "SELECT lLoginID FROM User WHERE UserID  = '$professorUserID';";
+    $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
+    $loginIDRow = mysqli_fetch_array($loginIDResult);
+    $loginID = $loginIDRow['lLoginID'];
+
+    // Deleting record from User table
+    $userSQL = "DELETE FROM User WHERE UserID = '$professorUserID';";
+    mysqli_query($databaseConn, $userSQL);
+
+    // Deleting record from Login table
+    $loginSQL = "DELETE FROM Login WHERE LoginID = '$loginID';";
+    mysqli_query($databaseConn, $loginSQL);
+
+    ?> <script>
+      alert("Professor account has been successfully deleted.");
+    </script> <?php
+
+    echo "<script> location.href='manageMemberDetails.php'; </script>";
+  }
+
 
 ?>
 
@@ -196,7 +260,7 @@
                           overflow-y: scroll;
                           overflow-x: scroll;">
 
-                <!-- Retrieving details of the existing users from the database -->
+                <!-- Retrieving details of the existing student account from the database -->
                 <?php
                   $studentDetailsSQL = "SELECT * FROM User u INNER JOIN Login l ON l.LoginID = u.lLoginID
                                     INNER JOIN UserCity uc ON uc.CityID = u.ucCityID
@@ -241,7 +305,7 @@
                   <tbody>
                       <?php
                         while($studentDetailsRow = mysqli_fetch_array($studentDetailsResult)){
-                          $userID = $studentDetailsRow['UserID'];
+                          $studentUserID = $studentDetailsRow['UserID'];
                       ?>
                     <tr>
                       <td title="First Name"><?php echo $studentDetailsRow["FirstName"]; ?></td>
@@ -263,10 +327,10 @@
                       <td title="Member Status"><?php echo $studentDetailsRow["MemberStatus"]; ?></td>
 
                       <td>
-                          <a href="updateStudentDetails.php?studentUserID=<?php echo $UserID; ?>"> Edit </a>
-                          | <a href="manageMemberDetails.php?removestudentUserID=<?php echo $ISBN; ?>"
-                          onClick="return confirm('Student Account will be deleted.\nAre you such you want to continue?')">
-                          Remove
+                          <a href="updateStudentDetails.php?studentUserID=<?php echo $studentUserID; ?>"> Edit </a>
+                          | <a href="manageMemberDetails.php?removestudentUserID=<?php echo $studentUserID; ?>"
+                          onClick="return confirm('Student Account will be deleted. Along with all connections to this account.\nAre you such you want to continue?')">
+                          Delete
                           </a>
                       </td>
                     </tr>
@@ -302,108 +366,80 @@
                           transform: translateX(-50%);
                           overflow-y: scroll;">
 
-                <!-- Retrieving details of the existing books from the database -->
+                <!-- Retrieving details of the existing professor accounts from the database -->
                 <?php
-                  $bookDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, bb.ReturnDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
-                                    INNER JOIN User u ON u.lLoginID = l.LoginID
-                                    INNER JOIN UniversityMember um ON um.uUserID = u.UserID
-                                    INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
-                                    INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
-                                    INNER JOIN Borrow br ON br.umUserID = um.uUserID
-                                    INNER JOIN BookBorrow bb ON bb.BorrowID = br.bbBorrowID
-                                    INNER JOIN Book b ON b.ISBN = br.bISBN
-                                    INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                    WHERE ba.Availability != 'Borrowed';";
+                  $professorDetailsSQL = "SELECT * FROM User u INNER JOIN Login l ON l.LoginID = u.lLoginID
+                                          INNER JOIN UserCity uc ON uc.CityID = u.ucCityID
+                                          INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
+                                          INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
+                                          INNER JOIN UniversityMember um ON um.uUserID = u.UserID
+                                          INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
+                                          INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
+                                          INNER JOIN MemberPosition mp ON mp.PositionID = um.mpPositionID
+                                          INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
+                                          INNER JOIN Professor p ON p.umUserID = um.uUserID AND p.umUniversityNo = um.UniversityNo
+                                          INNER JOIN ProfessorSpecialization ps ON ps.SpecializationID = p.psSpecializationID;";
 
-                  $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
+                  $professorDetailsResult = mysqli_query($databaseConn, $professorDetailsSQL);
 
                 ?>
 
                 <table class="table table-hover fixed_header" style="border-radius: 10px;">
                   <thead>
                     <tr>
-                      <th> Username </th>
                       <th> First Name </th>
+                      <th> Middle Name </th>
                       <th> Last Name </th>
-                      <th> Membership Type </th>
+                      <th> Email Address </th>
+                      <th> Mobile Number </th>
+                      <th> Telephone Number </th>
+                      <th> Street Address </th>
+                      <th> City </th>
+                      <th> Zip/Postal Code </th>
+                      <th> Provience </th>
+                      <th> University Index No </th>
+                      <th> Faculty </th>
+                      <th> Position </th>
+                      <th> Specialization </th>
+                      <th> Username </th>
                       <th> Member Status </th>
-                      <th> Book ISBN </th>
-                      <th> Borrow DateTime </th>
-                      <th> Return DateTime </th>
-                      <th> Borrow Duration </th>
                       <th> Modification </th>
-                      <th> Calculate Late Fine </th>
+
                     </tr>
                   </thead>
                   <tbody>
                       <?php
-                        while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
-                          $ISBN = $bookDetailsRow["ISBN"];
+                        while($professorDetailsRow = mysqli_fetch_array($professorDetailsResult)){
+                          $professorUserID = $professorDetailsRow["UserID"];
                       ?>
                     <tr>
-                      <td title="Username"><?php echo $bookDetailsRow["Username"]; ?></td>
-                      <td title="First Name"><?php echo $bookDetailsRow["FirstName"]; ?></td>
-                      <td title="Last Name"><?php echo $bookDetailsRow["LastName"]; ?></td>
-                      <td title="Membership Type"><?php echo $bookDetailsRow["MembershipType"]; ?></td>
-                      <td title="Member Status"><?php echo $bookDetailsRow["MemberStatus"]; ?></td>
-                      <td title="Book ISBN"><?php echo $ISBN ?></td>
-                      <td title="Borrow DateTime"><?php echo $bookDetailsRow["BorrowDateTime"]; ?></td>
-                      <td title="Return DateTime"><?php echo $bookDetailsRow["ReturnDateTime"]; ?></td>
-
-                      <?php
-
-                        $borrowDateTime = strtotime($bookDetailsRow["BorrowDateTime"]);
-                        $returnDateTime = strtotime($bookDetailsRow["ReturnDateTime"]);
-
-                        // Substracting the ReturnDateTime and BorrowDateTime, returned in seconds
-                        $bookBorrowDurationSecs = $returnDateTime - $borrowDateTime;
-
-                        // Converting seconds into days and convert it to a whole number by the conversion of float to interger
-                        $borrowDuration = intval($bookBorrowDurationSecs / 86400);
-                      ?>
-
-                      <td title="Borrow Duration"><?php echo $borrowDuration; ?></td>
+                      <td title="First Name"><?php echo $professorDetailsRow["FirstName"]; ?></td>
+                      <td title="Middle Name"><?php echo $professorDetailsRow["MiddleName"]; ?></td>
+                      <td title="Last Name"><?php echo $professorDetailsRow["LastName"]; ?></td>
+                      <td title="Email Address"><?php echo $professorDetailsRow["EmailAddress"]; ?></td>
+                      <td title="Mobile Number"><?php echo $professorDetailsRow["MobileNumber"]; ?></td>
+                      <td title="Telephone Number"><?php echo $professorDetailsRow["TelephoneNumber"]; ?></td>
+                      <td title="Street Address"><?php echo $professorDetailsRow["StreetAddress"]; ?></td>
+                      <td title="City"><?php echo $professorDetailsRow["City"]; ?></td>
+                      <td title="Zip/Postal Code"><?php echo $professorDetailsRow["ZipPostalCode"]; ?></td>
+                      <td title="Provience"><?php echo $professorDetailsRow["Provience"]; ?></td>
+                      <td title="University Index No"><?php echo $professorDetailsRow["UniversityNo"]; ?></td>
+                      <td title="Faculty"><?php echo $professorDetailsRow["Faculty"]; ?></td>
+                      <td title="Position"><?php echo $professorDetailsRow["Position"]; ?></td>
+                      <td title="Specialization"><?php echo $professorDetailsRow["Specialization"]; ?></td>
+                      <td title="Username"><?php echo $professorDetailsRow["Username"]; ?></td>
+                      <td title="Member Status"><?php echo $professorDetailsRow["MemberStatus"]; ?></td>
 
                       <td>
-                          <a href="updateReturnDetails.php?returnisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookDetailsRow['BorrowID']; ?>&userusername=<?php echo $bookDetailsRow["Username"]; ?>"> Edit </a>
+                          <a href="updateProfessorDetails.php?professorUserID=<?php echo $professorUserID; ?>"> Edit </a>
+                          | <a href="manageMemberDetails.php?removeprofessorUserID=<?php echo $professorUserID; ?>"
+                          onClick="return confirm('Professor Account will be deleted. Along with all connections to this account.\nAre you such you want to continue?')">
+                          Delete
+                          </a>
                       </td>
 
-                      <td>
-                        <button type="button" name="fineCal" style="padding: 6px;
-                                                                    font-size: 15px;
-                                                                    color: white;
-                                                                    margin-left: 10px;
-                                                                    margin-top: 6px;
-                                                                    width: 100px;
-                                                                    border-radius: 5px;
-                                                                    background-color: #0081FF;
-                                                                    border: 1px solid #0081FF"
-                          onclick="
-                          <?php
-                            if($borrowDuration > 14){
-                              $exceededDuration = ($borrowDuration - 14); // This fine is charged daily
-                              $totalLateFine = ($exceededDuration * 50);
-                              ?>
-                                alert('Book borrow has exceeded duration limit by, <?php echo $exceededDuration; ?> days\nDaily Late Fine Charge: Rs.50\nTotal Fine: Rs.<?php echo $totalLateFine; ?>');
-                              <?php
-                            }
-                            else if($borrowDuration <= 14){
-                              ?>
-                                alert('Book borrow did not exceed the borrow duration limit (14 days).');
-                              <?php
-                            }
-                          ?>
-                          ">
-                          Calculate
-                        </button>
-
-                      </td>
                     </tr>
-
-
-
-
-                      <?php } ?>
+                    <?php } ?>
                   </tbody>
                 </table>
               </div>
