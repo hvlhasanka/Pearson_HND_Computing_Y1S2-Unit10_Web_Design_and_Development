@@ -7,9 +7,15 @@
     header("location: ../../logout.php");
   }
 
- $userUsername = $_SESSION['username'];
-
+    // Retrieving code block for MySQL database connection
   include_once("../../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
+
+  $userUsername = $_SESSION['username'];
+
+  
 
 ?>
 
@@ -109,7 +115,7 @@
 
             <button type="button" name="return" style="color: #FFFFFF;
                                                       background-color: #5EAFFF;
-                                                      border-color: #5EAFFF;
+                                                      border: 1px solid #5EAFFF;
                                                       padding: 5px;
                                                       border-radius: 5px;
                                                       width: 140px;
@@ -123,7 +129,7 @@
 
 
             <div style="width: 55%;
-                        height: 830px;
+                        height: 780px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -181,12 +187,7 @@
                 <table>
 
                   <tr>
-                    <td> <p class="containerSubTextStyle">Membership Type: </p> <td>
-                    <td> <p class="containerUserDataTextStyle">Professor </p> <td>
-                  </tr>
-
-                  <tr>
-                    <td> <p class="containerMainTextStyle">Student Details</p> <td>
+                    <td> <p class="containerMainTextStyle">Librarian Details</p> <td>
                   </tr>
                   <tr>
                     <td> <p class="containerSubTextStyle">First Name: </p> <td>
@@ -241,13 +242,13 @@
 
                 <button type="button" name="changePassword" style="color: #FFFFFF;
                                                                   background-color: #6A6A6A;
-                                                                  border-color: #6A6A6A;
+                                                                  border: 1px solid #6A6A6A;
                                                                   padding: 5px;
                                                                   border-radius: 5px;
                                                                   width: 360px;
                                                                   position: absolute;
-                                                                  top: 640px;
-                                                                  left: 70px;" onClick="window.location.href = 'librarianChangePassword.php';">
+                                                                  top: 590px;
+                                                                  left: 80px;" onClick="window.location.href = 'librarianChangePassword.php';">
                   <i class="fa fa-unlock" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
                   Change Password
@@ -257,13 +258,13 @@
 
               <button type="button" name="updateDetails" style="color: #FFFFFF;
                                                                 background-color: #1F6DBE;
-                                                                border-color: #1F6DBE;
+                                                                border: 1px solid #1F6DBE;
                                                                 padding: 5px;
                                                                 border-radius: 5px;
                                                                 width: 300px;
                                                                 height: 50px;
                                                                 position: absolute;
-                                                                top: 860px;
+                                                                top: 820px;
                                                                 left: 690px;" onClick="window.location.href = 'librarianUpdateDetails.php';">
                 <i class="fa fa-edit" style="font-size: 20px;
                                             margin-right: 10px;"></i>

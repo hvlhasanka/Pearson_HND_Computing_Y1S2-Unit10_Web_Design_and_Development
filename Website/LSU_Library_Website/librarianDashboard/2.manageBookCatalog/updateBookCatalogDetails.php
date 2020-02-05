@@ -1,5 +1,4 @@
 <?php
-  include_once("../../LSULibraryDBConnection.php");
 
   session_start();
 
@@ -7,6 +6,12 @@
   if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
     header("location: ../../logout.php");
   }
+
+  // Retrieving code block for MySQL database connection
+  include_once("../../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
 
   // Book Catalog ID value that was retrieved from the previous web page
   $bookCatalogID = $_GET['id'];

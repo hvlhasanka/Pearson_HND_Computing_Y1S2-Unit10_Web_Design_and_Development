@@ -1,10 +1,17 @@
 <?php
-  include_once("../../LSULibraryDBConnection.php");
+
+  session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
   if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
     header("location: ../../logout.php");
   }
+
+  // Retrieving code block for MySQL database connection
+  include_once("../../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
 
 
   // ID retrieved from the previous web page

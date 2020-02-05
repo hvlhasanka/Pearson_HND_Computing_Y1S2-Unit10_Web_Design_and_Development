@@ -2,7 +2,11 @@
   // Starts the SESSION period
   session_start();
 
+  // Retrieving code block for MySQL database connection
   include_once("../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../checkBookReserveTimePeriod.php");
 
 
   // Login Process
@@ -701,7 +705,11 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 300px;
-                                                      left: 470px;" onClick="window.location.href = '../index.php';">
+                                                      left: 470px;"
+                                                        onClick="
+                                                                var selectedOption = confirm('All the entered details will be discarded. Do you want to continue?');
+                                                                if(selectedOption == 1){ location.href='../index.php'; };
+                                                              ">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -788,7 +796,7 @@
 
                       <input type="text" name="middleName" placeholder="Middle Name" class="formInput"
                       title="Optional, Only Uppercase Initials and Lowercase Alphabetic Characters"
-                      data-toggle="tooltip" data-placement="left"
+                      data-toggle="tooltip" data-placement="right"
                       style="margin-left: 20px;">
 
                     <br>
@@ -816,7 +824,7 @@
                     <input type="number" name="telephoneNumber" placeholder="Telephone Number" class="formInput"
                     style="margin-left: 20px;"
                     title="Optional, Only 10 numeric characters"
-                    data-toggle="tooltip" data-placement="left">
+                    data-toggle="tooltip" data-placement="right">
 
                   <p class="formText">Address</p>
                     <input type="text" name="streetAddress" placeholder="Street Address" class="formInput" required
@@ -828,7 +836,7 @@
                     <input type="text" name="city" placeholder="City" class="formInput" required
                     style="margin-left: 20px;"
                     title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="left">
+                    data-toggle="tooltip" data-placement="right">
                     <p class="mandatoryAsterisk" style="top: 430px;
                                                         left: 603px;">*</p>
 
@@ -854,7 +862,7 @@
                     <input type="text" name="zipPostalCode" placeholder="Zip/Postal Code" class="formInput"
                     style="margin-left: 20px;" required
                     title="Mandatory, Only 5 Numeric Characters"
-                    data-toggle="tooltip" data-placement="left">
+                    data-toggle="tooltip" data-placement="right">
                     <p class="mandatoryAsterisk" style="top: 495px;
                                                         left: 603px;">*</p>
 
@@ -869,7 +877,7 @@
                     <select name="facultySelect" class="formInput"
                     style="margin-left: 20px;"
                     title="Mandatory, Select the Faculty"
-                    data-toggle="tooltip" data-placement="left">
+                    data-toggle="tooltip" data-placement="right">
                       <option value="NULL">Faculty</option>
                       <?php
                         // Retrieving the faculties from the database, MemberFaculty table
@@ -893,7 +901,7 @@
                     <input type="text" name="batch" placeholder="Batch (eg:- Spring 2017)" class="formInput"
                     style="margin-left: 20px;" required
                     title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
-                    data-toggle="tooltip" data-placement="left">
+                    data-toggle="tooltip" data-placement="right">
                     <p class="mandatoryAsterisk" style="top: 670px;
                                                         left: 603px;">*</p>
 
@@ -928,7 +936,7 @@
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" class="formInput"
                     style="margin-left: 20px;" required
                     title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                    data-toggle="tooltip" data-placement="left">
+                    data-toggle="tooltip" data-placement="right">
                     <p class="mandatoryAsterisk" style="top: 906px;
                                                         left: 603px;">*</p>
 
@@ -962,7 +970,7 @@
                                 left: 140px;
                                 top: 1170px;"
                                 title="Mandatory, Tick Checkbox if agree"
-                                data-toggle="tooltip" data-placement="left">I have read and I agree to the Terms and Conditions</p>
+                                data-toggle="tooltip" data-placement="right">I have read and I agree to the Terms and Conditions</p>
                     </div>
 
                   <br>

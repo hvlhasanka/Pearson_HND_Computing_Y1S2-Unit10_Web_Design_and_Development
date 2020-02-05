@@ -7,10 +7,15 @@
     header("location: ../../logout.php");
   }
 
+  // Retrieving code block for MySQL database connection
   include_once("../../LSULibraryDBConnection.php");
 
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
+
+
   // Process of removing a book borrow
-  if(isset($_GET['removeisbn']) && isset($_GET['borrowID'])){
+  if(isset($_GET['removeisbn']) && isset($_GET['borrowid']) && isset($_GET['username'])){
 
     $ISBN = $_GET['removeisbn'];
     $borrowID = $_GET['borrowid'];
@@ -35,6 +40,10 @@
     // Removing record from BookBorrow Table
     $bookBorrowSQL = "DELETE FROM BookBorrow WHERE BorrowID = '$borrowID';";
     mysqli_query($databaseConn, $bookBorrowSQL);
+
+    // Updating Book Table, availability to available
+    $bookAvailabilitySQL = "UPDATE Book SET baAvailabilityID = 55240001 WHERE ISBN = '$ISBN';";
+    mysqli_query($databaseConn, $bookAvailabilitySQL);
 
   }
 
@@ -195,9 +204,9 @@
                                     INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
                                     INNER JOIN Borrow br ON br.umUserID = um.uUserID
                                     INNER JOIN BookBorrow bb ON bb.BorrowID = br.bbBorrowID
-                                    INNER JOIN Book b ON b.ISBN = br.bISBN
-                                    INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                    WHERE ba.Availability = 'Borrowed';";
+                                    INNER JOIN Book b ON b.ISBN = br.bISBN;";
+                                //    INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
+                                //    WHERE ba.Availability = 'Available';";
 
                   $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
 
@@ -220,7 +229,7 @@
                   <tbody>
                       <?php
                         while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
-
+                          $ISBN = $bookDetailsRow["ISBN"];
                       ?>
                     <tr>
                       <td title="Username"><?php echo $bookDetailsRow["Username"]; ?></td>
@@ -228,7 +237,7 @@
                       <td title="Last Name"><?php echo $bookDetailsRow["LastName"]; ?></td>
                       <td title="Membership Type"><?php echo $bookDetailsRow["MembershipType"]; ?></td>
                       <td title="Member Status"><?php echo $bookDetailsRow["MemberStatus"]; ?></td>
-                      <td title="Book ISBN"><?php echo $bookDetailsRow["ISBN"]; ?></td>
+                      <td title="Book ISBN"><?php echo $ISBN; ?></td>
 
                       <?php $borrowDateTime = $bookDetailsRow["BorrowDateTime"]; ?>
 
@@ -243,16 +252,12 @@
                       <td title="Expected Return DateTime"><?php echo $expectedBookReturnDateTime ?></td>
 
 
-
-
-
-
                       <td>
-                          <a href="updateBorrowDetails.php?borrowisbn=<?php echo $ISBN ?>"> Edit </a>
-                          | <a href="manageBookBorrowAndReturnDetails.php?removeisbn=<?php echo $ISBN ?>&borrowid=<?php $bookDetailsRow['BorrowID'] ?>&username=<?php echo $bookDetailsRow["Username"]; ?>"
+                          <a href="updateBorrowDetails.php?borrowisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookDetailsRow['BorrowID']; ?>&userusername=<?php echo $bookDetailsRow["Username"]; ?>"> Edit </a>
+                          | <a href="manageBookBorrowAndReturnDetails.php?removeisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookDetailsRow['BorrowID']; ?>&username=<?php echo $bookDetailsRow["Username"]; ?>"
                           onClick="return confirm('Book borrow will be removed.\nAre you such you want to continue?')">
                           Remove
-                        </a>
+                          </a>
                       </td>
                     </tr>
                       <?php } ?>

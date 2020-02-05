@@ -7,9 +7,16 @@
     header("location: ../../logout.php");
   }
 
+  // Retrieving code block for MySQL database connection
+  include_once("../../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
+
+
   $userUsername = $_SESSION['username'];
 
-  include_once("../../LSULibraryDBConnection.php");
+  
 
   if(isset($_POST['updateSubmit'])){
     $enteredFirstName = $_POST['firstName'];
@@ -293,7 +300,7 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Professor Dashboard</p>
+                        padding-top: 10px;">Librarian Dashboard</p>
 
               <!-- Spinner -->
               <div style="position: absolute;
@@ -312,7 +319,7 @@
 
             <button type="button" name="return" style="color: #FFFFFF;
                                                       background-color: #5EAFFF;
-                                                      border-color: #5EAFFF;
+                                                      border: 1px solid #5EAFFF;
                                                       padding: 5px;
                                                       border-radius: 5px;
                                                       width: 140px;
@@ -379,7 +386,7 @@
                   color: #FFFFFF;
                   width: 390px;
                   height: 50px;
-                  border-color: #0081FF;
+                  border: 1px solid #0081FF;
                   position: absolute;
                   left: 15%;
                   transform: translateX(-85%);
@@ -391,7 +398,7 @@
                   background-color: #DEDEDE;
                   color: #000000;
                   width: 100px;
-                  border-color: #DEDEDE;
+                  border: 1px solid #DEDEDE;
                   margin-top: 110px;
                   margin-left: -120px;
                 }

@@ -7,82 +7,87 @@
     header("location: ../../logout.php");
   }
 
-  // Retrieving code block for MySQL database connection
+    // Retrieving code block for MySQL database connection
   include_once("../../LSULibraryDBConnection.php");
 
   // Retrieving code block to check if the book reserve time period has exceeded or not
   include_once("../../checkBookReserveTimePeriod.php");
 
+
   $userUsername = $_SESSION['username'];
 
-  
+  if(isset($_POST['cborrowdetails'])){
 
-  // Process of changing the password
-  if(isset($_POST['cPasswordSubmit'])){
+    $currentISBN = $_GET['borrowisbn'];
+    $borrowID = $_GET['borrowid'];
+    $currentUserUsername = $_GET['userusername'];
 
-    $enteredCurrentPassword = $_POST['currentPassword'];
-    $enteredNewPassword = $_POST['newPassword'];
-    $enteredCNewPassword = $_POST['confirmNewPassword'];
+    $newUserUsername = $_POST['cborrowMember'];
+    $newBookISBN = $_POST['cborrowbook'];
+    $newBorrowDateTime = $_POST['cborrowdt'];
+    $newExpectedReturnDateTime = $_POST['cexreturndt'];
 
-    if(empty($enteredCurrentPassword) || empty($enteredNewPassword) || empty($enteredCNewPassword) || $enteredNewPassword != $enteredCNewPassword){
-
-      if(empty($enteredCurrentPassword)){
-        ?> <script>
-          alert("ERROR: Current Password field was not filled.");
-        </script> <?php
-      }
-
-      if(empty($enteredNewPassword)){
-        ?> <script>
-          alert("ERROR: New Password field was not filled.");
-        </script> <?php
-      }
-
-      if(empty($enteredCNewPassword)){
-        ?> <script>
-          alert("ERROR: Confirm New Password field was not filled.");
-        </script> <?php
-      }
-
-      if($enteredNewPassword != $enteredCNewPassword){
-        ?> <script>
-          alert("ERROR: Entered New Passwords don't match");
-        </script> <?php
-      }
-
+    if(empty($newUserUsername) || empty($newBookISBN) || empty($newBorrowDateTime) || empty($newExpectedReturnDateTime)){
+      ?> <script>
+        alert("ERROR: At least one of the fields must be filled.");
+      </script><?php
     }
     else{
 
-      $currentPasswordHashDBSQL = "SELECT Password FROM Login WHERE Username = '$userUsername';";
-      $currentPasswordHashDBResult = mysqli_query($databaseConn, $currentPasswordHashDBSQL);
-      $currentPasswordHashDBRow = mysqli_fetch_array($currentPasswordHashDBResult);
-      $currentPasswordHashDB = $currentPasswordHashDBRow['Password'];
+      // Process of undating the borrow member username
+      // Retrieving the UserID and UniversityNo of the current Username
+      $currentUserDetailSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
+                        INNER JOIN User u ON u.UserID = um.uUserID
+                        INNER JOIN Login l ON l.LoginID = u.lLoginID
+                        WHERE l.Username = '$currentUserUsername';";
+      $currentUserDetailResult = mysqli_query($databaseConn, $currentUserDetailSQL);
+      $currentUserDetailRow = mysqli_fetch_array($currentUserDetailResult);
+      $currentuUserID = $currentUserDetailRow["uUserID"];
+      $currentUniversityNo = $currentUserDetailRow["UniversityNo"];
 
-      // Checking if the enter current password is same as hash value that is already existing in the database
-      if(password_verify($enteredCurrentPassword, $currentPasswordHashDB)){
+      // Retrieving the UserID and UniversityNo of the new Username
+      $newUserDetailSQL = "SELECT um.uUserID, um.UniversityNo FROM UniversityMember um
+                        INNER JOIN User u ON u.UserID = um.uUserID
+                        INNER JOIN Login l ON l.LoginID = u.lLoginID
+                        WHERE l.Username = '$newUserUsername';";
+      $newUserDetailResult = mysqli_query($databaseConn, $newUserDetailSQL);
+      $newUserDetailRow = mysqli_fetch_array($newUserDetailResult);
+      $newuUserID = $newUserDetailRow["uUserID"];
+      $newUniversityNo = $newUserDetailRow["UniversityNo"];
 
-        // Converting entered new password value into a hash value to check value from the database
-        $enteredNewPasswordHash = password_hash($enteredNewPassword, PASSWORD_DEFAULT);
+      // Updating Borrow Table with new Username
+      $newBorrowMemberSQL = "UPDATE Borrow SET umUserID = '$newuUserID', umUniversityNo = '$newUniversityNo'
+                            WHERE umUserID = '$currentuUserID' AND umUniversityNo = '$currentUniversityNo';";
+      mysqli_query($databaseConn, $newBorrowMemberSQL);
 
-        $updatePasswordSQL = "UPDATE Login SET Password = '$enteredNewPasswordHash' WHERE Username = '$userUsername';";
-        mysqli_query($databaseConn, $updatePasswordSQL);
 
-        ?> <script>
-          alert("Password successfully updated.");
-        </script> <?php
+      // Process of undating the borrow book
+      $bookBorrowSQL = "UPDATE Borrow SET bISBN = '$newBookISBN' WHERE bISBN = '$currentISBN';";
+      mysqli_query($databaseConn, $bookBorrowSQL);
 
-        echo "<script> location.href='librarianAccountDetails.php'; </script>";
+      // Process of updating the borrow datetime
+      // Converting value from DateTime-Local input to mysql compatible datetime format
+      $borrowDateTimeMySQL = date("Y-m-d h:i:s", strtotime($newBorrowDateTime));
+      // Updating value
+      $borrowDateTimeSQL = "UPDATE BookBorrow SET BorrowDateTime = '$borrowDateTimeMySQL' WHERE BorrowID = '$borrowID';";
+      mysqli_query($databaseConn, $borrowDateTimeSQL);
 
-      }
-      else{
-        ?> <script>
-          alert("ERROR: Entered current password is invalid");
-        </script> <?php
-      }
+      // Process of updating the return datetime
+      // Converting value from DateTime-Local input to mysql compatible datetime format
+      $ExReturnDateTimeMySQL = date("Y-m-d h:i:s", strtotime($newExpectedReturnDateTime));
+      // Updating value
+      $returnDateTimeSQL = "UPDATE BookBorrow SET ReturnDateTime = '$ExReturnDateTimeMySQL' WHERE BorrowID = '$borrowID';";
+      mysqli_query($databaseConn, $returnDateTimeSQL);
+
+      ?><script>
+        alert("Borrow details are successfully updated.");
+      </script><?php
 
     }
 
   }
+
+
 
 ?>
 
@@ -94,9 +99,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="icon" type="image/png" sizes="1500x1500" href="../../assets/images/LSULibraryLogo.png">
-
-    <!-- Retrieving signPage script  -->
-    <script type="text/javascript" src="../../assets/javascript/signupPage.js"></script>
 
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
@@ -125,7 +127,7 @@
 
 
   </head>
-  <body onload="displayFillAllMandatoryFieldsMessage();">
+  <body>
     <!-- MAIN SECTION - Begin -->
         <!-- HEADER SECTION - Begin -->
         <div style="height: 140px; width: 100%;">
@@ -146,7 +148,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="../5.accountDetails/librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $userUsername ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
@@ -198,7 +200,7 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 340px;
-                                                      left: 470px;" onClick="window.location.href = 'librarianAccountDetails.php';">
+                                                      left: 470px;" onClick="window.location.href = 'manageBookBorrowAndReturnDetails.php';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -206,7 +208,7 @@
 
 
             <div style="width: 55%;
-                        height: 520px;
+                        height: 620px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -216,7 +218,8 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>Change Password</b></p>
+                        margin-left: 40px;
+                        text-align: center;"><b>Update Borrow Details</b></p>
 
 
               <style>
@@ -256,15 +259,20 @@
                   height: 50px;
                   border: 1px solid #0081FF;
                   position: absolute;
-                  left: 9%;
-                  transform: translateX(-91%);
+                  left: 12%;
+                  transform: translateX(-88%);
                 }
 
-                .mandatoryAsterisk{
-                  color: red;
-                  font-size: 20px;
-                  font-weight: bold;
+                #updateResetButton{
+                  padding: 5px;
+                  border-radius: 5px;
+                  background-color: #DEDEDE;
+                  color: #000000;
+                  width: 100px;
+                  border: 1px solid #DEDEDE;
                   position: absolute;
+                  top: 440px;
+                  left: -100px;
                 }
 
               </style>
@@ -272,30 +280,47 @@
               <!-- Main Container -->
               <div id="container">
 
-                <form action="librarianChangePassword.php" method="POST">
 
-                  <p class="updateFormText">Current Password: </p>
-                  <input type="password" name="currentPassword" required class="updateFormInput"
-                  title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                  data-toggle="tooltip" data-placement="left">
-                  <p class="mandatoryAsterisk" style="top: 30px;
-                                                      left: 405px;">*</p>
 
-                  <p class="updateFormText">New Password: </p>
-                  <input type="password" name="newPassword" required class="updateFormInput"
-                  title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                  data-toggle="tooltip" data-placement="left">
-                  <p class="mandatoryAsterisk" style="top: 130px;
-                                                      left: 405px;">*</p>
+                <form action="updateBorrowDetails.php?borrowisbn=<?php echo $_GET['borrowisbn']; ?>&borrowid=<?php echo $_GET['borrowid']; ?>&userusername=<?php echo $_GET['userusername']; ?>"
+                  method="POST">
 
-                  <p class="updateFormText">Confirm New Password: </p>
-                  <input type="password" name="confirmNewPassword" required class="updateFormInput"
-                  title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                  data-toggle="tooltip" data-placement="left">
-                  <p class="mandatoryAsterisk" style="top: 228px;
-                                                      left: 405px;">*</p>
+                  <p class="updateFormText">Change Borrow Member: </p>
 
-                  <button type="submit" name="cPasswordSubmit" id="updateSubmitButton">Update Password</button>
+                  <input type="text" name="cborrowMember" class="updateFormInput" placeholder="Member Username"
+                  title="Only Uppercase, Lowercase Alphabetic and Numeric Characters, Minimum Length: 10, Maximum Length: 15"
+                  data-toggle="tooltip" data-placement="right" value="<?php echo $_GET['userusername']; ?>">
+
+                  <p class="updateFormText">Change Borrow Book: </p>
+                  <input type="text" name="cborrowbook" class="updateFormInput" placeholder="Book ISBN"
+                  title="Only Numeric characters with a length of 10 to 13 characters"
+                  data-toggle="tooltip" data-placement="right" value="<?php echo $_GET['borrowisbn']; ?>">
+
+                  <?php
+                  $rBorrowID = $_GET['borrowid'];
+
+                  // Retrieving Borrow DateTime and Expected Return DateTime from the BookBorrow Table
+                  $dateTimeSQL = "SELECT DATE_FORMAT(BorrowDateTime, '%Y-%m-%dT%H:%i') AS 'BorrowDateTime',
+                                  DATE_FORMAT(ReturnDateTime, '%Y-%m-%dT%H:%i') AS 'ReturnDateTime'
+                                  FROM BookBorrow WHERE BorrowID = '$rBorrowID';";
+                  $dateTimeResult = mysqli_query($databaseConn, $dateTimeSQL);
+                  $dateTimeRow = mysqli_fetch_array($dateTimeResult);
+                  $bdt = $dateTimeRow['BorrowDateTime'];
+                  $rdt = $dateTimeRow['ReturnDateTime'];
+                  ?>
+
+                  <p class="updateFormText">Change Borrow DateTime: </p>
+                  <input type="datetime-local" name="cborrowdt" class="updateFormInput"
+                  title="Select a date and time"
+                  data-toggle="tooltip" data-placement="right" value="<?php echo $bdt; ?>">
+
+                  <p class="updateFormText">Change Expected Return DateTime: </p>
+                  <input type="datetime-local" name="cexreturndt" class="updateFormInput"
+                  title="Select a date and time"
+                  data-toggle="tooltip" data-placement="right" value="<?php echo $rdt; ?>">
+
+                  <button type="submit" name="cborrowdetails" id="updateSubmitButton">Update Details</button>
+                  <button type="submit" name="updateResetButton" id="updateResetButton">Reset</button>
 
                 </form>
 

@@ -7,9 +7,14 @@
     header("location: ../../logout.php");
   }
 
+  // Retrieving code block for MySQL database connection
+  include_once("../../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
+
   $userUsername = $_SESSION['username'];
 
-  include_once("../../LSULibraryDBConnection.php");
 
   // Process of changing the password
   if(isset($_POST['cPasswordSubmit'])){

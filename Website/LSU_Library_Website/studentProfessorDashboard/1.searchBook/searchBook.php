@@ -9,7 +9,11 @@
 
   $userUsername = $_SESSION['username'];
 
+  // Retrieving code block for MySQL database connection
   include_once("../../LSULibraryDBConnection.php");
+
+  // Retrieving code block to check if the book reserve time period has exceeded or not
+  include_once("../../checkBookReserveTimePeriod.php");
 
 
 
