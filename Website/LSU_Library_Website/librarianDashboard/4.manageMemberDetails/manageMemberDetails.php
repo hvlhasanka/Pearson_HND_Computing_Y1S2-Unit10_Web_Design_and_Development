@@ -60,6 +60,7 @@
     </script> <?php
 
     echo "<script> location.href='manageMemberDetails.php'; </script>";
+
   }
 
   // Process of deleting a professor account
@@ -108,6 +109,7 @@
     </script> <?php
 
     echo "<script> location.href='manageMemberDetails.php'; </script>";
+
   }
 
 
@@ -327,7 +329,7 @@
                       <td title="Member Status"><?php echo $studentDetailsRow["MemberStatus"]; ?></td>
 
                       <td>
-                          <a href="updateStudentDetails.php?studentUserID=<?php echo $studentUserID; ?>"> Edit </a>
+                          <a href="updateStudentDetails.php?updatestudentUsername=<?php echo $studentDetailsRow["Username"]; ?>"> Edit </a>
                           | <a href="manageMemberDetails.php?removestudentUserID=<?php echo $studentUserID; ?>"
                           onClick="return confirm('Student Account will be deleted. Along with all connections to this account.\nAre you such you want to continue?')">
                           Delete
@@ -431,7 +433,7 @@
                       <td title="Member Status"><?php echo $professorDetailsRow["MemberStatus"]; ?></td>
 
                       <td>
-                          <a href="updateProfessorDetails.php?professorUserID=<?php echo $professorUserID; ?>"> Edit </a>
+                          <a href="updateProfessorDetails.php?updateprofessorUsername=<?php echo $professorDetailsRow["Username"]; ?>"> Edit </a>
                           | <a href="manageMemberDetails.php?removeprofessorUserID=<?php echo $professorUserID; ?>"
                           onClick="return confirm('Professor Account will be deleted. Along with all connections to this account.\nAre you such you want to continue?')">
                           Delete

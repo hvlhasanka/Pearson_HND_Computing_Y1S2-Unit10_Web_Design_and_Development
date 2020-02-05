@@ -3,7 +3,7 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350002") {
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
     header("location: ../../logout.php");
   }
 
@@ -14,6 +14,8 @@
   include_once("../../checkBookReserveTimePeriod.php");
 
   $userUsername = $_SESSION['username'];
+
+  $professorUsername= $_GET['updateprofessorUsername'];
 
 
   if(isset($_POST['updateSubmit'])){
@@ -132,7 +134,7 @@
     }
     else{
 
-      $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$userUsername';";
+      $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$professorUsername';";
       $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
       $loginIDRow = mysqli_fetch_array($loginIDResult);
       $loginID = $loginIDRow["LoginID"];
@@ -275,18 +277,11 @@
       $loginSQL = "UPDATE Login SET Username = '$enteredUsername' WHERE LoginID = '$loginID';";
       mysqli_query($databaseConn, $loginSQL);
 
-      $_SESSION['username'] = "$enteredUsername";
-
       ?> <script>
-        alert("Account Details successfully updated");
+        alert("Professor account details successfully updated");
       </script> <?php
 
-      if($_SESSION['membershipType'] == '65350001'){
-        echo "<script> location.href='studentAccountDetails.php'; </script>";
-      }
-      else if($_SESSION['membershipType'] == '65350002'){
-        echo "<script> location.href='professorAccountDetails.php'; </script>";
-      }
+      echo "<script> location.href='updateProfessorDetails?updateprofessorUsername=</script><?php echo $professorUsername; ?><script>.php'; </script>";
 
     }
 
@@ -353,7 +348,7 @@
                   <td class="navItem" id="navItem1">
                     <a href="professorAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
-                      <?php echo $userUsername ?> &nbsp
+                      <?php echo $_SESSION['username']; ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
                                                   color: #00B1D2FF;"></i> &nbsp
                     </a>
@@ -378,7 +373,7 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Professor Dashboard</p>
+                        padding-top: 10px;">Librarian Dashboard</p>
 
               <!-- Spinner -->
               <div style="position: absolute;
@@ -392,7 +387,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1820px;
+                      height: 1840px;
                       background-color: #F6F6F6;">
 
             <button type="button" name="return" style="color: #FFFFFF;
@@ -403,7 +398,7 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 340px;
-                                                      left: 470px;" onClick="window.location.href = 'professorAccountDetails.php';">
+                                                      left: 470px;" onClick="window.location.href = 'manageMemberDetails.php';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -411,7 +406,7 @@
 
 
             <div style="width: 55%;
-                        height: 1600px;
+                        height: 1630px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -421,7 +416,7 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>Update Details</b></p>
+                        text-align: center;"><b>Update Professor Details</b></p>
 
 
               <style>
@@ -457,7 +452,7 @@
                   padding: 5px;
                   font-size: 20px;
                   border-radius: 5px;
-                  margin-top: 30px;
+                  margin-top: 110px;
                   margin-left: 38%;
                   margin-right: 10px;
                   background-color: #0081FF;
@@ -477,7 +472,7 @@
                   color: #000000;
                   width: 100px;
                   border-color: #DEDEDE;
-                  margin-top: 110px;
+                  margin-top: 130px;
                   margin-left: -120px;
                 }
               </style>
@@ -495,7 +490,7 @@
                                       INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
                                       INNER JOIN Professor p ON p.umUserID = um.uUserID AND p.umUniversityNo = um.UniversityNo
                                       INNER JOIN ProfessorSpecialization ps ON ps.SpecializationID = p.psSpecializationID
-                                      WHERE l.Username = '$userUsername';";
+                                      WHERE l.Username = '$professorUsername';";
                 $retrieveDetailsResult = mysqli_query($databaseConn, $retrieveDetailsSQL);
                 $retrieveDetailsRow = mysqli_fetch_array($retrieveDetailsResult);
 
@@ -504,7 +499,7 @@
               <!-- Main Container -->
               <div id="container">
 
-                <form action="professorUpdateDetails.php" method="POST">
+                <form action="updateProfessorDetails.php?updateprofessorUsername=<?php echo $professorUsername; ?>" method="POST">
 
                   <table>
 
@@ -718,7 +713,21 @@
                     </tr>
                   </table>
 
-                  <button type="submit" name="updateSubmit" id="updateSubmitButton">Update</button>
+                  <button type="button" name="changePassword" style="color: #FFFFFF;
+                                                                    background-color: #6A6A6A;
+                                                                    border-color: #6A6A6A;
+                                                                    padding: 5px;
+                                                                    border-radius: 5px;
+                                                                    width: 360px;
+                                                                    position: absolute;
+                                                                    top: 1315px;
+                                                                    left: 80px;" onClick="window.location.href = 'updateStudentProfessorPassword.php?accountUsername=<?php echo $professorUsername; ?>&membershipType=<?php echo $retrieveDetailsRow['MembershipType'];?>';">
+                    <i class="fa fa-unlock" style="font-size: 20px;
+                                                  margin-right: 10px;"></i>
+                    Change Password
+                  </button>
+
+                  <button type="submit" name="updateSubmit" id="updateSubmitButton">Update Details</button>
                   <button type="reset" name="updateReset" id="updateResetButton">Reset</button>
 
                 </form>

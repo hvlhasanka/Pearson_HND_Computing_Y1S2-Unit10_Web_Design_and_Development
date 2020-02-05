@@ -3,7 +3,7 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Librarian (65350003)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350002") {
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
     header("location: ../../logout.php");
   }
 
@@ -14,6 +14,8 @@
   include_once("../../checkBookReserveTimePeriod.php");
 
   $userUsername = $_SESSION['username'];
+
+  $studentUsername= $_GET['updatestudentUsername'];
 
 
   if(isset($_POST['updateSubmit'])){
@@ -29,14 +31,15 @@
     $enteredZipPostalCode = $_POST['zipPostalCode'];
     $enteredUniversityNo = $_POST['universityIndexNo'];
     $selectedFaculty = $_POST['facultySelect'];
+    $enteredDegreeProgram = $_POST['degreeProgram'];
+    $enteredBatch = $_POST['batch'];
     $selectedPosition = $_POST['positionSelect'];
-    $enteredSpecialization = $_POST['specialization'];
     $enteredUsername = $_POST['username'];
 
     if(empty($enteredFirstName) || empty($enteredLastName) || empty($enteredEmailAddress) || empty($enteredMobileNumber) ||
       empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
-      empty($enteredUniversityNo) || $selectedFaculty == "NULL" || $selectedPosition == "NULL" || empty($enteredSpecialization) ||
-      empty($enteredUsername)
+      empty($enteredUniversityNo) || $selectedFaculty == "NULL" || empty($enteredDegreeProgram) || empty($enteredBatch) ||
+      $selectedPosition == "NULL" || empty($enteredUsername)
     ){
 
       if(strlen($enteredMobileNumber) != 10){
@@ -111,15 +114,21 @@
         </script> <?php
       }
 
-      if($selectedPosition == "NULL"){
+      if(empty($enteredDegreeProgram)){
         ?> <script>
-          alert("ERROR: Position was not selected");
+          alert("ERROR: Degree Program was not filled");
         </script> <?php
       }
 
-      if(empty($enteredSpecialization)){
+      if(empty($enteredBatch)){
         ?> <script>
-          alert("ERROR: Specialization was not filled");
+          alert("ERROR: Batch was not filled");
+        </script> <?php
+      }
+
+      if($selectedPosition == "NULL"){
+        ?> <script>
+          alert("ERROR: Position was not selected");
         </script> <?php
       }
 
@@ -132,7 +141,7 @@
     }
     else{
 
-      $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$userUsername';";
+      $loginIDSQL = "SELECT LoginID FROM Login WHERE Username = '$studentUsername';";
       $loginIDResult = mysqli_query($databaseConn, $loginIDSQL);
       $loginIDRow = mysqli_fetch_array($loginIDResult);
       $loginID = $loginIDRow["LoginID"];
@@ -224,6 +233,8 @@
         mysqli_query($databaseConn, $zipUpdateSQL);
       }
 
+
+
       // Updating UniversityMember table
       $updateUniversityMemberSQL = "UPDATE UniversityMember SET mfFacultyID = '$selectedFaculty', mpPositionID = '$selectedPosition'
                                     WHERE UniversityNo = '$enteredUniversityNo';";
@@ -231,66 +242,102 @@
 
 
 
-      // Checking if the entered specialization is available in the ProfessorSpecialization table.
-      $checkSpecialization = "";
-      $existingSpecializationID = "";
-      $specializationDBSQL = "SELECT * FROM ProfessorSpecialization;";
-      $specializationDBResult = mysqli_query($databaseConn, $specializationDBSQL);
-      while($specializationDBRow = mysqli_fetch_array($specializationDBResult)){
-        if($specializationDBRow["Specialization"] == $enteredSpecialization){
-          $existingSpecializationID = $specializationDBRow["SpecializationID"];
-          $checkSpecialization = 1;
+      // Checking if the entered batch is already available in the StudentBatch Table.
+      $checkBatch = "";
+      $existingBatchID = "";
+      $batchDBSQL = "SELECT * FROM StudentBatch";
+      $batchDBResult = mysqli_query($databaseConn, $batchDBSQL);
+      while($batchDBRow = mysqli_fetch_array($batchDBResult)){
+        if($batchDBRow["Batch"] == $enteredBatch){
+          $existingBatchID = $batchDBRow["BatchID"];
+          $checkBatch = 1;
           break;
         }
-        else if($specializationDBRow["Specialization"] != $enteredSpecialization){
-          $checkSpecialization = 0;
+        else if($batchDBRow["Batch"] != $enteredBatch){
+          $checkBatch = 0;
         }
       }
 
-      // Checking if the entered specialization is available in the ProfessorSpecialization table.
-      if($checkSpecialization == 1){
-        // Inserting new record into Professor table
-        $professorSQL = "INSERT INTO Professor VALUES ('$userID', '$enteredUniversityNo', '$existingSpecializationID');";
-        mysqli_query($databaseConn, $professorSQL);
+      // Checking if the entered batch is already available in the StudentBatch Table.
+      if($checkBatch == 1){
+        // Updating Student table for the newly added records
+        $batchUpdateSQL = "UPDATE Student SET sbBatchID = '$existingBatchID' WHERE
+                          umUserID = '$userID' AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $batchUpdateSQL);
       }
-      else if($checkSpecialization == 0){
+      else if($checkBatch == 0){
+        // Inserting new record into the StudentBatch table
+        $studentBatchInsert = "INSERT INTO StudentBatch (Batch) VALUES ('$enteredBatch');";
+        mysqli_query($databaseConn, $studentBatchInsert);
 
-        // Inserting new record into ProfessorSpecialization table
-        $specializationSQL = "INSERT INTO ProfessorSpecialization (Specialization) VALUES ('$enteredSpecialization');";
-        mysqli_query($databaseConn, $specializationSQL);
+        // Retrieving the BatchID from the newly added record
+        $batchIDDBSQL = "SELECT BatchID FROM StudentBatch WHERE Batch = '$enteredBatch';";
+        $batchIDDBResult = mysqli_query($databaseConn, $batchIDDBSQL);
+        $batchIDDBRow = mysqli_fetch_array($batchIDDBResult);
+        $batchIDDB = $batchIDDBRow["BatchID"];
 
-        // Retrieving specializationID of the newly added record
-        $specializationIDDBSQL = "SELECT * FROM ProfessorSpecialization WHERE Specialization = '$enteredSpecialization';";
-        $specializationIDDBResult = mysqli_query($databaseConn, $specializationIDDBSQL);
-        $specializationIDDBRow = mysqli_fetch_array($specializationIDDBResult);
-        $newSpecializationID = $specializationIDDBRow["SpecializationID"];
-
-        // Inserting new record into Professor table
-        $professorSQL = "INSERT INTO Professor VALUES ('$userID', '$enteredUniversityNo', '$newSpecializationID');";
-        mysqli_query($databaseConn, $professorSQL);
+        // Updating Student table record with the new batchID
+        $studentUpdateSQL = "UPDATE Student SET sbBatchID = '$batchIDDB' WHERE umUserID = '$userID'
+                            AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $studentUpdateSQL);
       }
 
+      // Checking if the entered degree program is already available in the StudentDegreeProgram Table.
+      $checkProgram = "";
+      $existingProgramID = "";
+      $programDBSQL = "SELECT * FROM StudentDegreeProgram;";
+      $programDBResult = mysqli_query($databaseConn, $programDBSQL);
+      while($programDBRow = mysqli_fetch_array($programDBResult)){
+        if($programDBRow["DegreeProgram"] == $enteredDegreeProgram){
+          $existingProgramID = $programDBRow["DegreeProgramID"];
+          $checkProgram = 1;
+          break;
+        }
+        else if($programDBRow["DegreeProgram"] != $enteredDegreeProgram){
+          $checkProgram = 0;
+        }
+      }
+
+      // Checking if the entered degree program is already in the StudentDegreeProgram Table.
+      if($checkProgram == 1){
+        // Updateing the Student record with the DegreeProgramID
+        $studentUpdateSQL = "UPDATE Student SET sdpDegreeProgramID = '$existingProgramID'
+                            WHERE umUserID = '$userID' AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $studentUpdateSQL);
+      }
+      else if($checkProgram == 0){
+        // Inserting new record into StudentDegreeProgram table
+        $degreeInsertSQL = "INSERT INTO StudentDegreeProgram (DegreeProgram)
+                            VALUES ('$enteredDegreeProgram');";
+        mysqli_query($databaseConn, $degreeInsertSQL);
+
+        // Retrieving DegreeProgramID of the newly added record from the StudentDegreeProgram table
+        $degreeProgramIDSQL = "SELECT DegreeProgramID FROM StudentDegreeProgram
+                      WHERE DegreeProgram = '$enteredDegreeProgram';";
+        $degreeProgramIDResult = mysqli_query($databaseConn, $degreeProgramIDSQL);
+        $degreeProgramIDRow = mysqli_fetch_array($degreeProgramIDResult);
+        $degreeProgramID = $degreeProgramIDRow["DegreeProgramID"];
+
+        // Updating Student table with the DegreeProgramID for the newly added record
+        $degreeUpdatedSQL = "UPDATE Student SET sdpDegreeProgramID = '$degreeProgramID' WHERE umUserID = '$userID'
+                            AND umUniversityNo = '$enteredUniversityNo';";
+        mysqli_query($databaseConn, $degreeUpdatedSQL);
+      }
 
       // Updating Login Table
       $loginSQL = "UPDATE Login SET Username = '$enteredUsername' WHERE LoginID = '$loginID';";
       mysqli_query($databaseConn, $loginSQL);
 
-      $_SESSION['username'] = "$enteredUsername";
-
       ?> <script>
-        alert("Account Details successfully updated");
+        alert("Student account Details successfully updated");
       </script> <?php
 
-      if($_SESSION['membershipType'] == '65350001'){
-        echo "<script> location.href='studentAccountDetails.php'; </script>";
-      }
-      else if($_SESSION['membershipType'] == '65350002'){
-        echo "<script> location.href='professorAccountDetails.php'; </script>";
-      }
+      echo "<script> location.href='updateStudentDetails?updatestudentUsername=</script><?php echo $studentUsername; ?><script>.php'; </script>";
 
     }
 
   }
+
 
 ?>
 
@@ -351,9 +398,9 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="professorAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="studentAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
-                      <?php echo $userUsername ?> &nbsp
+                      <?php echo $_SESSION['username']; ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
                                                   color: #00B1D2FF;"></i> &nbsp
                     </a>
@@ -378,7 +425,7 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;">Professor Dashboard</p>
+                        padding-top: 10px;">Librarian Dashboard</p>
 
               <!-- Spinner -->
               <div style="position: absolute;
@@ -392,7 +439,7 @@
 
           <!-- Outer Background -->
           <div style="width: 100%;
-                      height: 1820px;
+                      height: 1930px;
                       background-color: #F6F6F6;">
 
             <button type="button" name="return" style="color: #FFFFFF;
@@ -403,7 +450,7 @@
                                                       width: 140px;
                                                       position: absolute;
                                                       top: 340px;
-                                                      left: 470px;" onClick="window.location.href = 'professorAccountDetails.php';">
+                                                      left: 470px;" onClick="window.location.href = 'manageMemberDetails.php';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
               Return
@@ -411,7 +458,7 @@
 
 
             <div style="width: 55%;
-                        height: 1600px;
+                        height: 1710px;
                         background-color: #FFFFFF;
                         border-radius: 10px;
                         position: relative;
@@ -421,7 +468,7 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>Update Details</b></p>
+                        text-align: center;"><b>Update Student Details</b></p>
 
 
               <style>
@@ -457,7 +504,7 @@
                   padding: 5px;
                   font-size: 20px;
                   border-radius: 5px;
-                  margin-top: 30px;
+                  margin-top: 100px;
                   margin-left: 38%;
                   margin-right: 10px;
                   background-color: #0081FF;
@@ -477,7 +524,7 @@
                   color: #000000;
                   width: 100px;
                   border-color: #DEDEDE;
-                  margin-top: 110px;
+                  margin-top: 130px;
                   margin-left: -120px;
                 }
               </style>
@@ -485,17 +532,18 @@
               <?php
 
                 $retrieveDetailsSQL = "SELECT * FROM User u INNER JOIN Login l ON l.LoginID = u.lLoginID
-                                      INNER JOIN UserCity uc ON uc.CityID = u.ucCityID
-                                      INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
-                                      INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
-                                      INNER JOIN UniversityMember um ON um.uUserID = u.UserID
-                                      INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
-                                      INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
-                                      INNER JOIN MemberPosition mp ON mp.PositionID = um.mpPositionID
-                                      INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
-                                      INNER JOIN Professor p ON p.umUserID = um.uUserID AND p.umUniversityNo = um.UniversityNo
-                                      INNER JOIN ProfessorSpecialization ps ON ps.SpecializationID = p.psSpecializationID
-                                      WHERE l.Username = '$userUsername';";
+                                    INNER JOIN UserCity uc ON uc.CityID = u.ucCityID
+                                    INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
+                                    INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
+                                    INNER JOIN UniversityMember um ON um.uUserID = u.UserID
+                                    INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
+                                    INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
+                                    INNER JOIN Student s ON s.umUserID = um.uUserID AND s.umUniversityNo = um.UniversityNo
+                                    INNER JOIN StudentDegreeProgram sdp ON sdp.DegreeProgramID = s.sdpDegreeProgramID
+                                    INNER JOIN StudentBatch sb ON sb.BatchID = s.sbBatchID
+                                    INNER JOIN MemberPosition mp ON mp.PositionID = um.mpPositionID
+                                    INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
+                                    WHERE l.Username = '$studentUsername';";
                 $retrieveDetailsResult = mysqli_query($databaseConn, $retrieveDetailsSQL);
                 $retrieveDetailsRow = mysqli_fetch_array($retrieveDetailsResult);
 
@@ -504,7 +552,7 @@
               <!-- Main Container -->
               <div id="container">
 
-                <form action="professorUpdateDetails.php" method="POST">
+                <form action="updateStudentDetails.php?updatestudentUsername=<?php echo $studentUsername; ?>" method="POST">
 
                   <table>
 
@@ -656,6 +704,22 @@
                       </td>
                     </tr>
                     <tr>
+                      <td> <p class="containerSubTextStyle">Degree Program: </p> </td>
+                      <td>
+                        <input type="text" name="degreeProgram" class="updateFormInput" required placeholder="Degree Program" value="<?php echo $retrieveDetailsRow['DegreeProgram']; ?>"
+                        title="Mandatory, Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
+                        data-toggle="tooltip" data-placement="right">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td> <p class="containerSubTextStyle">Batch: </p> </td>
+                      <td>
+                        <input type="text" name="batch" class="updateFormInput" required placeholder="Batch" value="<?php echo $retrieveDetailsRow['Batch']; ?>"
+                        title="Mandatory,  Only Uppercase Initials, Lowercase Alphabetic and Numeric Characters"
+                        data-toggle="tooltip" data-placement="right">
+                      </td>
+                    </tr>
+                    <tr>
                       <td> <p class="containerSubTextStyle">Position: </p> </td>
                       <td>
                         <select name="positionSelect" class="updateFormInput"
@@ -669,39 +733,31 @@
                             <option value="92130001"
                               <?php
                                 // If the provience is equal to the selected position, 'selected will be echoed'
-                                if(92130004 == $selectedPositionID && "Professor" == $selectedPosition)
+                                if(92130001 == $selectedPositionID && "Undergraduate" == $selectedPosition)
                                 {
                                   echo "selected";
                                 }
-                              ?> >Professor
+                              ?> >Undergraduate
                             </option>
                             <option value="92130002"
                               <?php
                                 // If the provience is equal to the selected position, 'selected will be echoed'
-                                if(92130005 == $selectedPositionID && "Senior Professor" == $selectedPosition)
+                                if(92130002 == $selectedPositionID && "Postgraduate" == $selectedPosition)
                                 {
                                   echo "selected";
                                 }
-                              ?> >Senior Professor
+                              ?> >Postgraduate
                             </option>
                             <option value="92130003"
                               <?php
                                 // If the provience is equal to the selected position, 'selected will be echoed'
-                                if(92130006 == $selectedPositionID && "Executive Professor" == $selectedPosition)
+                                if(92130003 == $selectedPositionID && "Alumni" == $selectedPosition)
                                 {
                                   echo "selected";
                                 }
-                              ?> >Executive Professor
+                              ?> >Alumni
                             </option>
                         </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td> <p class="containerSubTextStyle">Specialization: </p> </td>
-                      <td>
-                        <input type="text" name="specialization" class="updateFormInput" required placeholder="Batch" value="<?php echo $retrieveDetailsRow['Specialization']; ?>"
-                        title="Mandatory,  Only Uppercase Initials and Lowercase Alphabetic Characters"
-                        data-toggle="tooltip" data-placement="right">
                       </td>
                     </tr>
 
@@ -718,7 +774,21 @@
                     </tr>
                   </table>
 
-                  <button type="submit" name="updateSubmit" id="updateSubmitButton">Update</button>
+                  <button type="button" name="changePassword" style="color: #FFFFFF;
+                                                                    background-color: #6A6A6A;
+                                                                    border-color: #6A6A6A;
+                                                                    padding: 5px;
+                                                                    border-radius: 5px;
+                                                                    width: 360px;
+                                                                    position: absolute;
+                                                                    top: 1390px;
+                                                                    left: 80px;" onClick="window.location.href = 'updateStudentProfessorPassword.php?accountUsername=<?php echo $studentUsername; ?>&membershipType=<?php echo $retrieveDetailsRow['MembershipType']; ?>';">
+                    <i class="fa fa-unlock" style="font-size: 20px;
+                                                  margin-right: 10px;"></i>
+                    Change Password
+                  </button>
+
+                  <button type="submit" name="updateSubmit" id="updateSubmitButton">Update Details</button>
                   <button type="reset" name="updateReset" id="updateResetButton">Reset</button>
 
                 </form>

@@ -3,7 +3,7 @@
   session_start();
 
   // Checks if the SEESION variables are already assigned and if the membershipType is Student (65350001) or Professor (65350002)
-  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] == "65350003") {
+  if (!isset($_SESSION['username']) || !isset($_SESSION['membershipType']) || $_SESSION['membershipType'] != "65350003") {
     header("location: ../../logout.php");
   }
 
@@ -15,6 +15,8 @@
 
   $userUsername = $_SESSION['username'];
 
+  $accountUsername = $_GET['accountUsername'];
+  $membershipType = $_GET['membershipType'];
 
   // Process of changing the password
   if(isset($_POST['cPasswordSubmit'])){
@@ -52,7 +54,7 @@
     }
     else{
 
-      $currentPasswordHashDBSQL = "SELECT Password FROM Login WHERE Username = '$userUsername';";
+      $currentPasswordHashDBSQL = "SELECT Password FROM Login WHERE Username = '$accountUsername';";
       $currentPasswordHashDBResult = mysqli_query($databaseConn, $currentPasswordHashDBSQL);
       $currentPasswordHashDBRow = mysqli_fetch_array($currentPasswordHashDBResult);
       $currentPasswordHashDB = $currentPasswordHashDBRow['Password'];
@@ -63,19 +65,18 @@
         // Converting entered new password value into a hash value to check value from the database
         $enteredNewPasswordHash = password_hash($enteredNewPassword, PASSWORD_DEFAULT);
 
-        $updatePasswordSQL = "UPDATE Login SET Password = '$enteredNewPasswordHash' WHERE Username = '$userUsername';";
+        $updatePasswordSQL = "UPDATE Login SET Password = '$enteredNewPasswordHash' WHERE Username = '$accountUsername';";
         mysqli_query($databaseConn, $updatePasswordSQL);
 
         ?> <script>
-          alert("Password successfully updated.");
+          alert("Account Password successfully updated.");
         </script> <?php
 
-
-        if($_SESSION['membershipType'] == '65350001'){
-          echo "<script> location.href='studentAccountDetails.php'; </script>";
+        if($membershipType == "Student"){
+          echo "<script> location.href='updateStudentDetails?updatestudentUsername=</script>$accountUsername<script>.php'; </script>";
         }
-        else if($_SESSION['membershipType'] == '65350002'){
-          echo "<script> location.href='professorAccountDetails.php'; </script>";
+        else if($membershipType == "Professor"){
+          echo "<script> location.href='updateProfessorDetails?updateprofessorUsername=</script>$accountUsername<script>.php'; </script>";
         }
 
       }
@@ -151,18 +152,9 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="
-                    <?php
-                      if($_SESSION['membershipType'] == '65350001'){
-                        echo "studentAccountDetails.php";
-                      }
-                      else if($_SESSION['membershipType'] == '65350002'){
-                        echo "professorAccountDetails.php";
-                      }
-                    ?>
-                    " data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="../5.accountDetails/librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
-                      <?php echo $userUsername ?> &nbsp
+                      <?php echo $userUsername; ?> &nbsp
                       <i class="fa fa-user" style="font-size: 32px;
                                                   color: #00B1D2FF;"></i> &nbsp
                     </a>
@@ -187,14 +179,7 @@
               <p style="font-size: 30px;
                         color: white;
                         text-align: center;
-                        padding-top: 10px;"><?php
-                                              if($_SESSION['membershipType'] == '65350001'){
-                                                echo "Student";
-                                              }
-                                              else if($_SESSION['membershipType'] == '65350002'){
-                                                echo "Professor";
-                                              }
-                                            ?> Dashboard</p>
+                        padding-top: 10px;">Librarian Dashboard</p>
 
               <!-- Spinner -->
               <div style="position: absolute;
@@ -220,11 +205,11 @@
                                                       position: absolute;
                                                       top: 340px;
                                                       left: 470px;" onClick="window.location.href = '<?php
-                                                        if($_SESSION['membershipType'] == '65350001'){
-                                                          echo "studentAccountDetails.php";
+                                                        if($membershipType == "Student"){
+                                                          echo "updateStudentDetails.php?updatestudentUsername=$accountUsername";
                                                         }
-                                                        else if($_SESSION['membershipType'] == '65350002'){
-                                                          echo "professorAccountDetails.php";
+                                                        else if($membershipType == "Professor"){
+                                                          echo "updateProfessorDetails.php?updateprofessorUsername=$accountUsername";
                                                         }
                                                       ?>';">
               <i class="fa fa-arrow-left" style="font-size: 20px;
@@ -244,7 +229,16 @@
 
               <p style="font-size: 30px;
                         padding-top: 25px;
-                        text-align: center;"><b>Change Password</b></p>
+                        text-align: center;"><b>Change
+                                            <?php
+                                              if($membershipType == "Student"){
+                                                echo "Student";
+                                              }
+                                              else if($membershipType == "Professor"){
+                                                echo "Professor";
+                                              }
+                                            ?>
+                                            Account Password</b></p>
 
 
               <style>
@@ -276,7 +270,7 @@
                   padding: 5px;
                   border-radius: 5px;
                   margin-top: 80px;
-                  margin-left: 38%;
+                  margin-left: 310px;
                   margin-right: 10px;
                   background-color: #0081FF;
                   color: #FFFFFF;
@@ -300,7 +294,7 @@
               <!-- Main Container -->
               <div id="container">
 
-                <form action="studentProfessorChangePassword.php" method="POST">
+                <form action="updateStudentProfessorPassword.php?accountUsername=<?php echo $accountUsername; ?>&membershipType=<?php echo $membershipType; ?>" method="POST">
 
                   <p class="updateFormText">Current Password: </p>
                   <input type="password" name="currentPassword" required class="updateFormInput"

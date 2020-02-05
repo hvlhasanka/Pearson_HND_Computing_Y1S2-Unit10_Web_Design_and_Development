@@ -15,7 +15,7 @@
 
   $userUsername = $_SESSION['username'];
 
-  
+
 
   // Process of changing the password
   if(isset($_POST['cPasswordSubmit'])){
@@ -277,21 +277,21 @@
                   <p class="updateFormText">Current Password: </p>
                   <input type="password" name="currentPassword" required class="updateFormInput"
                   title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                  data-toggle="tooltip" data-placement="left">
+                  data-toggle="tooltip" data-placement="right">
                   <p class="mandatoryAsterisk" style="top: 30px;
                                                       left: 405px;">*</p>
 
                   <p class="updateFormText">New Password: </p>
                   <input type="password" name="newPassword" required class="updateFormInput"
                   title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                  data-toggle="tooltip" data-placement="left">
+                  data-toggle="tooltip" data-placement="right">
                   <p class="mandatoryAsterisk" style="top: 130px;
                                                       left: 405px;">*</p>
 
                   <p class="updateFormText">Confirm New Password: </p>
                   <input type="password" name="confirmNewPassword" required class="updateFormInput"
                   title="Mandatory, Only Uppercase, Lowercase Alphabetic Characters, One Numeric and One Special Character, Minimum Length: 10, Maximum Length: 20"
-                  data-toggle="tooltip" data-placement="left">
+                  data-toggle="tooltip" data-placement="right">
                   <p class="mandatoryAsterisk" style="top: 228px;
                                                       left: 405px;">*</p>
 
