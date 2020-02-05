@@ -14,7 +14,7 @@
   include_once("../../checkBookReserveTimePeriod.php");
 
 
-  // Process of deleting a book borrow
+  // Process of removing a book borrow
   if(isset($_GET['removeisbn']) && isset($_GET['borrowid']) && isset($_GET['username'])){
 
     $ISBN = $_GET['removeisbn'];
@@ -32,12 +32,12 @@
     $universityNo = $userDetailsRow['UniversityNo'];
 
 
-    // Deleting record from Borrow table
+    // Removing record from Borrow table
     $borrowSQL = "DELETE FROM Borrow WHERE umUserID = '$userID' AND
                   umUniversityNo = '$universityNo' AND bISBN = '$ISBN' AND bbBorrowID = '$borrowID';";
     mysqli_query($databaseConn, $borrowSQL);
 
-    // Deleting record from BookBorrow Table
+    // Removing record from BookBorrow Table
     $bookBorrowSQL = "DELETE FROM BookBorrow WHERE BorrowID = '$borrowID';";
     mysqli_query($databaseConn, $bookBorrowSQL);
 
@@ -150,11 +150,11 @@
                 <li class="nav-item">
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="manageBookBorrowAndReturnDetails.php">Manage Book Borrow and Returning Details</a>
-                </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Member Details</a>
+                  <a class="nav-link" href="../3.manageBookBorrowAndReturnDetails/manageBookBorrowAndReturnDetails.php">Manage Book Borrow and Returning Details</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="manageMemberDetails.php">Manage Member Details</a>
                 </li>
               </ul>
             </nav>
@@ -185,7 +185,7 @@
 
               <p style="font-size: 20px;
                         padding-left: 30px;
-                        padding-top: 20px;"><b>Book Borrow Details</b> (Before Book Returned)</p>
+                        padding-top: 20px;"><b>Student Member Details</b></p>
 
               <div style="width: 95%;
                           height: 600px;
@@ -193,70 +193,80 @@
                           position: absolute;
                           left: 50%;
                           transform: translateX(-50%);
-                          overflow-y: scroll;">
+                          overflow-y: scroll;
+                          overflow-x: scroll;">
 
-                <!-- Retrieving details of the existing books from the database -->
+                <!-- Retrieving details of the existing users from the database -->
                 <?php
-                  $bookBorrowDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
-                                    INNER JOIN User u ON u.lLoginID = l.LoginID
+                  $studentDetailsSQL = "SELECT * FROM User u INNER JOIN Login l ON l.LoginID = u.lLoginID
+                                    INNER JOIN UserCity uc ON uc.CityID = u.ucCityID
+                                    INNER JOIN UserZipPostalCode uzpc ON uzpc.ZPCID = u.uzpcZPCID
+                                    INNER JOIN UserProvience up ON up.ProvienceID = u.upProvienceID
                                     INNER JOIN UniversityMember um ON um.uUserID = u.UserID
-                                    INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
                                     INNER JOIN MemberMembershipType mmt ON mmt.MembershipTypeID = um.mmtMembershipTypeID
-                                    INNER JOIN Borrow br ON br.umUserID = um.uUserID
-                                    INNER JOIN BookBorrow bb ON bb.BorrowID = br.bbBorrowID
-                                    INNER JOIN Book b ON b.ISBN = br.bISBN
-                                    INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                    WHERE ba.Availability = 'Borrowed';";
+                                    INNER JOIN MemberFaculty mf ON mf.FacultyID = um.mfFacultyID
+                                    INNER JOIN Student s ON s.umUserID = um.uUserID AND s.umUniversityNo = um.UniversityNo
+                                    INNER JOIN StudentDegreeProgram sdp ON sdp.DegreeProgramID = s.sdpDegreeProgramID
+                                    INNER JOIN StudentBatch sb ON sb.BatchID = s.sbBatchID
+                                    INNER JOIN MemberPosition mp ON mp.PositionID = um.mpPositionID
+                                    INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID;";
 
-                  $bookBorrowDetailsResult = mysqli_query($databaseConn, $bookBorrowDetailsSQL);
+                  $studentDetailsResult = mysqli_query($databaseConn, $studentDetailsSQL);
 
                 ?>
 
                 <table class="table table-hover fixed_header" style="border-radius: 10px;">
                   <thead>
                     <tr>
-                      <th> Username </th>
                       <th> First Name </th>
+                      <th> Middle Name </th>
                       <th> Last Name </th>
-                      <th> Membership Type </th>
+                      <th> Email Address </th>
+                      <th> Mobile Number </th>
+                      <th> Telephone Number </th>
+                      <th> Street Address </th>
+                      <th> City </th>
+                      <th> Zip/Postal Code </th>
+                      <th> Provience </th>
+                      <th> University Index No </th>
+                      <th> Faculty </th>
+                      <th> Degree Program </th>
+                      <th> Batch </th>
+                      <th> Position </th>
+                      <th> Username </th>
                       <th> Member Status </th>
-                      <th> Book ISBN </th>
-                      <th> Borrow DateTime </th>
-                      <th> Expected Return DateTime </th>
                       <th> Modification </th>
                     </tr>
                   </thead>
                   <tbody>
                       <?php
-                        while($bookBorrowDetailsRow = mysqli_fetch_array($bookBorrowDetailsResult)){
-                          $ISBN = $bookBorrowDetailsRow["ISBN"];
+                        while($studentDetailsRow = mysqli_fetch_array($studentDetailsResult)){
+                          $userID = $studentDetailsRow['UserID'];
                       ?>
                     <tr>
-                      <td title="Username"><?php echo $bookBorrowDetailsRow["Username"]; ?></td>
-                      <td title="First Name"><?php echo $bookBorrowDetailsRow["FirstName"]; ?></td>
-                      <td title="Last Name"><?php echo $bookBorrowDetailsRow["LastName"]; ?></td>
-                      <td title="Membership Type"><?php echo $bookBorrowDetailsRow["MembershipType"]; ?></td>
-                      <td title="Member Status"><?php echo $bookBorrowDetailsRow["MemberStatus"]; ?></td>
-                      <td title="Book ISBN"><?php echo $ISBN; ?></td>
-
-                      <?php $borrowDateTime = $bookBorrowDetailsRow["BorrowDateTime"]; ?>
-
-                      <td title="Borrow DateTime"><?php echo $borrowDateTime ?></td>
-
-                      <?php
-                      $bookReturnDuration = strtotime("+14 day", strtotime($borrowDateTime));
-
-                      $expectedBookReturnDateTime = date("Y-m-d h:i:s", $bookReturnDuration);
-                      ?>
-
-                      <td title="Expected Return DateTime"><?php echo $expectedBookReturnDateTime ?></td>
-
+                      <td title="First Name"><?php echo $studentDetailsRow["FirstName"]; ?></td>
+                      <td title="Middle Name"><?php echo $studentDetailsRow["MiddleName"]; ?></td>
+                      <td title="Last Name"><?php echo $studentDetailsRow["LastName"]; ?></td>
+                      <td title="Email Address"><?php echo $studentDetailsRow["EmailAddress"]; ?></td>
+                      <td title="Mobile Number"><?php echo $studentDetailsRow["MobileNumber"]; ?></td>
+                      <td title="Telephone Number"><?php echo $studentDetailsRow["TelephoneNumber"]; ?></td>
+                      <td title="Street Address"><?php echo $studentDetailsRow["StreetAddress"]; ?></td>
+                      <td title="City"><?php echo $studentDetailsRow["City"]; ?></td>
+                      <td title="Zip/Postal Code"><?php echo $studentDetailsRow["ZipPostalCode"]; ?></td>
+                      <td title="Provience"><?php echo $studentDetailsRow["Provience"]; ?></td>
+                      <td title="University Index No"><?php echo $studentDetailsRow["UniversityNo"]; ?></td>
+                      <td title="Faculty"><?php echo $studentDetailsRow["Faculty"]; ?></td>
+                      <td title="Degree Program"><?php echo $studentDetailsRow["DegreeProgram"]; ?></td>
+                      <td title="Batch"><?php echo $studentDetailsRow["Batch"]; ?></td>
+                      <td title="Position"><?php echo $studentDetailsRow["Position"]; ?></td>
+                      <td title="Username"><?php echo $studentDetailsRow["Username"]; ?></td>
+                      <td title="Member Status"><?php echo $studentDetailsRow["MemberStatus"]; ?></td>
 
                       <td>
-                          <a href="updateBorrowDetails.php?borrowisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookBorrowDetailsRow['BorrowID']; ?>&userusername=<?php echo $bookBorrowDetailsRow["Username"]; ?>"> Edit </a>
-                          | <a href="manageBookBorrowAndReturnDetails.php?removeisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookBorrowDetailsRow['BorrowID']; ?>&username=<?php echo $bookBorrowDetailsRow["Username"]; ?>"
-                          onClick="return confirm('Book borrow will be deleted.\nAre you such you want to continue?')">
-                          Delete
+                          <a href="updateStudentDetails.php?studentUserID=<?php echo $UserID; ?>"> Edit </a>
+                          | <a href="manageMemberDetails.php?removestudentUserID=<?php echo $ISBN; ?>"
+                          onClick="return confirm('Student Account will be deleted.\nAre you such you want to continue?')">
+                          Remove
                           </a>
                       </td>
                     </tr>
@@ -282,7 +292,7 @@
 
               <p style="font-size: 20px;
                         padding-left: 30px;
-                        padding-top: 20px;"><b>Book Return Details</b> (After Book Returned)</p>
+                        padding-top: 20px;"><b>Professor Member Details</b></p>
 
               <div style="width: 95%;
                           height: 600px;
@@ -294,7 +304,7 @@
 
                 <!-- Retrieving details of the existing books from the database -->
                 <?php
-                  $bookReturnDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, bb.ReturnDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
+                  $bookDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, bb.ReturnDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
                                     INNER JOIN User u ON u.lLoginID = l.LoginID
                                     INNER JOIN UniversityMember um ON um.uUserID = u.UserID
                                     INNER JOIN MemberMemberStatus mms ON mms.MemberStatusID = um.mmsMemberStatusID
@@ -303,9 +313,9 @@
                                     INNER JOIN BookBorrow bb ON bb.BorrowID = br.bbBorrowID
                                     INNER JOIN Book b ON b.ISBN = br.bISBN
                                     INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
-                                    WHERE ba.Availability = 'Borrowed';";
+                                    WHERE ba.Availability != 'Borrowed';";
 
-                  $bookReturnDetailsResult = mysqli_query($databaseConn, $bookReturnDetailsSQL);
+                  $bookDetailsResult = mysqli_query($databaseConn, $bookDetailsSQL);
 
                 ?>
 
@@ -327,23 +337,23 @@
                   </thead>
                   <tbody>
                       <?php
-                        while($bookReturnDetailsRow = mysqli_fetch_array($bookReturnDetailsResult)){
-                          $ISBN = $bookReturnDetailsRow["ISBN"];
+                        while($bookDetailsRow = mysqli_fetch_array($bookDetailsResult)){
+                          $ISBN = $bookDetailsRow["ISBN"];
                       ?>
                     <tr>
-                      <td title="Username"><?php echo $bookReturnDetailsRow["Username"]; ?></td>
-                      <td title="First Name"><?php echo $bookReturnDetailsRow["FirstName"]; ?></td>
-                      <td title="Last Name"><?php echo $bookReturnDetailsRow["LastName"]; ?></td>
-                      <td title="Membership Type"><?php echo $bookReturnDetailsRow["MembershipType"]; ?></td>
-                      <td title="Member Status"><?php echo $bookReturnDetailsRow["MemberStatus"]; ?></td>
+                      <td title="Username"><?php echo $bookDetailsRow["Username"]; ?></td>
+                      <td title="First Name"><?php echo $bookDetailsRow["FirstName"]; ?></td>
+                      <td title="Last Name"><?php echo $bookDetailsRow["LastName"]; ?></td>
+                      <td title="Membership Type"><?php echo $bookDetailsRow["MembershipType"]; ?></td>
+                      <td title="Member Status"><?php echo $bookDetailsRow["MemberStatus"]; ?></td>
                       <td title="Book ISBN"><?php echo $ISBN ?></td>
-                      <td title="Borrow DateTime"><?php echo $bookReturnDetailsRow["BorrowDateTime"]; ?></td>
-                      <td title="Return DateTime"><?php echo $bookReturnDetailsRow["ReturnDateTime"]; ?></td>
+                      <td title="Borrow DateTime"><?php echo $bookDetailsRow["BorrowDateTime"]; ?></td>
+                      <td title="Return DateTime"><?php echo $bookDetailsRow["ReturnDateTime"]; ?></td>
 
                       <?php
 
-                        $borrowDateTime = strtotime($bookReturnDetailsRow["BorrowDateTime"]);
-                        $returnDateTime = strtotime($bookReturnDetailsRow["ReturnDateTime"]);
+                        $borrowDateTime = strtotime($bookDetailsRow["BorrowDateTime"]);
+                        $returnDateTime = strtotime($bookDetailsRow["ReturnDateTime"]);
 
                         // Substracting the ReturnDateTime and BorrowDateTime, returned in seconds
                         $bookBorrowDurationSecs = $returnDateTime - $borrowDateTime;
@@ -355,7 +365,7 @@
                       <td title="Borrow Duration"><?php echo $borrowDuration; ?></td>
 
                       <td>
-                          <a href="updateReturnDetails.php?returnisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookReturnDetailsRow['BorrowID']; ?>&userusername=<?php echo $bookReturnDetailsRow["Username"]; ?>"> Edit </a>
+                          <a href="updateReturnDetails.php?returnisbn=<?php echo $ISBN; ?>&borrowid=<?php echo $bookDetailsRow['BorrowID']; ?>&userusername=<?php echo $bookDetailsRow["Username"]; ?>"> Edit </a>
                       </td>
 
                       <td>

@@ -186,7 +186,7 @@
                 </a>
 
                 <!-- Manage Member Details Cell -->
-                <a href="#">
+                <a href="4.manageMemberDetails/manageMemberDetails.php">
                   <div style="width: 510px;
                               height: 180px;
                               background-color: #2330B2;
