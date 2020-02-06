@@ -50,7 +50,10 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <img src="../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                <a href="studentProfessorDashboard.php">
+                  <img src="../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
+                </a>
+
 
                 <h1 id="mainTitle"> LSU <span id="mainTitleSpan">Library</span> </h1>
 

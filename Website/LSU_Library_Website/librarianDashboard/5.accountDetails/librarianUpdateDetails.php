@@ -258,7 +258,7 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-                <a href="../studentProfessorDashboard.php">
+                <a href="../librarianDashboard.php">
                   <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
                 </a>
 
