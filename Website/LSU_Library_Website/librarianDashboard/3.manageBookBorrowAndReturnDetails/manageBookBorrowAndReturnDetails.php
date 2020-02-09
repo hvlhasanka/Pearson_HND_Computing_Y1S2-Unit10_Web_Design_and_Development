@@ -100,7 +100,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="../5.accountDetails/librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $_SESSION['username']; ?> &nbsp
                       <i class="fa fa-bars" style="font-size: 32px;
@@ -158,7 +158,7 @@
                   <a class="nav-link" href="manageBookBorrowAndReturnDetails.php">Manage Book Borrow and Returning Details</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Member Details</a>
+                  <a class="nav-link" href="../4.manageMemberDetails/manageMemberDetails.php">Manage Member Details</a>
                 </li>
               </ul>
             </nav>

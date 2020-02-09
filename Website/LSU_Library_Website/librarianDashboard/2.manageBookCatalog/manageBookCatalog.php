@@ -75,6 +75,9 @@
     <!-- Retrieving default layout style sheet -->
     <link rel="stylesheet" href="../../assets/css/defaultLayout.css">
 
+    <!-- Retrieving font-awesome library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <script src="../../assets/bootstrap/js/jquery.min.js"></script>
     <script src="../../assets/bootstrap/js/popper.min.js"></script>
@@ -94,7 +97,7 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-		<a href="../librarianDashboard.php">
+		            <a href="../librarianDashboard.php">
                   <img src="../../assets/Images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
                 </a>
 
@@ -108,8 +111,12 @@
 
               <table id="navSection">
                 <tr>
-                  <td class="navItem" id="navItem1"> <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
-                    data-content="View Account Details" style="color: black;"><?php echo $_SESSION['username']; ?></a> </td>
+                  <td class="navItem" id="navItem1"> <a href="../5.accountDetails/librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    data-content="View Account Details" style="color: black;"><?php echo $_SESSION['username']; ?> &nbsp
+                    <i class="fa fa-bars" style="font-size: 32px;
+                                                color: #00B1D2FF;"></i> &nbsp
+                    </a>
+                  </td>
                   <td class="navItem" id="navItem2"> <a href="../../logout.php">Logout</a> </td>
                 </tr>
               </table>
@@ -156,13 +163,10 @@
                   <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
+                  <a class="nav-link" href="../3.manageBookBorrowAndReturnDetails/manageBookBorrowAndReturnDetails.php">Manage Borrow and Returning Details</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Member Details</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Calculate Late Fine</a>
+                  <a class="nav-link" href="../4.manageMemberDetails/manageMemberDetails.php">Manage Member Details</a>
                 </li>
               </ul>
             </nav>

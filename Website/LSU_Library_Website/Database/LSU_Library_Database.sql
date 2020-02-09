@@ -382,13 +382,32 @@ CREATE TABLE Book(
 -- Inserting records into Table 18 - Book
 INSERT INTO Book (ISBN, Name, bcCategoryID, baAvailabilityID, RegisteredDateTime) VALUES
 ('978-1517671273', 'Elements of Programming Interviews in Java: The Insiders'' Guide 2nd Edition',
-  75330003, 55240001, '2020-01-01 12:39:23.234');
+  75330003, 55240001, '2020-01-01 12:39:23.234'),
+('978-0735219090', 'Where the Crawdads Sing', 75330001, 55240001, '2020-01-01 12:50:23.234'),
+('978-0743247542', 'The Glass Castle: A Memoir', 75330001, 55240001, '2020-01-01 13:01:23.234'),
+('978-0393356687', 'The Overstory: A Novel', 75330001, 55240003, '2020-01-01 13:15:23.234'),
+('978-1250080400', 'Nightingale', 75330001, 55240005, '2020-01-01 13:20:23.234'),
+('978-1501173219', 'All the Light We Cannot See: A Novel', 75330001, 55240001, '2020-01-01 13:25:23.234'),
+('978-0735224315', 'Little Fires Everywhere: A Novel', 75330001, 55240002, '2020-01-01 13:29:29.234'),
+('978-0525436140', 'There There', 75330001, 55240001, '2020-01-01 13:40:29.234'),
+('978-0134093413', 'Campbell Biology (11th Edition)', 75330003, 55240001, '2020-01-01 13:44:29.234'),
+('978-1118324578', 'Materials Science and Engineering: An Introduction 9th Edition', 75330003, 55240005, '2020-01-01 13:44:50.234'),
+('978-0134414232', 'Chemistry: The Central Science (14th Edition) 14th Edition', 75330003, 55240002, '2020-01-01 13:56:29.234'),
+('978-0323319744', 'Mosby''s Textbook for Nursing Assistants - Soft Cover Version 9th Edition', 75330003, 55240005, '2020-01-01 14:02:29.234'),
+('978-1455770052', 'Guyton and Hall Textbook of Medical Physiology (Guyton Physiology) 13th Edition', 75330003, 55240001, '2020-01-01 14:20:29.234'),
+('978-1796356304', 'The Fifth Science', 75330002, 55240005, '2020-01-02 09:09:29.234'),
+('978-0718084226', 'The Hideaway', 75330002, 55240005, '2020-01-02 09:20:29.234');
 
 -- Inserting records into Table 18 - Book
 INSERT INTO Book VALUES
 ('978-0984782857', 'Cracking the Coding Interview: 189 Programming Questions and Solutions 6th Edition',
-  75330003, 55240004, '2020-01-02 14:23:12.233', 45150002, '2020-01-01 12:34:06.693');
-
+  75330003, 55240004, '2020-01-02 14:23:12.233', 45150002, '2020-01-01 12:34:06.693'),
+('978-0323613170', 'Textbook of Diagnostic Microbiology 6th Edition',
+  75330003, 55240004, '2020-01-03 10:20:12.233', 45150002, '2020-01-01 12:40:06.693'),
+('978-1779501127', 'Watchmen (2019 Edition)',
+  75330001, 55240004, '2020-01-04 09:30:12.233', 45150002, '2020-01-01 12:50:06.693'),
+('978-1797738161', 'The Price of Time',
+  75330002, 55240004, '2020-01-06 14:20:12.233', 45150002, '2020-01-01 13:15:06.693');
 
 
 
@@ -404,7 +423,29 @@ CREATE TABLE BookAuthor(
 INSERT INTO BookAuthor VALUES
 ('978-0984782857', 'Gayle Laakmann McDowell'),
 ('978-1517671273', 'Adnan Aziz'),
-('978-1517671273', 'Tsung-Hsien Lee');
+('978-1517671273', 'Tsung-Hsien Lee'),
+('978-0735219090', 'Delia Owens'),
+('978-0743247542', 'Jeannette Walls'),
+('978-0393356687', 'Richard Powers'),
+('978-1250080400', 'Kristin Hannah'),
+('978-1501173219', 'Anthony Doerr'),
+('978-0735224315', 'Celeste Ng'),
+('978-0525436140', 'Tommy Orange'),
+('978-0134093413', 'Lisa A. Urry'),
+('978-0134093413', 'Michael L. Cain'),
+('978-1118324578', 'William D. Callister Jr.'),
+('978-1118324578', 'David G. Rethwisch'),
+('978-0134414232', 'Theodore E. Brown'),
+('978-0134414232', 'H. Eugene LeMay'),
+('978-0323319744', 'Sheila A. Sorrentino PhD RN'),
+('978-0323319744', 'Leighann Remmert MS RN'),
+('978-1455770052', 'John E. Hall PhD'),
+('978-0323613170', 'Connie R. Mahon MS MT(ASCP) CLS'),
+('978-0323613170', 'Donald C. Lehman EdD MT(ASCP) SM(NRM)'),
+('978-1779501127', 'Alan Moore'),
+('978-1796356304', 'Exurb1a'),
+('978-1797738161', 'Tim Tigner'),
+('978-0718084226', 'Lauren K. Denton');
 
 
 

@@ -18,7 +18,7 @@
 
   $userUsername = $_SESSION['username'];
 
-  
+
 
   if(isset($_POST['updateSubmit'])){
     $enteredFirstName = $_POST['firstName'];

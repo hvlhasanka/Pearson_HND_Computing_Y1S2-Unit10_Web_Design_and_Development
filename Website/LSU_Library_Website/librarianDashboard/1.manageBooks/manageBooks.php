@@ -139,7 +139,7 @@
         <div style="height: 140px; width: 100%;">
               <div id="logoSection">
 
-		<a href="../librarianDashboard.php">
+		          <a href="../librarianDashboard.php">
               	  <img src="../../assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
             	</a>
 
@@ -154,7 +154,7 @@
               <table id="navSection">
                 <tr>
                   <td class="navItem" id="navItem1">
-                    <a href="" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
+                    <a href="../5.accountDetails/librarianAccountDetails.php" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="Options"
                     data-content="View Account Details" style="color: black;">
                       <?php echo $_SESSION['username']; ?> &nbsp
                       <i class="fa fa-bars" style="font-size: 32px;
@@ -209,13 +209,10 @@
                   <a class="nav-link" href="../2.manageBookCatalog/manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
+                  <a class="nav-link" href="../3.manageBookBorrowAndReturnDetails/manageBookBorrowAndReturnDetails.php">Manage Borrow and Returning Details</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Member Details</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Calculate Late Fine</a>
+                  <a class="nav-link" href="../4.manageMemberDetails/manageMemberDetails.php">Manage Member Details</a>
                 </li>
               </ul>
             </nav>
