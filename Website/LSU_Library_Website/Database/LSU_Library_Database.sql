@@ -1,10 +1,12 @@
+-- Code Developed and Maintained by Hewa Vidanage Lahiru Hasanka
+
+
+
 -- Creating new database named 'LSULibraryDB'
 CREATE DATABASE LSULibraryDB;
 
 -- Accessing LSULibraryDB database
 USE LSULibraryDB;
-
-
 
 
 

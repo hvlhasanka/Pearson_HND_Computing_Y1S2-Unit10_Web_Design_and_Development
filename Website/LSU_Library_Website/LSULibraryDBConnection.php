@@ -1,3 +1,5 @@
+<!-- Code Developed and Maintained by Hewa Vidanage Lahiru Hasanka -->
+
 <?php
 
   // Assigning mysqli_connect function parameters to the variables

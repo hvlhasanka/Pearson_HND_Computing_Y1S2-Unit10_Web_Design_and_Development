@@ -1,3 +1,5 @@
+/* Code Developed and Maintained by Hewa Vidanage Lahiru Hasanka */
+
 function generatePathway(form){
   var selectedPosition = form.membershipType.value;
 

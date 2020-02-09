@@ -1,3 +1,5 @@
+<!-- Code Developed and Maintained by Hewa Vidanage Lahiru Hasanka -->
+
 <?php
   // Starts the SESSION period
   session_start();

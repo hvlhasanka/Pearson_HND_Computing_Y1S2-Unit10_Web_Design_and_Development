@@ -1,3 +1,5 @@
+<!-- Code Developed and Maintained by Hewa Vidanage Lahiru Hasanka -->
+
 <?php
 
   // Retrieving code block for MySQL database connection
