@@ -34,7 +34,7 @@ INSERT INTO UserCity (City) VALUES
 -- Creating Table 2 - UserZipPostalCode
 CREATE TABLE UserZipPostalCode(
   ZPCID INT(8) AUTO_INCREMENT,
-  ZipPostalCode INT(5),
+  ZipPostalCode VARCHAR(5),
   PRIMARY KEY (ZPCID)
 )ENGINE = INNODB;
 
@@ -106,10 +106,28 @@ INSERT INTO User (FirstName, MiddleName, LastName, EmailAddress, StreetAddress, 
   MobileNumber, TelePhoneNumber, RegistrationDateTime, lLoginID) VALUES
   ('Nickie', 'Weber', 'Langham', 'nlanghame@mail.ru', '959 Golf Course Alley', 22120001, 23130001, 24140009, '0158521592', '0348521596',
     '2020-01-01 09:23:34.131', NULL),  -- UserID: 45150001
-  ('Jake', 'Andrews', 'Anderson', 'jakeanderson12@gmail.com', '818 School Park',  22120001, 23130001, 24140009, '0895874693','0341569634',
+  ('Rosina', 'Jody', 'Prujean', 'jprujean0@columbia.edu', '1571 Clyde Gallagher Pass', 22120003, 23130004, 24140003, '0254659325','0458246951',
+    '2020-01-01 12:50:13.342', NULL),  -- UserID: 45150004
+  ('Jake', 'Andrews', 'Anderson', 'jakeanderson12@gmail.com', '818 School Park', 22120001, 23130001, 24140009, '0895874693','0341569634',
     '2020-01-01 10:32:12.132', NULL),  -- UserID: 45150002
-  ('Peter', 'Andy', 'Jackson', 'JacksonAny42@gmail.com', 'A23 Palace Lane',  22120001, 23130001, 24140009, '0235316489','0425268313',
-    '2020-01-01 11:23:13.342', NULL);  -- UserID: 45150003
+  ('Peter', 'Andy', 'Jackson', 'JacksonAny42@gmail.com', 'A23 Palace Lane', 22120001, 23130001, 24140009, '0235316489','0425268313',
+    '2020-01-01 11:23:13.342', NULL),  -- UserID: 45150003
+  ('Jaime', 'Allina', 'Galiford', 'agalifordh@auda.org.au', '89 Pleasure Terrace', 22120004, 23130002, 24140007, '0258741259','0421589652',
+    '2020-01-01 12:55:13.342', NULL),  -- UserID: 45150005
+  ('Charles', 'Rikki', 'Linge', 'rlinge7@geocities.jp', '349 Anniversary Parkway', 22120005, 23130003, 24140004, '0147852635', '0415985424',
+    '2020-01-02 10:25:34.131', NULL),  -- UserID: 45150006
+  ('Gillian', 'Gerri', 'Bowsher', 'gbowsherk@va.gov', '4 Forest Lane', 22120002, 23130002, 24140009, '0248249658','0425163589',
+    '2020-01-02 11:32:12.132', NULL),  -- UserID: 45150007
+  ('Julee', 'Dacey', 'Adkins', 'dadkinsk@yolasite.com', '58 Monument Plaza',  22120001, 23130004, 24140009, '0247856354','0425874159',
+    '2020-01-02 12:23:13.342', NULL),  -- UserID: 45150008
+  ('Tamara', 'Wilhelm', 'Trayes', '	wtrayesc@topsy.com', '73690 Evergreen Center',  22120003, 23130005, 24140001, '0258745692','0415965475',
+    '2020-01-02 13:40:13.342', NULL),  -- UserID: 45150009
+  ('Gareth', 'Winfred', 'Rubes', 'wrubes5@t.co', '43952 Bartelt Place',  22120004, 23130003, 24140007, '0214569852','0412589635',
+    '2020-01-02 13:55:13.342', NULL),  -- UserID: 45150010
+  ('Bill', 'Dael', 'McKinless', 'dmckinlessh@forbes.com', '75 Riverside Road',  22120005, 23130001, 24140004, '0258746532','0412569874',
+    '2020-01-02 14:28:13.342', NULL),  -- UserID: 45150011
+  ('Toby', 'Lyndell', 'Dennant', 'ldennant7@xinhuanet.com', '1976 Rieder Drive',  22120002, 23130004, 24140009, '0284369574','0125478535',
+    '2020-01-02 14:50:13.342', NULL);  -- UserID: 45150012
 
 
 
@@ -123,7 +141,8 @@ CREATE TABLE Librarian(
 
 -- Inserting records into Table 5 - Librarian
 INSERT INTO Librarian VALUES
-(45150001);
+(45150001),
+(45150002);
 
 
 
@@ -228,8 +247,16 @@ CREATE TABLE UniversityMember(
 -- Inserting records into Table 10 - UniversityMember
 INSERT INTO UniversityMember
 (uUserID, UniversityNo, mmtMembershipTypeID, mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES
-(45150002, 10004392, 44120001, 93140001, 91120001, 92130003),
-(45150003, 10003242, 44120002, 93140001, 91120003, 92130005);
+(45150003, 10004392, 44120001, 93140001, 91120001, 92130001),
+(45150004, 10003242, 44120001, 93140001, 91120004, 92130002),
+(45150005, 10002754, 44120001, 93140004, 91120003, 92130001),
+(45150006, 10009647, 44120001, 93140001, 91120001, 92130003),
+(45150007, 10003456, 44120001, 93140002, 91120002, 92130001),
+(45150008, 10002458, 44120002, 93140001, 91120001, 92130004),
+(45150009, 10008765, 44120002, 93140001, 91120003, 92130006),
+(45150010, 10003458, 44120002, 93140003, 91120004, 92130005),
+(45150011, 10002518, 44120002, 93140001, 91120002, 92130005),
+(45150012, 10006492, 44120002, 93140001, 91120001, 92130004);
 
 
 
@@ -246,8 +273,10 @@ ALTER TABLE StudentBatch AUTO_INCREMENT = 55760001;
 
 -- Inserting records into Table 11 - MemberMemberStatus
 INSERT INTO StudentBatch (Batch) VALUES
-('Fall 2017'),  -- BatchID: 55760001
-('Spring 2018');  -- BatchID: 55760002
+('Fall 2017'),     -- BatchID: 55760001
+('Spring 2018'),   -- BatchID: 55760002
+('Fall 2018'),     -- BatchID: 55760003
+('Spring 2019');   -- BatchID: 55760004
 
 
 
@@ -265,7 +294,10 @@ ALTER TABLE StudentDegreeProgram AUTO_INCREMENT = 56770001;
 -- Inserting records into Table 12 - StudentDegreeProgram
 INSERT INTO StudentDegreeProgram (DegreeProgram) VALUES
 ('BSc(Hons) in Software Engineering'),  -- DegreeProgramID: 56770001
-('BSc(Hons) in Civil Engineering');     -- DegreeProgramID: 56770002
+('BSc(Hons) in Civil Engineering'),     -- DegreeProgramID: 56770002
+('BSc(Hons) in Networking'),            -- DegreeProgramID: 56770003
+('MSc(Hons) in Business Management');   -- DegreeProgramID: 56770004
+
 
 
 
@@ -284,7 +316,11 @@ CREATE TABLE Student(
 
 -- Inserting records into Table 13 - Student
 INSERT INTO Student VALUES
-(45150002, 10004392, 55760001, 56770001);
+(45150003, 10004392, 55760002, 56770001),
+(45150004, 10003242, 55760003, 56770004),
+(45150005, 10002754, 55760003, 56770002),
+(45150006, 10009647, 55760001, 56770001),
+(45150007, 10003456, 55760004, 56770003);
 
 
 
@@ -301,8 +337,9 @@ ALTER TABLE ProfessorSpecialization AUTO_INCREMENT = 33110001;
 
 -- Inserting records into Table 14 - ProfessorSpecialization
 INSERT INTO ProfessorSpecialization (Specialization) VALUES
-('Computing'),  -- SpecializationID: 33110001
-('Business');   -- SpecializationID: 33110001
+('Computing'),           -- SpecializationID: 33110001
+('Business'),            -- SpecializationID: 33110002
+('Civil Engineering');   -- SpecializationID: 33110003
 
 
 
@@ -319,9 +356,11 @@ CREATE TABLE Professor(
 
 -- Inserting records into Table 15 - Professor
 INSERT INTO Professor VALUES
-(45150003, 10003242, 33110001);
-
-
+(45150008, 10002458, 33110001),
+(45150009, 10008765, 33110003),
+(45150010, 10003458, 33110003),
+(45150011, 10002518, 33110002),
+(45150012, 10006492, 33110001);
 
 
 -- Creating Table 16 - BookCategory
@@ -395,7 +434,7 @@ INSERT INTO Book (ISBN, Name, bcCategoryID, baAvailabilityID, RegisteredDateTime
 ('978-0134414232', 'Chemistry: The Central Science (14th Edition) 14th Edition', 75330003, 55240002, '2020-01-01 13:56:29.234'),
 ('978-0323319744', 'Mosby''s Textbook for Nursing Assistants - Soft Cover Version 9th Edition', 75330003, 55240005, '2020-01-01 14:02:29.234'),
 ('978-1455770052', 'Guyton and Hall Textbook of Medical Physiology (Guyton Physiology) 13th Edition', 75330003, 55240001, '2020-01-01 14:20:29.234'),
-('978-1796356304', 'The Fifth Science', 75330002, 55240005, '2020-01-02 09:09:29.234'),
+('978-1796356304', 'The Fifth Science', 75330002, 55240001, '2020-01-02 09:09:29.234'),
 ('978-0718084226', 'The Hideaway', 75330002, 55240005, '2020-01-02 09:20:29.234');
 
 -- Inserting records into Table 18 - Book
@@ -464,7 +503,10 @@ ALTER TABLE BookBorrow AUTO_INCREMENT = 44250001;
 
 -- Inserting records to Table 20 - BookBorrow
 INSERT INTO BookBorrow (BorrowDateTime, ReturnDateTime) VALUES
-('2020-01-03 09:12:43.233', '2020-01-05 12:52:02.233');  -- BDID: 44250001
+('2020-01-03 09:12:43.233', '2020-01-10 12:52:02.233'),  -- BDID: 44250001
+('2020-01-05 10:12:43.233', '2020-01-16 09:52:02.233'),  -- BDID: 44250002
+('2020-01-07 14:12:43.233', '2020-01-15 14:52:02.233'),  -- BDID: 44250003
+('2020-01-14 12:12:43.233', '2020-01-20 10:52:02.233');  -- BDID: 44250004
 
 
 
@@ -483,7 +525,8 @@ ALTER TABLE BookCatalog AUTO_INCREMENT = 22450001;
 
 -- Inserting records to Table 21 - BookCatalog
 INSERT INTO BookCatalog (Name, CreatedDateTime) VALUES
-('Computing', '2020-01-02 10:25:34.131'); -- CatalogID: 22450001
+('Computing', '2020-01-02 10:25:34.131'), -- CatalogID: 22450001
+('Science', '2020-01-04 11:25:34.131'); -- CatalogID: 22450002
 
 
 
@@ -524,17 +567,44 @@ ALTER TABLE Login AUTO_INCREMENT = 11250001;
 -- Inserting records to Table 23 - Login
 -- Password encryption: password_hash (php function)
 INSERT INTO Login(Username, Password, lutUserTypeID) VALUES
-('NickieLangham22', '$2y$10$3gNWnpV5nw0LMrBsSAV/rev2YRwB8tYJkZwbLDfmmZHuJglmwIBy6', 65350003),
--- Password: WeLannick4_k33 | LoginID: 11250001 |  MemberType: Librarian
-('jakeanderson52', '$2y$10$xb8OmUOyNtbCV.q99/p/j.xbeEs/pK0M1dSN2XZrQO7uPKmXReICm', 65350001),
--- Password: andRewsand_er2 | LoginID: 11250002 | MemberType: Student
-('JacksonAndy32', '$2y$10$yEICTpS6D1u/wqV8/vsHie13oIwZQy6sObRXuTtdBo/1U2s.ikTPS', 65350002);
--- Password: jackpetera_pj33 | LoginID: 11250003 |  MemberType: Professor
+('NickieLangham44', '$2y$10$sn7ORCBP3Raghs1axcIicO0k8BUTgjhY4f.iktx38quzql05Ci.kW', 65350003),
+-- Password: NickieLangham$582 | LoginID: 11250001 |  MemberType: Librarian
+('RosinaPrujean43', '$2y$10$1a./tjidJRM76zuLJ90ZxuDNCSyzJqYpqV6ntqV5uzvD4lE1cKnfe', 65350003),
+-- Password: RosinaPrujean@481 | LoginID: 11250002 |  MemberType: Librarian
+('JakeAnderson34', '$2y$10$EuhyLFkyaDdjeVkrMu7oGuUSrs9p13CwbzvgCpYBe5TpjsHlrSjqO', 65350001),
+-- Password: JakeAnderson*146 | LoginID: 11250003 | MemberType: Student
+('PeterJackson44', '$2y$10$xfJNcGd.E//iqweSQF9Zru.pQG.NYUx4aVKuTG/medwI21M/xf4CO', 65350001),
+-- Password: PeterJackson%594 | LoginID: 11250004 |  MemberType: Student
+('JaimeGaliford76', '$2y$10$aZH/CiiniZxC7PP0lVhKeuhVi87L7YgU/VltT4.E0yq5ZAZR1O70G', 65350001),
+-- Password: JaimeGaliford$159 | LoginID: 11250005 |  MemberType: Student
+('CharlesLinge63', '$2y$10$UAbWfIvFhSfza4HwJbyjjOLMws2JvUuFbKT/W9L61xlqPrxXOWGlW', 65350001),
+-- Password: CharlesLinge*359 | LoginID: 11250006 | MemberType: Student
+('GillianBowsher38', '$2y$10$YhotiHa7v9IDSjv73QrUqOquhS7Sk8CYRiqoxXTnT1jXn4ihnU9vi', 65350001),
+-- Password: GillianBowsher!248 | LoginID: 11250007 |  MemberType: Student
+('JuleeAdkins34', '$2y$10$CqdQAwPcRVd2GtsPU7V7XeVPF5vzYG7/WXZMQF9nM1swhJC8tcFW2', 65350002),
+-- Password: JuleeAdkins$249 | LoginID: 11250008 |  MemberType: Professor
+('TamaraTrayes77', '$2y$10$cZCUETGwEOK9OHLIUj77EebXeoa8LYsfA6ChP2aqtrdFa1ZopDcZS', 65350002),
+-- Password: TamaraTrayes^154 | LoginID: 11250009 |  MemberType: Professor
+('GarethRubes95', '$2y$10$32UAkUIz8tlMPaqqj.XJo.8.qPtHSy/ITkYjzn/O4v7.JuO53Fj3W', 65350002),
+-- Password: GarethRubes#582 | LoginID: 11250010 | MemberType: Professor
+('BillMckinless53', '$2y$10$4Zuvj42P6kk8PljQS5luj.s5rwcv30c80dydKINRTt6GT2y7OPYsy', 65350002),
+-- Password: BillMckinless*335 | LoginID: 11250011 |  MemberType: Professor
+('TobyDennant62', '$2y$10$BmbUwHo9bTFeJfmeodhMwe3mmDZBgMazRUOh/NYG860Xoly45uaYq', 65350002);
+-- Password: TobyDennant$523 | LoginID: 11250012 |  MemberType: Professor
 
 -- Updating the lLoginID in Table 4 - User for these newly added records
 UPDATE User SET lLoginID = 11250001 WHERE UserID = 45150001;
 UPDATE User SET lLoginID = 11250002 WHERE UserID = 45150002;
 UPDATE User SET lLoginID = 11250003 WHERE UserID = 45150003;
+UPDATE User SET lLoginID = 11250004 WHERE UserID = 45150004;
+UPDATE User SET lLoginID = 11250005 WHERE UserID = 45150005;
+UPDATE User SET lLoginID = 11250006 WHERE UserID = 45150006;
+UPDATE User SET lLoginID = 11250007 WHERE UserID = 45150007;
+UPDATE User SET lLoginID = 11250008 WHERE UserID = 45150008;
+UPDATE User SET lLoginID = 11250009 WHERE UserID = 45150009;
+UPDATE User SET lLoginID = 11250010 WHERE UserID = 45150010;
+UPDATE User SET lLoginID = 11250011 WHERE UserID = 45150011;
+UPDATE User SET lLoginID = 11250012 WHERE UserID = 45150012;
 
 -- Updating lLoginID column in Table 4 - User as foreign key
 ALTER TABLE User ADD FOREIGN KEY (lLoginID) REFERENCES Login (LoginID);
@@ -671,10 +741,17 @@ CREATE TABLE BookCatalogHasBook(
 -- Inserting records to Table 31 - BookCatalogHasBook
 INSERT INTO BookCatalogHasBook VALUES
 (22450001, '978-0984782857'),
-(22450001, '978-1517671273');
+(22450001, '978-1517671273'),
+(22450002, '978-0134093413'),
+(22450002, '978-1118324578'),
+(22450002, '978-0134414232'),
+(22450002, '978-0323319744'),
+(22450002, '978-1455770052'),
+(22450002, '978-0323613170');
 
 -- Updating the NoOfBooks in Table 21: BookCatalog
 UPDATE BookCatalog SET NoOfBooks = 2 WHERE CatalogID = 22450001;
+UPDATE BookCatalog SET NoOfBooks = 6 WHERE CatalogID = 22450002;
 
 
 
@@ -693,4 +770,7 @@ CREATE TABLE Borrow(
 
 -- Inserting records to Table 32 - Borrow
 INSERT INTO Borrow VALUES
-(45150002, 10004392, '978-0984782857', 44250001);
+(45150003, 10004392, '978-1250080400', 44250001),
+(45150006, 10009647, '978-1118324578', 44250002),
+(45150008, 10002458, '978-0323319744', 44250003),
+(45150012, 10006492, '978-0718084226', 44250004);

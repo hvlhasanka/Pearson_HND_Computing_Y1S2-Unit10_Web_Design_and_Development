@@ -284,8 +284,8 @@
                                                                   border-radius: 5px;
                                                                   width: 360px;
                                                                   position: absolute;
-                                                                  top: 910px;
-                                                                  left: 60px;" onClick="window.location.href = 'studentProfessorChangePassword.php';">
+                                                                  top: 915px;
+                                                                  left: 80px;" onClick="window.location.href = 'studentProfessorChangePassword.php';">
                   <i class="fa fa-unlock" style="font-size: 20px;
                                                 margin-right: 10px;"></i>
                   Change Password
