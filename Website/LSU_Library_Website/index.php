@@ -318,8 +318,8 @@
 
           <table id="navSection">
             <tr>
-              <td class="navItem" id="navItem1"> <a href="#" data-toggle="modal" data-target="#signupFormModel">SignUp</a> </td>
-              <td class="navItem" id="navItem2"> <a href="#" data-toggle="modal" data-target="#loginFormModel">Login</a> </td>
+              <td class="navItem" id="navItem1"> <a href="#" data-toggle="modal" data-target="#loginFormModel">Login</a> </td>
+              <td class="navItem" id="navItem2"> <a href="#" data-toggle="modal" data-target="#signupFormModel">SignUp</a> </td>
             </tr>
           </table>
         </div>
@@ -480,7 +480,7 @@
                     <img src="assets/images/HomePage/homePageBodySection2Img4.jpg" class="card-img-top" alt="Image 4">
                     <div class="card-body">
                       <p class="card-text">
-                        Members can reserve a book for 24 hours before finalizing it for borrowing.
+                        Members can reserve a book for 24 hours before finalizing it for borrowing
                       </p>
                     </div>
                   </div>
@@ -492,7 +492,7 @@
                     <img src="assets/images/HomePage/homePageBodySection2Img5.png" class="card-img-top" alt="Image 5">
                     <div class="card-body">
                       <p class="card-text">
-                        Our web application is simple and easy to use.
+                        Our web application is simple and easy to use
                       </p>
                     </div>
                   </div>
