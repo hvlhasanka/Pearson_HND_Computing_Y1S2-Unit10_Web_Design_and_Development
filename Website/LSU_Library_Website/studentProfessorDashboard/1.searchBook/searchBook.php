@@ -393,7 +393,7 @@
 
 
                     // Retrieving details of all available books
-                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.RegisteredDateTime FROM Book b
+                    $bookSQL = "SELECT b.ISBN, b.Name, bc.Category, ba.Availability, b.ReserveDateTime, b.uUserID_ReservedBy, b.RegisteredDateTime FROM Book b
                                 INNER JOIN BookAvailability ba ON ba.AvailabilityID = b.baAvailabilityID
                                 INNER JOIN BookCategory bc ON bc.CategoryID = b.bcCategoryID
                                 WHERE ba.Availability = 'Available' OR ba.Availability = 'Reserved' ORDER BY RegisteredDateTime DESC;";

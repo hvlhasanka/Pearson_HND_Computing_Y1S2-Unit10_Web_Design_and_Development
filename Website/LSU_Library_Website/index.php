@@ -13,15 +13,15 @@
     $selectedMembershipType = $_POST['membershipTypeSignUp'];
 
     if($selectedMembershipType == "65350001"){
-      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
+      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue? '); </script>";
       echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPages/signupStudentPage.php'; } </script>";
     }
     if($selectedMembershipType == "65350002"){
-      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
+      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue? '); </script>";
       echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPages/signupProfessorPage.php'; } </script>";
     }
     else if($selectedMembershipType == "65350003"){
-      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue: '); </script>";
+      echo "<script> var selectedPositionConfirmation = confirm('Are you sure you want to continue? '); </script>";
       echo "<script> if(selectedPositionConfirmation == 1){ location.href='signupPages/signupLibrarianPage.php'; } </script>";
     }
     else{
