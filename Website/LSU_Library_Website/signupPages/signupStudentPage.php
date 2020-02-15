@@ -116,18 +116,12 @@
       empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
       empty($enteredUniversityNo) || $selectedFaculty == "NULL" || empty($enteredDegreeProgram) || empty($enteredBatch) ||
       $selectedPosition == "NULL" || empty($enteredUsernameS) || empty($enteredPasswordS) || empty($enteredConfirmPasswordS) ||
-      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS
+      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS || strlen($enteredMobileNumber) != 10
     ){
 
       if(strlen($enteredMobileNumber) != 10){
         ?> <script>
           alert("ERROR: Phone Number doesn't have 10 characters");
-        </script> <?php
-      }
-
-      if(strlen($enteredTelephoneNumber) != 10){
-        ?> <script>
-          alert("ERROR: Telephone Number doesn't have 10 characters");
         </script> <?php
       }
 
@@ -353,7 +347,7 @@
 
 
           // Insert new record into the UniversityMember table
-          $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityNo, mmtMemberTypeID,
+          $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityNo, mmtMembershipTypeID,
                                   mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES ('$userIDDB',
                                   '$enteredUniversityNo', 44120001, '$selectedStatus',
                                   '$selectedFaculty', '$selectedPosition');";

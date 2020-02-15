@@ -88,7 +88,7 @@
     }
   }
 
-  // Registering new student into the system process
+  // Registering new professor into the system process
   if(isset($_POST['memberSubmit'])){
 
     $enteredFirstName = $_POST['firstName'];
@@ -331,7 +331,7 @@
 
 
       // Insert new record into the UniversityMember table
-      $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityNo, mmtMemberTypeID,
+      $universityMemberSQL = "INSERT INTO UniversityMember (uUserID, UniversityNo, mmtMembershipTypeID,
                               mmsMemberStatusID, mfFacultyID, mpPositionID) VALUES ('$userIDDB',
                               '$enteredUniversityNo', 44120002, '$selectedStatus',
                               '$selectedFaculty', '$selectedPosition');";

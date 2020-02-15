@@ -88,7 +88,7 @@
     }
   }
 
-  // Registering new student into the system process
+  // Registering new librarian into the system process
   if(isset($_POST['memberSubmit'])){
 
     $enteredFirstName = $_POST['firstName'];

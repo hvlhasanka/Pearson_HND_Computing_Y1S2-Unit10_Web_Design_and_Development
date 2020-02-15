@@ -304,7 +304,7 @@
         <div id="header">
 
           <div id="logoSection">
-            <a href="homePage.php">
+            <a href="index.php">
               <img src="assets/images/LSULibraryLogo.png" alt="LSU Library Logo" id="lsuLibraryLogoIcon">
             </a>
 

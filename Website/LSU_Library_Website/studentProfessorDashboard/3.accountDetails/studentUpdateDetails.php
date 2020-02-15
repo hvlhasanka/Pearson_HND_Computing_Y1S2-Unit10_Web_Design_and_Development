@@ -39,18 +39,12 @@
     if(empty($enteredFirstName) || empty($enteredLastName) || empty($enteredEmailAddress) || empty($enteredMobileNumber) ||
       empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
       empty($enteredUniversityNo) || $selectedFaculty == "NULL" || empty($enteredDegreeProgram) || empty($enteredBatch) ||
-      $selectedPosition == "NULL" || empty($enteredUsername)
+      $selectedPosition == "NULL" || empty($enteredUsername) || strlen($enteredMobileNumber) != 10
     ){
 
       if(strlen($enteredMobileNumber) != 10){
         ?> <script>
           alert("ERROR: Phone Number doesn't have 10 characters");
-        </script> <?php
-      }
-
-      if(strlen($enteredTelephoneNumber) != 10){
-        ?> <script>
-          alert("ERROR: Telephone Number doesn't have 10 characters");
         </script> <?php
       }
 
@@ -334,7 +328,7 @@
         alert("Account Details successfully updated");
       </script> <?php
 
-      echo "<script> location.href='accountDetails.php'; </script>";
+      echo "<script> location.href='studentAccountDetails.php'; </script>";
 
     }
 
