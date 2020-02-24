@@ -775,7 +775,7 @@
                   <br>
 
                   <br>
-                  <button type="submit" name="memberSubmit" id="submitButton">Submit</button>
+                  <button type="submit" name="memberSubmit" id="submitButton">Sign Up</button>
                   <button type="reset" name="memberReset" id="resetButton">Reset</button>
 
                 </form>

@@ -67,7 +67,6 @@
     text-decoration: none;
     color: #00B1D2FF;
     font-family: verdana;
-    font-size: 20px;
     border-style: solid;
     border-width: thin;
     border-radius: 6px;
@@ -103,9 +102,10 @@
   }
 
   #footerLogoSection{
-    position:relative;
+    position: absolute;
+    left: 60%;
+    transform: translateX(-40%);
     top: -100px;
-    left: 700px;
   }
 
   #footerLogoSection h1{

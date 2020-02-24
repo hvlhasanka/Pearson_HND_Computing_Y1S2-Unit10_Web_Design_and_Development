@@ -40,8 +40,6 @@
   // Checking if this logged in user is an authorized user (active) to check book availability, anf reserve a book
   if($accountStatus == "Active"){
 
-
-
     $bookISBN = "";
     $bookName = "";
     $bookAuthor = "";
@@ -364,7 +362,7 @@
                           left: -10px;"><b>Search Book</b></p>
 
                 <?php
-
+                  // Retrieving book details from database according to the user entered preference
 
                   $bookSQL = "";
 
@@ -483,7 +481,6 @@
                     </tbody>
                   </table>
                 </div>
-
 
 
               </div>

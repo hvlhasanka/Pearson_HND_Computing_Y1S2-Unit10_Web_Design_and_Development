@@ -185,7 +185,7 @@
                       height: 715px;
                       background-color: #F6F6F6;">
 
-            <!-- Existing Books section -->
+            <!-- Existing Book Catalogs section -->
             <div style="width: 70%;
                         height: 500px;
                         background-color: #FFFFFF;
@@ -356,11 +356,6 @@
                       <button type="reset" name="createBookCatalogReset" id="formResetButton">Reset</button>
 
                     </form>
-                  </div>
-
-                  <!-- Modal - Footer -->
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                   </div>
 
                 </div>

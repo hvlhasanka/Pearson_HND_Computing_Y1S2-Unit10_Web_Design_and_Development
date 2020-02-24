@@ -27,7 +27,7 @@
       </script> <?php
     }
     else{
-
+      // Process of Book Returning
       // Updating Book Table
       $bookSQL = "UPDATE Book SET baAvailabilityID = 55240001 WHERE ISBN = '$bookISBN';";
       mysqli_query($databaseConn, $bookSQL);

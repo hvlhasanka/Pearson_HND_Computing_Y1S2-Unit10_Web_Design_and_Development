@@ -351,7 +351,7 @@
           </div>
 
 
-          <!-- View All Books Modal -->
+          <!-- View All Available and Reserved Books Modal -->
           <div class="modal fade" id="viewBooks">
             <div class="modal-dialog modal-dialog-scrollable" style="max-width: 95%;">
               <div class="modal-content">

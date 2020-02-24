@@ -18,6 +18,7 @@
   // ISBN value that was retrieved from the previous web page
   $ISBN = $_GET['isbn'];
 
+  // Process of Updating Book Details
   if(isset($_POST['updateBookUpdate'])){
 
     $name = $_POST['name'];
