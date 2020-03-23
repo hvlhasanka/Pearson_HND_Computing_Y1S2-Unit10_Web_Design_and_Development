@@ -17,7 +17,7 @@
 
   $userUsername = $_SESSION['username'];
 
-
+  // Updating Account Details Process
   if(isset($_POST['updateSubmit'])){
     $enteredFirstName = $_POST['firstName'];
     $enteredMiddleName = $_POST['middleName'];
