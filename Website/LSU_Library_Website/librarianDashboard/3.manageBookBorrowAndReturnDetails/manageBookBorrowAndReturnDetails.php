@@ -199,7 +199,7 @@
                           transform: translateX(-50%);
                           overflow-y: scroll;">
 
-                <!-- Retrieving details of the existing books from the database -->
+                <!-- Retrieving details of the books borrow from the database -->
                 <?php
                   $bookBorrowDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
                                     INNER JOIN User u ON u.lLoginID = l.LoginID
@@ -296,7 +296,7 @@
                           transform: translateX(-50%);
                           overflow-y: scroll;">
 
-                <!-- Retrieving details of the existing books from the database -->
+                <!-- Retrieving details of the books return from the database -->
                 <?php
                   $bookReturnDetailsSQL = "SELECT l.Username, u.FirstName, u.LastName, b.ISBN, bb.BorrowID, bb.BorrowDateTime, bb.ReturnDateTime, mms.MemberStatus, mmt.MembershipType FROM Login l
                                     INNER JOIN User u ON u.lLoginID = l.LoginID

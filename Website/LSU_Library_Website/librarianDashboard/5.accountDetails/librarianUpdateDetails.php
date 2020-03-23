@@ -19,7 +19,7 @@
   $userUsername = $_SESSION['username'];
 
 
-
+  // Process of updating librarian account details
   if(isset($_POST['updateSubmit'])){
     $enteredFirstName = $_POST['firstName'];
     $enteredMiddleName = $_POST['middleName'];

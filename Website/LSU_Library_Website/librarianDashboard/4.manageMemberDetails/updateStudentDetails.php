@@ -19,7 +19,7 @@
 
   $studentUsername= $_GET['updatestudentUsername'];
 
-
+  // Process of updating student details
   if(isset($_POST['updateSubmit'])){
     $enteredFirstName = $_POST['firstName'];
     $enteredMiddleName = $_POST['middleName'];
