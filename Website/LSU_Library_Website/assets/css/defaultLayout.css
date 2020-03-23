@@ -102,9 +102,8 @@
   }
 
   #footerLogoSection{
-    position: absolute;
-    left: 60%;
-    transform: translateX(-40%);
+    position: relative;
+    left: 40%;
     top: -100px;
   }
 
@@ -123,7 +122,7 @@
   #footerText1Main{
     position: relative;
     top: -140px;
-    left: 650px;
+    left: 40%;
     font-family: sans-serif;
     font-size: 20px;
     color: white;

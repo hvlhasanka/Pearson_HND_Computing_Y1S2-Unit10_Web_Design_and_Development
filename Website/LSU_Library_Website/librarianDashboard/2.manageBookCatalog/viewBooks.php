@@ -176,13 +176,10 @@
                   <a class="nav-link" href="manageBookCatalog.php">Manage Book Catalogs</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Borrow and Returning Details</a>
+                  <a class="nav-link" href="../3.manageBookBorrowAndReturnDetails/manageBookBorrowAndReturnDetails.php">Manage Borrow and Returning Details</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Manage Member Details</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Calculate Late Fine</a>
+                  <a class="nav-link" href="../4.manageMemberDetails/manageMemberDetails.php">Manage Member Details</a>
                 </li>
               </ul>
             </nav>
