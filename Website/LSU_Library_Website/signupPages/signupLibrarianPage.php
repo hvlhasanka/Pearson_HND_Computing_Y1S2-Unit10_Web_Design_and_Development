@@ -107,10 +107,8 @@
 
     if(empty($enteredFirstName) || empty($enteredLastName) || empty($enteredEmailAddress) || empty($enteredMobileNumber) ||
       empty($enteredStreetAddress) || empty($enteredCity) || $selectedProvience == "NULL" || empty($enteredZipPostalCode) ||
-      empty($enteredUsernameS) || empty($enteredPasswordS) || empty($enteredConfirmPasswordS) ||
-      $selectedStatus == "NULL" || $enteredPasswordS != $enteredConfirmPasswordS ||
-
-      (strlen($enteredMobileNumber) != 10)
+      empty($enteredUsernameS) || empty($enteredPasswordS) || empty($enteredConfirmPasswordS) || 
+      $enteredPasswordS != $enteredConfirmPasswordS || (strlen($enteredMobileNumber) != 10)
 
       ){
 
@@ -183,12 +181,6 @@
       if(empty($enteredConfirmPasswordS)){
         ?> <script>
           alert("ERROR: Confirm Password was not filled");
-        </script> <?php
-      }
-
-      if($selectedStatus == "NULL"){
-        ?> <script>
-          alert("ERROR: Status was not selected");
         </script> <?php
       }
 
@@ -315,7 +307,7 @@
 
 
       ?> <script>
-      alert("Student Account has been successfully created. Login is now eligible.");
+      alert("Librarian Account has been successfully created. Login is now eligible.");
       </script> <?php
 
       echo "<script> location.href='../index.php'; </script>";

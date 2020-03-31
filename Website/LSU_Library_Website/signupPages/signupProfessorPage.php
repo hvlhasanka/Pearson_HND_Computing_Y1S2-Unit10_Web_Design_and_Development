@@ -378,7 +378,7 @@
       }
 
       ?> <script>
-      alert("Student Account has been successfully created. Login is now eligible.");
+      alert("Professor Account has been successfully created. Login is now eligible.");
       </script> <?php
 
       echo "<script> location.href='../index.php'; </script>";
